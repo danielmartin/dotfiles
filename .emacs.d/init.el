@@ -34,9 +34,6 @@
 ;; Show column numbers in status bar
 (column-number-mode 1)
 
-;; Show line numbers on the left
-(global-linum-mode t)
-
 ;; Format linum-mode output by appending a space at the end
 (setq linum-format "%d ")
 
@@ -72,11 +69,10 @@
 ;; PYTHON ;;
 ;;;;;;;;;;;;
 
-(require 'python)
-(define-key python-mode-map (kbd "\C-c\C-a") 'python-nav-beginning-of-block)
-(define-key python-mode-map (kbd "\C-c\C-e") 'python-nav-end-of-block)
-
-(setq python-check-command "pyflakes")
+(add-to-list 'load-path "~/.emacs.d/python-mode/")
+(autoload 'python-mode "python-mode" "Python Mode." t)
+(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
+(add-to-list 'interpreter-mode-alist '("python" . python-mode))
 
 ;;;;;;;;;;;;;;;;;
 ;; KEYBINDINGS ;;
