@@ -55,6 +55,11 @@
 			(awk-mode . "awk")
 			(other . "k&r")))
 
+;; Make RET indent automatically
+(defun my-make-CR-do-indent ()
+  (define-key c-mode-base-map "\C-m" 'c-context-line-break))
+(add-hook 'c-initialization-hook 'my-make-CR-do-indent)
+
 ;; Indent with 4 spaces
 (setq c-basic-offset 4)
 ;; GMP info manual
