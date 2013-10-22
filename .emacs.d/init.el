@@ -106,3 +106,12 @@
 
 (global-font-lock-mode 1)		     ; for all buffers
 (add-hook 'org-mode-hook 'turn-on-font-lock)  ; org-mode buffers only
+
+;;;;;;;;;;;;;;;
+;; YASNIPPET ;;
+;;;;;;;;;;;;;;;
+
+(add-to-list 'load-path
+              "~/.emacs.d/plugins/yasnippet")
+(require 'yasnippet)
+(yas-global-mode 1)
