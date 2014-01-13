@@ -1,13 +1,15 @@
 Dotfiles
 ========
 
-This repository contains some configuration files for Emacs. In the future, I'll add configuration files for other Unix tools that I use. If you want them, follow these instructions:
+This repository contains some configuration files for typical Unix tools. If you want them, follow these instructions:
 
 ```sh
 cd $HOME
-git clone https://github.com/danielmartin/dotfiles.git
+git clone --recursive https://github.com/danielmartin/dotfiles.git
 mv .emacs.d .emacs.d~
+mv .bash_profile .bash_profile~
 ln -s dotfiles/.emacs.d .
+ln -s dotfiles/.bash_profile .
 ```
 
-This will create a `dotfiles` directory inside your home directory and a corresponding symbolic link for each configuration file/folder.
+This will create a `dotfiles` directory inside your home directory and a corresponding symbolic link for each configuration file/folder. The `--recursive` option will automatically download every submodule in the repository.
