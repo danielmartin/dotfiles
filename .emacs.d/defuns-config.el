@@ -8,12 +8,23 @@
 
 ;; recenter buffer so that current defun is at the top
 (defun recenter-defun()
-  "This function recenters the buffer to put the current defun at the top."
+  "Recenters the buffer to put the current defun at the top."
   (interactive)
   (beginning-of-defun)
   (let ((this-scroll-margin
 	 (min (max 0 scroll-margin)
 	      (truncate (/ (window-body-height) 4.0)))))
     (recenter this-scroll-margin)))
+
+(defun expand-and-indent-block ()
+  "Expand a statement block so that the point is inside the block in a
+new, indented line, and the closing brace of the block is also indented"
+  (interactive "*")
+  (delete-horizontal-space t)
+  (newline)
+  (newline)
+  (indent-according-to-mode)
+  (previous-line)
+  (indext-for-tab-command))
 
 (provide 'defuns-config)

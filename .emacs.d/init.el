@@ -54,14 +54,15 @@
 (setq c-default-style '((java-mode . "java")
 			(awk-mode . "awk")
 			(other . "k&r")))
+;; Indent with 4 spaces, no tabs
+(setq c-basic-offset 4)
+(setq-default indent-tabs-mode nil)
 
 ;; Make RET indent automatically
 (defun my-make-CR-do-indent ()
   (define-key c-mode-base-map "\C-m" 'c-context-line-break))
 (add-hook 'c-initialization-hook 'my-make-CR-do-indent)
 
-;; Indent with 4 spaces
-(setq c-basic-offset 4)
 ;; GMP info manual
 (eval-after-load "info-look"
        '(let ((mode-value (assoc 'c-mode (assoc 'symbol info-lookup-alist))))
