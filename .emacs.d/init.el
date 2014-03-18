@@ -43,6 +43,10 @@
 ;; recent mode
 (recentf-mode 1)
 
+;; Scroll pages up and down
+(global-set-key "\M-p" (lambda () (interactive) (scroll-down 4)))
+(global-set-key "\M-n" (lambda () (interactive) (scroll-up 4)))
+
 ;; Function definitions
 (require 'defuns-config)
 
