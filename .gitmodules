@@ -1,3 +1,6 @@
 [submodule ".emacs.d/plugins/yasnippet"]
 	path = .emacs.d/plugins/yasnippet
 	url = https://github.com/capitaomorte/yasnippet
+[submodule ".emacs.d/swift-mode"]
+	path = .emacs.d/swift-mode
+	url = https://github.com/danielmartin/swift-mode

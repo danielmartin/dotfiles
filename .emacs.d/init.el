@@ -95,6 +95,12 @@
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
+;;;;;;;;;;;;;;;
+;;   SWIFT   ;;
+;;;;;;;;;;;;;;;
+(add-to-list 'load-path "~/.emacs.d/swift-mode/")
+(require 'swift-mode)
+
 ;;;;;;;;;;;;;;;;;
 ;; KEYBINDINGS ;;
 ;;;;;;;;;;;;;;;;;
