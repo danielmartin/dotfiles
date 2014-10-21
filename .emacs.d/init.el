@@ -4,8 +4,15 @@
 ;; GENERAL ;;
 ;;;;;;;;;;;;;
 
-;; Add Emacs directory to load path
-(add-to-list 'load-path user-emacs-directory)
+;; Add Emacs subdirectories to load path
+(setq main-src-path (concat user-emacs-directory "src/"))
+(setq yasnippet-path (concat user-emacs-directory "plugins/yasnippet/"))
+(setq swift-mode-path (concat user-emacs-directory "swift-mode/"))
+(setq markdown-mode-path (concat user-emacs-directory "markdown-mode/"))
+(setq python-mode-path (concat user-emacs-directory "python-mode/"))
+
+(add-to-list 'load-path main-src-path)
+(add-to-list 'load-path yasnippet-path)
 
 ;; Set some custom folders where binaries are located
 (setq exec-path (append '("/usr/local/bin") exec-path))
