@@ -6,20 +6,7 @@
 
 ;; Add Emacs subdirectories to load path
 (setq main-src-path (concat user-emacs-directory "src/"))
-(setq yasnippet-path (concat user-emacs-directory "plugins/yasnippet/"))
-(setq async-path (concat user-emacs-directory "plugins/async/"))
-(setq helm-path (concat user-emacs-directory "plugins/helm/"))
-(setq swift-mode-path (concat user-emacs-directory "swift-mode/"))
-(setq markdown-mode-path (concat user-emacs-directory "markdown-mode/"))
-(setq python-mode-path (concat user-emacs-directory "python-mode/"))
-
 (add-to-list 'load-path main-src-path)
-(add-to-list 'load-path yasnippet-path)
-(add-to-list 'load-path async-path)
-(add-to-list 'load-path helm-path)
-(add-to-list 'load-path swift-mode-path)
-(add-to-list 'load-path markdown-mode-path)
-(add-to-list 'load-path python-mode-path)
 
 ;; Set some custom folders where binaries are located
 (setq exec-path (append '("/usr/local/bin") exec-path))
@@ -93,6 +80,9 @@
 ;; PYTHON ;;
 ;;;;;;;;;;;;
 
+(setq python-mode-path (concat user-emacs-directory "python-mode/"))
+(add-to-list 'load-path python-mode-path)
+
 (autoload 'python-mode "python-mode" "Python Mode." t)
 (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
 (add-to-list 'interpreter-mode-alist '("python" . python-mode))
@@ -100,6 +90,9 @@
 ;;;;;;;;;;;;;;
 ;; MARKDOWN ;;
 ;;;;;;;;;;;;;;
+
+(setq markdown-mode-path (concat user-emacs-directory "markdown-mode/"))
+(add-to-list 'load-path markdown-mode-path)
 
 (autoload 'markdown-mode "markdown-mode"
    "Major mode for editing Markdown files" t)
@@ -110,6 +103,9 @@
 ;;;;;;;;;;;;;;;
 ;;   SWIFT   ;;
 ;;;;;;;;;;;;;;;
+
+(setq swift-mode-path (concat user-emacs-directory "swift-mode/"))
+(add-to-list 'load-path swift-mode-path)
 
 (require 'swift-mode)
 
@@ -134,13 +130,19 @@
 ;; YASNIPPET ;;
 ;;;;;;;;;;;;;;;
 
-(add-to-list 'load-path
-              "~/.emacs.d/plugins/yasnippet")
+(setq yasnippet-path (concat user-emacs-directory "plugins/yasnippet/"))
+(add-to-list 'load-path yasnippet-path)
+
 (require 'yasnippet)
 (yas-global-mode 1)
 
 ;;;;;;;;;;;;;;;
 ;;    HELM   ;;
 ;;;;;;;;;;;;;;;
+
+(setq async-path (concat user-emacs-directory "plugins/async/"))
+(setq helm-path (concat user-emacs-directory "plugins/helm/"))
+(add-to-list 'load-path async-path)
+(add-to-list 'load-path helm-path)
 
 (require 'helm-config)
