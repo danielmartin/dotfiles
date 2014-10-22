@@ -4,9 +4,9 @@
 [submodule ".emacs.d/swift-mode"]
 	path = .emacs.d/swift-mode
 	url = https://github.com/danielmartin/swift-mode
-[submodule ".emacs.d/helm"]
-        path = .emacs.d/helm
-        url = https://github.com/emacs-helm/helm.git
-[submodule ".emacs.d/async"]
-        path = .emacs.d/async
-        url = https://github.com/jwiegley/emacs-async.git
+[submodule ".emacs.d/plugins/helm"]
+	path = .emacs.d/plugins/helm
+	url = https://github.com/emacs-helm/helm.git
+[submodule ".emacs.d/plugins/async"]
+	path = .emacs.d/plugins/async
+	url = https://github.com/jwiegley/emacs-async.git
