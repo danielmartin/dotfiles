@@ -7,12 +7,19 @@
 ;; Add Emacs subdirectories to load path
 (setq main-src-path (concat user-emacs-directory "src/"))
 (setq yasnippet-path (concat user-emacs-directory "plugins/yasnippet/"))
+(setq async-path (concat user-emacs-directory "plugins/async/"))
+(setq helm-path (concat user-emacs-directory "plugins/helm/"))
 (setq swift-mode-path (concat user-emacs-directory "swift-mode/"))
 (setq markdown-mode-path (concat user-emacs-directory "markdown-mode/"))
 (setq python-mode-path (concat user-emacs-directory "python-mode/"))
 
 (add-to-list 'load-path main-src-path)
 (add-to-list 'load-path yasnippet-path)
+(add-to-list 'load-path async-path)
+(add-to-list 'load-path helm-path)
+(add-to-list 'load-path swift-mode-path)
+(add-to-list 'load-path markdown-mode-path)
+(add-to-list 'load-path python-mode-path)
 
 ;; Set some custom folders where binaries are located
 (setq exec-path (append '("/usr/local/bin") exec-path))
@@ -86,7 +93,6 @@
 ;; PYTHON ;;
 ;;;;;;;;;;;;
 
-(add-to-list 'load-path "~/.emacs.d/python-mode/")
 (autoload 'python-mode "python-mode" "Python Mode." t)
 (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
 (add-to-list 'interpreter-mode-alist '("python" . python-mode))
@@ -95,7 +101,6 @@
 ;; MARKDOWN ;;
 ;;;;;;;;;;;;;;
 
-(add-to-list 'load-path "~/.emacs.d/markdown-mode/")
 (autoload 'markdown-mode "markdown-mode"
    "Major mode for editing Markdown files" t)
 (add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
@@ -105,7 +110,7 @@
 ;;;;;;;;;;;;;;;
 ;;   SWIFT   ;;
 ;;;;;;;;;;;;;;;
-(add-to-list 'load-path "~/.emacs.d/swift-mode/")
+
 (require 'swift-mode)
 
 ;;;;;;;;;;;;;;;;;
@@ -133,3 +138,9 @@
               "~/.emacs.d/plugins/yasnippet")
 (require 'yasnippet)
 (yas-global-mode 1)
+
+;;;;;;;;;;;;;;;
+;;    HELM   ;;
+;;;;;;;;;;;;;;;
+
+(require 'helm-config)
