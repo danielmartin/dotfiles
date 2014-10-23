@@ -109,12 +109,6 @@
 
 (require 'swift-mode)
 
-;;;;;;;;;;;;;;;;;
-;; KEYBINDINGS ;;
-;;;;;;;;;;;;;;;;;
-
-(require 'keybindings)
-
 ;;;;;;;;;;;;;;
 ;; ORG-MODE ;;
 ;;;;;;;;;;;;;;
@@ -146,3 +140,10 @@
 (add-to-list 'load-path helm-path)
 
 (require 'helm-config)
+(helm-mode 1)
+
+;;;;;;;;;;;;;;;;;
+;; KEYBINDINGS ;;
+;;;;;;;;;;;;;;;;;
+
+(require 'keybindings)
