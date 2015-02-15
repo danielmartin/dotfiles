@@ -10,7 +10,7 @@
 
 ;; Set some custom folders where binaries are located
 (setq exec-path (append '("/usr/local/bin") exec-path))
-(setenv "PATH" (concat "/usr/local/bin" ":" (getenv "PATH")))
+(setenv "PATH" (concat "/usr/texbin" ":" (concat "/usr/local/bin" ":" (getenv "PATH"))))
 
 ;; Configure some appearance options
 (require 'appearance)
@@ -109,6 +109,11 @@
 
 (require 'swift-mode)
 
+;;;;;;;;;;;;;;;
+;;   LATEX   ;;
+;;;;;;;;;;;;;;;
+(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+
 ;;;;;;;;;;;;;;
 ;; ORG-MODE ;;
 ;;;;;;;;;;;;;;
@@ -141,6 +146,12 @@
 
 (require 'helm-config)
 (helm-mode 1)
+
+;;;;;;;;;;;;;;;
+;;   ASPELL  ;;
+;;;;;;;;;;;;;;;
+
+(setq-default ispell-program-name "aspell")
 
 ;;;;;;;;;;;;;;;;;
 ;; KEYBINDINGS ;;
