@@ -112,7 +112,17 @@
 ;;;;;;;;;;;;;;;
 ;;   LATEX   ;;
 ;;;;;;;;;;;;;;;
+
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+
+;;;;;;;;;;;;
+;; OCTAVE ;;
+;;;;;;;;;;;;
+
+(setq auto-mode-alist
+      (cons
+       '("\\.m$" . octave-mode)
+       auto-mode-alist))
 
 ;;;;;;;;;;;;;;
 ;; ORG-MODE ;;
