@@ -27,4 +27,12 @@ new, indented line, and the closing brace of the block is also indented"
   (previous-line)
   (indext-for-tab-command))
 
+(defun open-line-above (N)
+    "Insert a new line above the current point position.
+With arg N, insert N newlines."
+    (interactive "p")
+    (save-excursion
+      (beginning-of-line)
+      (newline N)))
+
 (provide 'defuns-config)

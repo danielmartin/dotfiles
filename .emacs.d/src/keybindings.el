@@ -8,6 +8,8 @@
 (global-set-key "\C-x\C-b" 'buffer-menu)
 ;; Indent regions more easily
 (global-set-key "\C-ci" 'indent-region)
+;; Open newlines above current position
+(global-set-key (kbd "C-S-o") 'open-line-above)
 
 ;; Helm
 (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
