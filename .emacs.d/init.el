@@ -163,6 +163,17 @@
 
 (setq-default ispell-program-name "aspell")
 
+;;;;;;;;;;;;;;;;;;
+;;   COCOAPODS  ;;
+;;;;;;;;;;;;;;;;;;
+
+(add-to-list 'auto-mode-alist '("\\.podspec$" . ruby-mode))
+
+;;;;;;;;;;;;;;;;;
+;; JAVASCRIPT  ;;
+;;;;;;;;;;;;;;;;;
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+
 ;;;;;;;;;;;;;;;;;
 ;; KEYBINDINGS ;;
 ;;;;;;;;;;;;;;;;;
