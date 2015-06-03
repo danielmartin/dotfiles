@@ -1,6 +1,9 @@
 PATH="/usr/local/bin:$ANDROID_HOME/tools:${PATH}"
 export PATH
 
+OCLINT_HOME=~/oclint
+export PATH=$OCLINT_HOME/bin:$PATH
+
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
 alias ll='ls -alF'
