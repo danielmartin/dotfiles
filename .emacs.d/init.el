@@ -101,6 +101,14 @@
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
 ;;;;;;;;;;;;;;;
+;;   PHP     ;;
+;;;;;;;;;;;;;;;
+(setq php-mode-path (concat user-emacs-directory "php-mode/"))
+(add-to-list 'load-path php-mode-path)
+(autoload 'php-mode "php-mode"
+(add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode)))
+
+;;;;;;;;;;;;;;;
 ;;   SWIFT   ;;
 ;;;;;;;;;;;;;;;
 
