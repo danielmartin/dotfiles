@@ -1,4 +1,4 @@
-; Emacs configuration file
+;; Emacs configuration file
 
 ;;;;;;;;;;;;;
 ;; GENERAL ;;
@@ -75,13 +75,29 @@
                   (cons '("(gmp)Function Index" nil "^ -.* " "\\>")
                         (nth 3 mode-value)))))
 
+;; Install packages
+(setq package-list '(magit helm js2-mode auctex python-mode markdown-mode php-mode yasnippet))
+
+;; Use MELPA repositories
+(setq package-archives '(("melpa" . "http://melpa.org/packages/")
+                         ("melpa-stable" . "http://stable.melpa.org/packages/")
+                         ("gnu" . "http://elpa.gnu.org/packages/")))
+;; Activate packages
+(package-initialize)
+
+;; Fetch available packages
+(or
+ (file-exists-p package-user-dir)
+ (package-refresh-contents))
+
+;; Install missing packages
+(dolist (package package-list)
+  (unless (package-installed-p package)
+    (package-install package)))
 
 ;;;;;;;;;;;;
 ;; PYTHON ;;
 ;;;;;;;;;;;;
-
-(setq python-mode-path (concat user-emacs-directory "python-mode/"))
-(add-to-list 'load-path python-mode-path)
 
 (autoload 'python-mode "python-mode" "Python Mode." t)
 (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
@@ -90,9 +106,6 @@
 ;;;;;;;;;;;;;;
 ;; MARKDOWN ;;
 ;;;;;;;;;;;;;;
-
-(setq markdown-mode-path (concat user-emacs-directory "markdown-mode/"))
-(add-to-list 'load-path markdown-mode-path)
 
 (autoload 'markdown-mode "markdown-mode"
    "Major mode for editing Markdown files" t)
@@ -103,8 +116,7 @@
 ;;;;;;;;;;;;;;;
 ;;   PHP     ;;
 ;;;;;;;;;;;;;;;
-(setq php-mode-path (concat user-emacs-directory "php-mode/"))
-(add-to-list 'load-path php-mode-path)
+
 (autoload 'php-mode "php-mode"
 (add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode)))
 
@@ -112,10 +124,10 @@
 ;;   SWIFT   ;;
 ;;;;;;;;;;;;;;;
 
-(setq swift-mode-path (concat user-emacs-directory "swift-mode/"))
-(add-to-list 'load-path swift-mode-path)
+;;(setq swift-mode-path (concat user-emacs-directory "swift-mode/"))
+;;(add-to-list 'load-path swift-mode-path)
 
-(require 'swift-mode)
+;;(require 'swift-mode)
 
 ;;;;;;;;;;;;;;;
 ;;   LATEX   ;;
@@ -126,7 +138,6 @@
 ;;;;;;;;;;;;
 ;; OCTAVE ;;
 ;;;;;;;;;;;;
-
 (setq auto-mode-alist
       (cons
        '("\\.m$" . octave-mode)
@@ -147,20 +158,12 @@
 ;; YASNIPPET ;;
 ;;;;;;;;;;;;;;;
 
-(setq yasnippet-path (concat user-emacs-directory "plugins/yasnippet/"))
-(add-to-list 'load-path yasnippet-path)
-
 (require 'yasnippet)
 (yas-global-mode 1)
 
 ;;;;;;;;;;;;;;;
 ;;    HELM   ;;
 ;;;;;;;;;;;;;;;
-
-(setq async-path (concat user-emacs-directory "plugins/async/"))
-(setq helm-path (concat user-emacs-directory "plugins/helm/"))
-(add-to-list 'load-path async-path)
-(add-to-list 'load-path helm-path)
 
 (require 'helm-config)
 (helm-mode 1)
@@ -188,6 +191,7 @@
 ;;;;;;;;;;;;;;;;;
 ;; JAVASCRIPT  ;;
 ;;;;;;;;;;;;;;;;;
+
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 
 ;;;;;;;;;;;;;;;;;
