@@ -76,7 +76,15 @@
                         (nth 3 mode-value)))))
 
 ;; Install packages
-(setq package-list '(magit helm js2-mode auctex python-mode markdown-mode php-mode yasnippet))
+(setq package-list '(magit
+                     helm
+                     js2-mode
+                     auctex
+                     python-mode
+                     markdown-mode
+                     php-mode
+                     yasnippet
+                     auto-complete))
 
 ;; Use MELPA repositories
 (setq package-archives '(("melpa" . "http://melpa.org/packages/")
@@ -94,6 +102,12 @@
 (dolist (package package-list)
   (unless (package-installed-p package)
     (package-install package)))
+
+;;;;;;;;;;;;;;;;;;;
+;; AUTO-COMPLETE ;;
+;;;;;;;;;;;;;;;;;;;
+
+(ac-config-default)
 
 ;;;;;;;;;;;;
 ;; PYTHON ;;
