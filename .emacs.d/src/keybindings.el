@@ -10,6 +10,14 @@
 (global-set-key "\C-ci" 'indent-region)
 ;; Open newlines above current position
 (global-set-key (kbd "C-S-o") 'open-line-above)
+;; Resize windows
+(global-set-key (kbd "C-x <up>") 'shrink-window)
+(global-set-key (kbd "C-x <down>") 'enlarge-window)
+(global-set-key (kbd "C-x <left>") 'shrink-window-horizontally)
+(global-set-key (kbd "C-x <right>") 'enlarge-window-horizontally)
+
+;; Magit
+(global-set-key (kbd "C-x g") 'magit-status)
 
 ;; Helm
 (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
