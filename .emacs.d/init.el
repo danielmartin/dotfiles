@@ -84,7 +84,8 @@
                      markdown-mode
                      php-mode
                      yasnippet
-                     auto-complete))
+                     auto-complete
+                     restclient))
 
 ;; Use MELPA repositories
 (setq package-archives '(("melpa" . "http://melpa.org/packages/")
