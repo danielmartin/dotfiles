@@ -86,7 +86,8 @@
                      yasnippet
                      auto-complete
                      restclient
-                     jedi))
+                     jedi
+                     swift-mode))
 
 ;; Use MELPA repositories
 (setq package-archives '(("melpa" . "http://melpa.org/packages/")
