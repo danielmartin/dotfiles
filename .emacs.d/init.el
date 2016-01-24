@@ -55,6 +55,9 @@
 (setq vc-make-backup-files t)
 (setq auto-save-list-file-name-transforms '((".*", "~/.emacs.d/auto-save-list" t)))
 
+;; Winner mode
+(winner-mode 1)
+
 ;; Function definitions
 (require 'defuns-config)
 
