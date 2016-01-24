@@ -48,6 +48,13 @@
 (global-set-key "\M-p" (lambda () (interactive) (scroll-down 4)))
 (global-set-key "\M-n" (lambda () (interactive) (scroll-up 4)))
 
+;; File backup management
+(setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+(setq delete-old-versions -1)
+(setq version-control t)
+(setq vc-make-backup-files t)
+(setq auto-save-list-file-name-transforms '((".*", "~/.emacs.d/auto-save-list" t)))
+
 ;; Function definitions
 (require 'defuns-config)
 
