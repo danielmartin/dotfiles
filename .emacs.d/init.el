@@ -97,7 +97,8 @@
                      auto-complete
                      restclient
                      jedi
-                     swift-mode))
+                     swift-mode
+                     undo-tree))
 
 ;; Use MELPA repositories
 (setq package-archives '(("melpa" . "http://melpa.org/packages/")
@@ -176,12 +177,7 @@
 ;; ORG-MODE ;;
 ;;;;;;;;;;;;;;
 
-(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-(define-key global-map "\C-cl" 'org-store-link)
-(define-key global-map "\C-ca" 'org-agenda)
-
-(global-font-lock-mode 1)		     ; for all buffers
-(add-hook 'org-mode-hook 'turn-on-font-lock)  ; org-mode buffers only
+(require 'org-mode-config)
 
 ;;;;;;;;;;;;;;;
 ;; YASNIPPET ;;
@@ -222,6 +218,13 @@
 ;;;;;;;;;;;;;;;;;
 
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+
+;;;;;;;;;;;;;;;
+;; UNDO TREE ;;
+;;;;;;;;;;;;;;;
+(global-undo-tree-mode)
+(setq undo-tree-visualizer-timestamps t)
+(setq undo-tree-visualizer-diff t)
 
 ;;;;;;;;;;;;;;;;;
 ;; KEYBINDINGS ;;
