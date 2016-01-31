@@ -35,4 +35,12 @@ With arg N, insert N newlines."
       (beginning-of-line)
       (newline N)))
 
+(defun beautify-json ()
+  "Pretty prints a region containing a JSON structure"
+  (interactive)
+  (let ((b (if mark-active (min (point) (mark)) (point-min)))
+        (e (if mark-active (max (point) (mark)) (point-max))))
+    (shell-command-on-region b e
+     "python -mjson.tool" (current-buffer) t)))
+
 (provide 'defuns-config)
