@@ -7,6 +7,8 @@
 ;; Add Emacs subdirectories to load path
 (setq main-src-path (concat user-emacs-directory "src/"))
 (add-to-list 'load-path main-src-path)
+(setq vendor-path (concat user-emacs-directory "vendor/ob-restclient.el"))
+(add-to-list 'load-path vendor-path)
 
 ;; Set some custom folders where binaries are located
 (setq exec-path (append '("/usr/local/bin") exec-path))

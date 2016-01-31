@@ -22,6 +22,11 @@
 ;; Org-Mode Agenda
 (setq org-agenda-files '("~/Org-Mode/"))
 
+;; Org-Babel
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((restclient . t)))
+
 (global-font-lock-mode 1)		     ; for all buffers
 (add-hook 'org-mode-hook 'turn-on-font-lock)  ; org-mode buffers only
 
