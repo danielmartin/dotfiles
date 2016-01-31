@@ -98,7 +98,8 @@
                      restclient
                      jedi
                      swift-mode
-                     undo-tree))
+                     undo-tree
+                     org2blog))
 
 ;; Use MELPA repositories
 (setq package-archives '(("melpa" . "http://melpa.org/packages/")
@@ -178,6 +179,7 @@
 ;;;;;;;;;;;;;;
 
 (require 'org-mode-config)
+(require 'org2blog-config)
 
 ;;;;;;;;;;;;;;;
 ;; YASNIPPET ;;
