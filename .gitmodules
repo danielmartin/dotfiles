@@ -1,3 +1,6 @@
 [submodule ".emacs.d/vendor/ob-restclient.el"]
 	path = .emacs.d/vendor/ob-restclient.el
 	url = https://github.com/danielmartin/ob-restclient.el.git
+[submodule ".emacs.d/vendor/ob-swift"]
+	path = .emacs.d/vendor/ob-swift
+	url = https://github.com/danielmartin/ob-swift.git

@@ -7,8 +7,10 @@
 ;; Add Emacs subdirectories to load path
 (setq main-src-path (concat user-emacs-directory "src/"))
 (add-to-list 'load-path main-src-path)
-(setq vendor-path (concat user-emacs-directory "vendor/ob-restclient.el"))
-(add-to-list 'load-path vendor-path)
+(setq restclient-vendor-path (concat user-emacs-directory "vendor/ob-restclient.el"))
+(add-to-list 'load-path restclient-vendor-path)
+(setq swift-vendor-path (concat user-emacs-directory "vendor/ob-swift"))
+(add-to-list 'load-path swift-vendor-path)
 
 ;; Set some custom folders where binaries are located
 (setq exec-path (append '("/usr/local/bin") exec-path))
@@ -101,7 +103,8 @@
                      jedi
                      swift-mode
                      undo-tree
-                     org2blog))
+                     org2blog
+                     org-tree-slide))
 
 ;; Use MELPA repositories
 (setq package-archives '(("melpa" . "http://melpa.org/packages/")
