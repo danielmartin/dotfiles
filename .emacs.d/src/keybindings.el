@@ -1,5 +1,5 @@
 ;; Nice option to find recent files
-(global-set-key (kbd "C-c f") 'recentf-ido-find-file)
+(global-set-key (kbd "C-c f") 'helm-recentf)
 ;; Recenter-defun is C-c d
 (global-set-key "\C-cd" 'recenter-defun)
 ;; Other-window is M-o

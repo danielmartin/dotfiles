@@ -32,4 +32,7 @@
 (global-font-lock-mode 1)		     ; for all buffers
 (add-hook 'org-mode-hook 'turn-on-font-lock)  ; org-mode buffers only
 
+(require 'org-bullets)
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+
 (provide 'org-mode-config)

@@ -104,7 +104,8 @@
                      swift-mode
                      undo-tree
                      org2blog
-                     org-tree-slide))
+                     org-tree-slide
+                     org-bullets))
 
 ;; Use MELPA repositories
 (setq package-archives '(("melpa" . "http://melpa.org/packages/")
