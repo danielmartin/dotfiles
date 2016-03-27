@@ -98,14 +98,13 @@
                      markdown-mode
                      php-mode
                      yasnippet
-                     auto-complete
                      restclient
-                     jedi
                      swift-mode
                      undo-tree
                      org2blog
                      org-tree-slide
-                     org-bullets))
+                     org-bullets
+                     company))
 
 ;; Use MELPA repositories
 (setq package-archives '(("melpa" . "http://melpa.org/packages/")
@@ -124,11 +123,7 @@
   (unless (package-installed-p package)
     (package-install package)))
 
-;;;;;;;;;;;;;;;;;;;
-;; AUTO-COMPLETE ;;
-;;;;;;;;;;;;;;;;;;;
-
-(ac-config-default)
+(add-to-list 'company-backends 'company-sourcekit)
 
 ;;;;;;;;;;;;
 ;; PYTHON ;;
@@ -156,15 +151,6 @@
 
 (autoload 'php-mode "php-mode"
 (add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode)))
-
-;;;;;;;;;;;;;;;
-;;   SWIFT   ;;
-;;;;;;;;;;;;;;;
-
-;;(setq swift-mode-path (concat user-emacs-directory "swift-mode/"))
-;;(add-to-list 'load-path swift-mode-path)
-
-;;(require 'swift-mode)
 
 ;;;;;;;;;;;;;;;
 ;;   LATEX   ;;
