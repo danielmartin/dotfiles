@@ -4,3 +4,6 @@
 [submodule ".emacs.d/vendor/ob-swift"]
 	path = .emacs.d/vendor/ob-swift
 	url = https://github.com/danielmartin/ob-swift.git
+[submodule ".emacs.d/vendor/magit-gh-pulls"]
+	path = .emacs.d/vendor/magit-gh-pulls
+	url = https://github.com/danielmartin/magit-gh-pulls.git

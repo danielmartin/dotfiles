@@ -1,3 +1,7 @@
+;; Custom color scheme, to reduce eye strain
+(use-package zenburn-theme
+  :load-path "themes/")
+
 ;; Ditch the splash screen
 (setq inhibit-splash-screen t)
 
@@ -11,9 +15,5 @@
 
 ;; Ditch scrollbars
 (scroll-bar-mode -1)
-
-;; Custom color scheme, to reduce eye strain
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
-(load-theme 'zenburn t)
 
 (provide 'appearance)

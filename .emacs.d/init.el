@@ -1,16 +1,28 @@
 ;; Emacs configuration file
 
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; PACKAGE MANAGEMENT ;;
+;;;;;;;;;;;;;;;;;;;;;;;;
+
+(require 'package)
+(setq package-enable-at-startup nil)
+(add-to-list 'package-archives
+             '("melpa" . "https://melpa.org/packages/"))
+
+(package-initialize)
+
+;; Bootstrap `use-package'
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
 ;;;;;;;;;;;;;
 ;; GENERAL ;;
 ;;;;;;;;;;;;;
 
-;; Add Emacs subdirectories to load path
-(setq main-src-path (concat user-emacs-directory "src/"))
-(add-to-list 'load-path main-src-path)
-(setq restclient-vendor-path (concat user-emacs-directory "vendor/ob-restclient.el"))
-(add-to-list 'load-path restclient-vendor-path)
-(setq swift-vendor-path (concat user-emacs-directory "vendor/ob-swift"))
-(add-to-list 'load-path swift-vendor-path)
+;; Set load-path
+(let ((default-directory  "~/.emacs.d/"))
+  (normal-top-level-add-subdirs-to-load-path))
 
 ;; Set some custom folders where binaries are located
 (setq exec-path (append '("/usr/local/bin") exec-path))
@@ -27,11 +39,12 @@
 ;; Show in which function/method the point is
 (which-function-mode 1)
 
-; Highlight parentheses pairs
+;; Highlight parentheses pairs
 (show-paren-mode 1)
 (set-face-background 'show-paren-match-face "#aaaaaa")
-(set-face-attribute 'show-paren-match-face nil 
-        :weight 'bold :underline nil :overline nil :slant 'normal)
+(set-face-attribute 'show-paren-match-face nil
+        :weight 'bold :underline nil :overline nil :slant
+        'normal)
 
 ;; Close parenthesis, braces, etc. automatically
 (electric-pair-mode 1)
@@ -62,163 +75,136 @@
 ;; Winner mode
 (winner-mode 1)
 
+;; Linum mode
+(add-hook 'prog-mode-hook (lambda () (linum-mode 1)))
+
 ;; Function definitions
 (require 'defuns-config)
 
-;;;;;;;
-;; C ;;
-;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; PROGRAMMING LANGUAGES ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Set k&r style
-(setq c-default-style '((java-mode . "java")
-			(awk-mode . "awk")
-			(other . "k&r")))
-;; Indent with 4 spaces, no tabs
-(setq c-basic-offset 4)
-(setq-default indent-tabs-mode nil)
+;; C
+(use-package cc-mode
+  :config
+  ;; Use K&R style for C
+  (add-hook 'c-mode-hook (lambda () (c-set-style "k&r")))
+  ;; Indent with 4 spaces, no tabs
+  (setq c-basic-offset 4)
+  (setq-default indent-tabs-mode nil))
 
-;; Make RET indent automatically
-(defun my-make-CR-do-indent ()
-  (define-key c-mode-base-map "\C-m" 'c-context-line-break))
-(add-hook 'c-initialization-hook 'my-make-CR-do-indent)
+;; JavaScript
+(use-package js2-mode
+  :ensure t
+  :mode ("\\.js\\'" . js2-mode))
 
-;; GMP info manual
-(eval-after-load "info-look"
-       '(let ((mode-value (assoc 'c-mode (assoc 'symbol info-lookup-alist))))
-          (setcar (nthcdr 3 mode-value)
-                  (cons '("(gmp)Function Index" nil "^ -.* " "\\>")
-                        (nth 3 mode-value)))))
+;; Octave
+(use-package octave
+  :ensure t
+  :mode ("\\.m$" . octave-mode))
 
-;; Install packages
-(setq package-list '(magit
-                     helm
-                     js2-mode
-                     auctex
-                     python-mode
-                     markdown-mode
-                     php-mode
-                     yasnippet
-                     restclient
-                     swift-mode
-                     undo-tree
-                     org2blog
-                     org-tree-slide
-                     org-bullets
-                     company))
+;; LaTeX
+(use-package tex-site
+  :ensure auctex
+  :config
+  (add-hook 'LaTeX-mode-hook 'turn-on-reftex))
 
-;; Use MELPA repositories
-(setq package-archives '(("melpa" . "http://melpa.org/packages/")
-                         ("melpa-stable" . "http://stable.melpa.org/packages/")
-                         ("gnu" . "http://elpa.gnu.org/packages/")))
-;; Activate packages
-(package-initialize)
+;; Python
+(use-package python
+  :ensure t
+  :mode ("\\.py\\'" . python-mode)
+  :interpreter ("python" . python-mode))
 
-;; Fetch available packages
-(or
- (file-exists-p package-user-dir)
- (package-refresh-contents))
+;; Markdown
+(use-package markdown-mode
+  :ensure t
+  :mode ("\\.\\(m\\(ark\\)?down\\|md\\)$" . markdown-mode))
 
-;; Install missing packages
-(dolist (package package-list)
-  (unless (package-installed-p package)
-    (package-install package)))
+;; PHP
+(use-package php-mode
+  :ensure t
+  :mode ("\\.php\\'" . php-mode))
 
-(add-to-list 'company-backends 'company-sourcekit)
+;; Swift
+(use-package swift-mode
+  :ensure t
+  :mode ("\\.swift\\'" . swift-mode))
 
-;;;;;;;;;;;;
-;; PYTHON ;;
-;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;
+;; GENERAL TOOLS ;;
+;;;;;;;;;;;;;;;;;;;
 
-(autoload 'python-mode "python-mode" "Python Mode." t)
-(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
-(add-to-list 'interpreter-mode-alist '("python" . python-mode))
-(add-hook 'python-mode-hook 'jedi:setup)
-(setq jedi:complete-on-dot t)
+;; Magit
+(use-package magit
+  :ensure t
+  :bind ("C-x g" . magit-status))
 
-;;;;;;;;;;;;;;
-;; MARKDOWN ;;
-;;;;;;;;;;;;;;
+(use-package gh
+  :ensure t)
 
-(autoload 'markdown-mode "markdown-mode"
-   "Major mode for editing Markdown files" t)
-(add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+(use-package s
+  :ensure t)
 
-;;;;;;;;;;;;;;;
-;;   PHP     ;;
-;;;;;;;;;;;;;;;
+(use-package magit-gh-pulls
+  :load-path "vendor/magit-gh-pulls/"
+  :config
+  (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls))
 
-(autoload 'php-mode "php-mode"
-(add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode)))
+;; Helm
+(use-package helm
+  :ensure t
+  :bind
+  (;; Redefine M-x to use Helm
+   ("M-x" . helm-M-x)
+   ;; File navigation on steroids
+   ("C-x C-f" . helm-find-files)
+   ;; Greate kill ring cycling
+   ("C-y" . helm-show-kill-ring)
+   ;; Find recent files using Helm
+   ("C-c f" . helm-recentf)
+   :map helm-map
+   ("<tab>" . helm-execute-persistent-action)
+   ("C-i" . helm-execute-persistent-action)
+   ("C-z" . helm-select-action)))
 
-;;;;;;;;;;;;;;;
-;;   LATEX   ;;
-;;;;;;;;;;;;;;;
+;; Yasnippet
+(use-package yasnippet
+  :ensure t
+  :init (yas-global-mode 1))
 
-(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+;; Restclient
+(use-package restclient
+  :ensure t)
 
-;;;;;;;;;;;;
-;; OCTAVE ;;
-;;;;;;;;;;;;
-(setq auto-mode-alist
-      (cons
-       '("\\.m$" . octave-mode)
-       auto-mode-alist))
+;; Undo Tree
+(use-package undo-tree
+  :ensure t
+  :init (global-undo-tree-mode)
+  :config
+  (setq undo-tree-visualizer-timestamps t)
+  (setq undo-tree-visualizer-diff t))
 
-;;;;;;;;;;;;;;
-;; ORG-MODE ;;
-;;;;;;;;;;;;;;
+;; Company
+(use-package company
+  :ensure t)
 
-(require 'org-mode-config)
-(require 'org2blog-config)
+;; ELDoc
+(use-package eldoc
+  :ensure t
+  :config
+  (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
+  (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
+  (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode))
 
-;;;;;;;;;;;;;;;
-;; YASNIPPET ;;
-;;;;;;;;;;;;;;;
-
-(require 'yasnippet)
-(yas-global-mode 1)
-
-;;;;;;;;;;;;;;;
-;;    HELM   ;;
-;;;;;;;;;;;;;;;
-
-(require 'helm-config)
-(helm-mode 1)
-
-;;;;;;;;;;;;;;;
-;;   ELDoc   ;;
-;;;;;;;;;;;;;;;
-
-(add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
-(add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
-(add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)
-
-;;;;;;;;;;;;;;;
-;;   ASPELL  ;;
-;;;;;;;;;;;;;;;
-
-(setq-default ispell-program-name "aspell")
-
-;;;;;;;;;;;;;;;;;;
-;;   COCOAPODS  ;;
-;;;;;;;;;;;;;;;;;;
-
-(add-to-list 'auto-mode-alist '("\\.podspec$" . ruby-mode))
-
-;;;;;;;;;;;;;;;;;
-;; JAVASCRIPT  ;;
-;;;;;;;;;;;;;;;;;
-
-(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-
-;;;;;;;;;;;;;;;
-;; UNDO TREE ;;
-;;;;;;;;;;;;;;;
-(global-undo-tree-mode)
-(setq undo-tree-visualizer-timestamps t)
-(setq undo-tree-visualizer-diff t)
+;; Smartparens
+(use-package smartparens
+  :ensure t
+  :config
+  (require 'smartparens-config)
+  (show-smartparens-global-mode t)
+  (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
+  (add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode))
 
 ;;;;;;;;;;;;;;;;;
 ;; KEYBINDINGS ;;
