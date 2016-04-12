@@ -154,6 +154,7 @@
 ;; Helm
 (use-package helm
   :ensure t
+  :init (helm-mode)
   :bind
   (;; Redefine M-x to use Helm
    ("M-x" . helm-M-x)
@@ -187,7 +188,8 @@
 
 ;; Company
 (use-package company
-  :ensure t)
+  :ensure t
+  :config (add-hook 'after-init-hook 'global-company-mode))
 
 ;; ELDoc
 (use-package eldoc
