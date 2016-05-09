@@ -89,11 +89,11 @@
 (use-package cc-mode
   :config
   ;; Use K&R style for C
-  (add-hook 'c-mode-hook (lambda () (c-set-style "k&r")))
-  ;; Indent with 4 spaces, no tabs
-  (setq c-basic-offset 4)
-  (setq-default indent-tabs-mode nil))
-
+  (add-hook 'c-mode-hook (lambda ()
+                           (c-set-style "k&r")
+                           ;; Indent with 4 spaces, no tabs
+                           (setq c-basic-offset 4)
+                           (setq-default indent-tabs-mode nil))))
 ;; JavaScript
 (use-package js2-mode
   :ensure t
@@ -189,7 +189,9 @@
 ;; Company
 (use-package company
   :ensure t
-  :config (add-hook 'after-init-hook 'global-company-mode))
+  :config
+  (add-hook 'after-init-hook 'global-company-mode)
+  (setq company-backends (delete 'company-semantic company-backends)))
 
 ;; ELDoc
 (use-package eldoc
@@ -207,6 +209,41 @@
   (show-smartparens-global-mode t)
   (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
   (add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode))
+
+;; Helm-Gtags
+(use-package helm-gtags
+  :ensure t
+  :init
+  (setq
+   helm-gtags-ignore-case t
+   helm-gtags-auto-update t
+   helm-gtags-use-input-at-cursor t
+   helm-gtags-pulse-at-cursor t
+   helm-gtags-prefix-key "\C-cg"
+   helm-gtags-suggested-key-mapping t)
+  :config
+  (add-hook 'dired-mode-hook 'helm-gtags-mode)
+  (add-hook 'eshell-mode-hook 'helm-gtags-mode)
+  (add-hook 'c-mode-hook 'helm-gtags-mode)
+  (add-hook 'c++-mode-hook 'helm-gtags-mode)
+  (add-hook 'asm-mode-hook 'helm-gtags-mode)
+  (define-key helm-gtags-mode-map (kbd "C-c g a") 'helm-gtags-tags-in-this-function)
+  (define-key helm-gtags-mode-map (kbd "C-j") 'helm-gtags-select)
+  (define-key helm-gtags-mode-map (kbd "M-.") 'helm-gtags-dwim)
+  (define-key helm-gtags-mode-map (kbd "M-,") 'helm-gtags-pop-stack)
+  (define-key helm-gtags-mode-map (kbd "C-c <") 'helm-gtags-previous-history)
+  (define-key helm-gtags-mode-map (kbd "C-c >") 'helm-gtags-next-history))
+
+;; Projectile
+(use-package helm-projectile
+  :ensure t)
+
+(use-package projectile
+  :ensure t
+  :config
+  (projectile-global-mode)
+  (setq projectile-completion-system 'helm)
+  (helm-projectile-on))
 
 ;;;;;;;;;;;;;;;;;
 ;; KEYBINDINGS ;;
