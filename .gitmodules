@@ -7,3 +7,6 @@
 [submodule ".emacs.d/vendor/magit-gh-pulls"]
 	path = .emacs.d/vendor/magit-gh-pulls
 	url = https://github.com/danielmartin/magit-gh-pulls.git
+[submodule ".emacs.d/vendor/gh.el"]
+	path = .emacs.d/vendor/gh.el
+	url = https://github.com/danielmartin/gh.el.git
