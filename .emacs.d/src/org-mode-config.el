@@ -18,6 +18,7 @@
 
 ;; Org-Mode Capture
 (setq org-default-notes-file "~/Org-Mode/organizer.org")
+(define-key global-map "\C-cc" 'org-capture)
 
 ;; Org-Mode Agenda
 (setq org-agenda-files '("~/Org-Mode/"))
