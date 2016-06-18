@@ -151,6 +151,9 @@
   :config
   (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls))
 
+(use-package git-timemachine
+  :ensure t)
+
 ;; Helm
 (use-package helm
   :ensure t
