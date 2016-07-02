@@ -248,6 +248,11 @@
   (setq projectile-completion-system 'helm)
   (helm-projectile-on))
 
+;; Silver Searcher
+(use-package helm-ag
+  :ensure t
+  :bind ("C-c a g" . helm-do-ag-project-root))
+
 ;;;;;;;;;;;;;;;;;
 ;; KEYBINDINGS ;;
 ;;;;;;;;;;;;;;;;;
