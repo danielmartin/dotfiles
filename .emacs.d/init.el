@@ -85,15 +85,18 @@
 ;; PROGRAMMING LANGUAGES ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; General
+(setq-default indent-tabs-mode nil) ;; No tabs, please
+
 ;; C
 (use-package cc-mode
   :config
   ;; Use K&R style for C
   (add-hook 'c-mode-hook (lambda ()
                            (c-set-style "k&r")
-                           ;; Indent with 4 spaces, no tabs
+                           ;; Indent with 4 spaces
                            (setq c-basic-offset 4)
-                           (setq-default indent-tabs-mode nil))))
+                           (setq tab-width 4))))
 ;; JavaScript
 (use-package js2-mode
   :ensure t
@@ -252,6 +255,29 @@
 (use-package helm-ag
   :ensure t
   :bind ("C-c a g" . helm-do-ag-project-root))
+
+;; Irony Mode
+(use-package irony
+  :ensure t
+  :config
+  (add-hook 'c++-mode-hook 'irony-mode)
+  (add-hook 'c-mode-hook 'irony-mode)
+  (add-hook 'objc-mode-hook 'irony-mode)
+  (defun my-irony-mode-hook ()
+    (define-key irony-mode-map [remap completion-at-point]
+      'irony-completion-at-point-async)
+    (define-key irony-mode-map [remap complete-symbol]
+      'irony-completion-at-point-async))
+  (add-hook 'irony-mode-hook 'my-irony-mode-hook)
+  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
+
+;; Company Irony
+(use-package company-irony
+  :ensure t
+  :config
+  (eval-after-load 'company
+    '(add-to-list
+      'company-backends 'company-irony)))
 
 ;;;;;;;;;;;;;;;;;
 ;; KEYBINDINGS ;;
