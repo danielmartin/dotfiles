@@ -88,7 +88,7 @@
 ;; General
 (setq-default indent-tabs-mode nil) ;; No tabs, please
 
-;; C
+;; C/C++
 (use-package cc-mode
   :config
   ;; Use K&R style for C
@@ -278,6 +278,13 @@
   (eval-after-load 'company
     '(add-to-list
       'company-backends 'company-irony)))
+
+;; Clang-Format
+(use-package clang-format
+  :ensure t
+  :bind
+  ("C-c i" . clang-format-region)
+  ("C-c u" . clang-format-buffer))
 
 ;;;;;;;;;;;;;;;;;
 ;; KEYBINDINGS ;;
