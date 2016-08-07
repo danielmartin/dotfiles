@@ -286,6 +286,10 @@
   ("C-c i" . clang-format-region)
   ("C-c u" . clang-format-buffer))
 
+;; Suggest
+(use-package suggest
+  :ensure t)
+
 ;;;;;;;;;;;;;;;;;
 ;; KEYBINDINGS ;;
 ;;;;;;;;;;;;;;;;;
