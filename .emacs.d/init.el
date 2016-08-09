@@ -216,30 +216,6 @@
   (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
   (add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode))
 
-;; Helm-Gtags
-(use-package helm-gtags
-  :ensure t
-  :init
-  (setq
-   helm-gtags-ignore-case t
-   helm-gtags-auto-update t
-   helm-gtags-use-input-at-cursor t
-   helm-gtags-pulse-at-cursor t
-   helm-gtags-prefix-key "\C-cg"
-   helm-gtags-suggested-key-mapping t)
-  :config
-  (add-hook 'dired-mode-hook 'helm-gtags-mode)
-  (add-hook 'eshell-mode-hook 'helm-gtags-mode)
-  (add-hook 'c-mode-hook 'helm-gtags-mode)
-  (add-hook 'c++-mode-hook 'helm-gtags-mode)
-  (add-hook 'asm-mode-hook 'helm-gtags-mode)
-  (define-key helm-gtags-mode-map (kbd "C-c g a") 'helm-gtags-tags-in-this-function)
-  (define-key helm-gtags-mode-map (kbd "C-j") 'helm-gtags-select)
-  (define-key helm-gtags-mode-map (kbd "M-.") 'helm-gtags-dwim)
-  (define-key helm-gtags-mode-map (kbd "M-,") 'helm-gtags-pop-stack)
-  (define-key helm-gtags-mode-map (kbd "C-c <") 'helm-gtags-previous-history)
-  (define-key helm-gtags-mode-map (kbd "C-c >") 'helm-gtags-next-history))
-
 ;; Projectile
 (use-package helm-projectile
   :ensure t)
@@ -290,8 +266,48 @@
 (use-package suggest
   :ensure t)
 
+;; RTags
+(use-package rtags
+  :ensure t
+  :config
+  (require 'company-rtags)
+  (use-package company
+    :config
+    (add-to-list 'company-backends 'company-rtags))
+  (setq rtags-completion-enabled t)
+  (setq rtags-autostart-diagnostics t)
+  (rtags-enable-standard-keybindings)
+  (setq rtags-use-helm t))
+
+;; Flycheck
+(defun my-flycheck-rtags-setup ()
+  (flycheck-select-checker 'rtags)
+  (setq-local flycheck-highlighting-mode nil)
+  (setq-local flycheck-check-syntax-automatically nil))
+
+(use-package flycheck
+  :ensure t
+  :init
+  (global-flycheck-mode)
+  :config
+  (require 'flycheck-rtags)
+  (add-hook 'c-mode-common-hook #'my-flycheck-rtags-setup))
+
+(use-package flycheck-irony
+  :ensure t
+  :config
+  (eval-after-load 'flycheck
+    '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup)))
+
+;; Clojure
+(use-package cider
+  :ensure t)
+
 ;;;;;;;;;;;;;;;;;
 ;; KEYBINDINGS ;;
 ;;;;;;;;;;;;;;;;;
 
 (require 'keybindings)
+
+;;; init.el ends here
+
