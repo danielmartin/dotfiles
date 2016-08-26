@@ -10,3 +10,6 @@
 [submodule ".emacs.d/vendor/gh.el"]
 	path = .emacs.d/vendor/gh.el
 	url = https://github.com/danielmartin/gh.el.git
+[submodule "swift-mode"]
+	path = .emacs.d/vendor/swift-mode
+	url = https://github.com/danielmartin/swift-mode.git

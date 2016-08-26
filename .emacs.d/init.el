@@ -132,7 +132,15 @@
 ;; Swift
 (use-package swift-mode
   :ensure t
-  :mode ("\\.swift\\'" . swift-mode))
+  :load-path "vendor/swift-mode/"
+  :mode ("\\.swift\\'" . swift-mode)
+  :config
+  (setq flycheck-swift-sdk-path "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk")
+  (add-to-list 'flycheck-checkers 'swift))
+
+;; Clojure
+(use-package cider
+  :ensure t)
 
 ;;;;;;;;;;;;;;;;;;;
 ;; GENERAL TOOLS ;;
@@ -298,10 +306,6 @@
   :config
   (eval-after-load 'flycheck
     '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup)))
-
-;; Clojure
-(use-package cider
-  :ensure t)
 
 ;;;;;;;;;;;;;;;;;
 ;; KEYBINDINGS ;;
