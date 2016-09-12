@@ -26,7 +26,7 @@
 
 ;; Set some custom folders where binaries are located
 (setq exec-path (append '("/usr/local/bin") exec-path))
-(setenv "PATH" (concat "/usr/texbin" ":" (concat "/usr/local/bin" ":" (getenv "PATH"))))
+(setenv "PATH" (concat "/Library/TeX/texbin" ":" (concat "/usr/local/bin" ":" (getenv "PATH"))))
 
 ;; Configure some appearance options
 (require 'appearance)
@@ -310,7 +310,10 @@
   (eval-after-load 'flycheck
     '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup)))
 
-;;;;;;;;;;;;;;;;;
+(use-package ox-reveal
+  :ensure t)
+
+;;;;;;;;;;;;;;;;
 ;; KEYBINDINGS ;;
 ;;;;;;;;;;;;;;;;;
 

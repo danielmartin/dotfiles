@@ -27,13 +27,14 @@
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((emacs-lisp . t)
-   (restclient . t)
    (swift . t)))
 
 (global-font-lock-mode 1)		     ; for all buffers
 (add-hook 'org-mode-hook 'turn-on-font-lock)  ; org-mode buffers only
 
-(require 'org-bullets)
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+(require 'ox-latex)
+
+(setq org-latex-listings t)
+(add-to-list 'org-latex-packages-alist '("" "listings"))
 
 (provide 'org-mode-config)
