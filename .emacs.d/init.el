@@ -243,29 +243,6 @@
   :ensure t
   :bind ("C-c a g" . helm-do-ag-project-root))
 
-;; Irony Mode
-(use-package irony
-  :ensure t
-  :config
-  (add-hook 'c++-mode-hook 'irony-mode)
-  (add-hook 'c-mode-hook 'irony-mode)
-  (add-hook 'objc-mode-hook 'irony-mode)
-  (defun my-irony-mode-hook ()
-    (define-key irony-mode-map [remap completion-at-point]
-      'irony-completion-at-point-async)
-    (define-key irony-mode-map [remap complete-symbol]
-      'irony-completion-at-point-async))
-  (add-hook 'irony-mode-hook 'my-irony-mode-hook)
-  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
-
-;; Company Irony
-(use-package company-irony
-  :ensure t
-  :config
-  (eval-after-load 'company
-    '(add-to-list
-      'company-backends 'company-irony)))
-
 ;; Clang-Format
 (use-package clang-format
   :ensure t
@@ -277,41 +254,36 @@
 (use-package suggest
   :ensure t)
 
-;; RTags
-(use-package rtags
-  :ensure t
-  :config
-  (require 'company-rtags)
-  (use-package company
-    :config
-    (add-to-list 'company-backends 'company-rtags))
-  (setq rtags-completion-enabled t)
-  (setq rtags-autostart-diagnostics t)
-  (rtags-enable-standard-keybindings)
-  (setq rtags-use-helm t))
-
-;; Flycheck
-(defun my-flycheck-rtags-setup ()
-  (flycheck-select-checker 'rtags)
-  (setq-local flycheck-highlighting-mode nil)
-  (setq-local flycheck-check-syntax-automatically nil))
-
 (use-package flycheck
   :ensure t
   :init
-  (global-flycheck-mode)
-  :config
-  (require 'flycheck-rtags)
-  (add-hook 'c-mode-common-hook #'my-flycheck-rtags-setup))
-
-(use-package flycheck-irony
-  :ensure t
-  :config
-  (eval-after-load 'flycheck
-    '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup)))
+  (global-flycheck-mode))
 
 (use-package ox-reveal
   :ensure t)
+
+(use-package ycmd
+  :ensure t
+  :config
+  (add-hook 'c++-mode-hook 'ycmd-mode)
+  (set-variable 'ycmd-server-command (list "python" (substitute-in-file-name "$HOME/ycmd/ycmd/__main__.py")))
+  (setq ycmd-parse-conditions '(save new-line mode-enabled idle-change))
+  (setq url-show-status nil))
+
+(use-package company-ycmd
+  :ensure t
+  :init
+  (company-ycmd-setup)
+  :config
+  (setq company-idle-delay 0.1)
+  (add-hook 'c++-mode-hook 'company-mode))
+
+(use-package flycheck-ycmd
+  :ensure t
+  :init
+  (flycheck-ycmd-setup)
+  :config
+  (add-hook 'c++-mode-hook 'flycheck-mode))
 
 ;;;;;;;;;;;;;;;;
 ;; KEYBINDINGS ;;
