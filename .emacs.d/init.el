@@ -78,6 +78,9 @@
 ;; Linum mode
 (add-hook 'prog-mode-hook (lambda () (linum-mode 1)))
 
+;; Highlight current line in programming modes
+(add-hook 'prog-mode-hook (lambda () (hl-line-mode 1)))
+
 ;; Function definitions
 (require 'defuns-config)
 
