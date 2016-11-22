@@ -76,10 +76,10 @@
 (winner-mode 1)
 
 ;; Linum mode
-(add-hook 'prog-mode-hook (lambda () (linum-mode 1)))
+(add-hook 'prog-mode-hook 'linum-mode)
 
 ;; Highlight current line in programming modes
-(add-hook 'prog-mode-hook (lambda () (hl-line-mode 1)))
+(add-hook 'prog-mode-hook 'hl-line-mode)
 
 ;; Function definitions
 (require 'defuns-config)
