@@ -180,8 +180,8 @@
    ("M-x" . helm-M-x)
    ;; File navigation on steroids
    ("C-x C-f" . helm-find-files)
-   ;; Greate kill ring cycling
-   ("C-y" . helm-show-kill-ring)
+   ;; Great kill ring cycling
+   ("M-y" . helm-show-kill-ring)
    ;; Find recent files using Helm
    ("C-c f" . helm-recentf)
    :map helm-map
