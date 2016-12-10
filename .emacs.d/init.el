@@ -81,6 +81,9 @@
 ;; Highlight current line in programming modes
 (add-hook 'prog-mode-hook 'hl-line-mode)
 
+;; Don't show ediff's control panel in a separate frame, even on graphical environments
+(setq ediff-window-setup-function 'ediff-setup-windows-plain)
+
 ;; Function definitions
 (require 'defuns-config)
 
