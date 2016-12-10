@@ -265,6 +265,7 @@
 (use-package ox-reveal
   :ensure t)
 
+;; YouCompleteMe
 (use-package ycmd
   :ensure t
   :config
@@ -288,11 +289,34 @@
   :config
   (add-hook 'c++-mode-hook 'flycheck-mode))
 
+;; Ace-jump-mode
 (use-package ace-jump-mode
   :ensure ace-jump-mode
-  :init (global-set-key (kbd "C-c SPC") 'ace-jump-mode))
+  :init
+  (global-set-key (kbd "C-c SPC") 'ace-jump-mode))
 
-;;;;;;;;;;;;;;;;
+;; Rtags
+(use-package rtags
+  :ensure t
+  :config
+  (require 'rtags-helm)
+  (setq rtags-use-helm t)
+  (add-hook 'c-mode-hook 'rtags-start-process-unless-running)
+  (add-hook 'c++-mode-hook 'rtags-start-process-unless-running)
+  (define-key c-mode-base-map (kbd "M-.") 'rtags-find-symbol-at-point)
+  (define-key c-mode-base-map (kbd "M-,") 'rtags-find-references-at-point)
+  (define-key c-mode-base-map (kbd "M-]") 'rtags-location-stack-back)
+  (define-key c-mode-base-map (kbd "M-[") 'rtags-location-stack-forward))
+
+;; Dash (DocSets)
+(use-package dash-at-point
+  :ensure t
+  :config
+  (add-to-list 'dash-at-point-mode-alist '(c++-mode . "cpp"))
+  :bind
+  ("C-c h" . dash-at-point))
+
+;;;;;;;;;;;;;;;;;
 ;; KEYBINDINGS ;;
 ;;;;;;;;;;;;;;;;;
 
