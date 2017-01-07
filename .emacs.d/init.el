@@ -319,6 +319,10 @@
   :bind
   ("C-c h" . dash-at-point))
 
+;; RealGud
+(use-package realgud
+  :ensure t)
+
 ;;;;;;;;;;;;;;;;;
 ;; KEYBINDINGS ;;
 ;;;;;;;;;;;;;;;;;
