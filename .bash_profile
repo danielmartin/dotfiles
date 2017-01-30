@@ -14,5 +14,3 @@ export GIT_PS1_SHOWUNTRACKEDFILES=1
 
 source ~/git-completion.bash
 
-source /usr/local/share/chruby/chruby.sh
-source /usr/local/share/chruby/auto.sh
