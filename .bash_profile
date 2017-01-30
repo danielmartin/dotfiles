@@ -14,3 +14,4 @@ export GIT_PS1_SHOWUNTRACKEDFILES=1
 
 source ~/git-completion.bash
 
+eval "$(rbenv init -)"
