@@ -104,6 +104,10 @@
                            ;; Indent with 4 spaces
                            (setq c-basic-offset 4)
                            (setq tab-width 4))))
+
+;; Use Obj-C mode for Obj-C++ files
+(add-to-list 'auto-mode-alist '("\\.mm$" . objc-mode))
+
 ;; JavaScript
 (use-package js2-mode
   :ensure t
