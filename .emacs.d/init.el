@@ -324,6 +324,10 @@
 (use-package realgud
   :ensure t)
 
+;; CMake mode
+(use-package cmake-mode
+  :ensure t)
+
 ;; PDF Tools
 (use-package pdf-tools
   :ensure t
