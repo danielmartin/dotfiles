@@ -166,10 +166,10 @@
 (use-package s
   :ensure t)
 
-(use-package magit-gh-pulls
-  :load-path "vendor/magit-gh-pulls/"
+(use-package magithub
+  :after magit
   :config
-  (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls))
+  (magithub-feature-autoinject t))
 
 (use-package git-timemachine
   :ensure t)
