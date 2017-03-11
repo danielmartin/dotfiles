@@ -1,6 +1,8 @@
 ;; Custom color scheme, to reduce eye strain
-(use-package zenburn-theme
-  :load-path "themes/")
+(use-package solarized-theme
+  :ensure t
+  :config
+  (load-theme 'solarized-dark t))
 
 ;; Ditch the splash screen
 (setq inhibit-splash-screen t)
