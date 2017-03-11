@@ -7,3 +7,5 @@
 /.emacs.d/recentf
 /.emacs.d/tramp
 /.emacs.d/src/org2blog-config.el
+/.emacs.d/projectile-bookmarks.eld
+/.emacs.d/bookmarks
