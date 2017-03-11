@@ -303,7 +303,7 @@
 (use-package rtags
   :ensure t
   :config
-  (require 'rtags-helm)
+  (setq rtags-autostart-diagnostics t)
   (setq rtags-use-helm t)
   (add-hook 'c-mode-hook 'rtags-start-process-unless-running)
   (add-hook 'c++-mode-hook 'rtags-start-process-unless-running)
