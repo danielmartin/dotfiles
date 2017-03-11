@@ -27,6 +27,7 @@
 ;; Set some custom folders where binaries are located
 (setq exec-path (append '("/usr/local/bin") exec-path))
 (setenv "PATH" (concat "/Library/TeX/texbin" ":" (concat "/usr/local/bin" ":" (getenv "PATH"))))
+(setenv "PKG_CONFIG_PATH" "/usr/local/Cellar/zlib/1.2.8/lib/pkgconfig:/usr/local/lib/pkgconfig:/opt/X11/lib/pkgconfig")
 
 ;; Configure some appearance options
 (require 'appearance)
@@ -322,6 +323,12 @@
 ;; RealGud
 (use-package realgud
   :ensure t)
+
+;; PDF Tools
+(use-package pdf-tools
+  :ensure t
+  :config
+  (pdf-tools-install))
 
 ;;;;;;;;;;;;;;;;;
 ;; KEYBINDINGS ;;
