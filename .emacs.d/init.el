@@ -179,6 +179,11 @@
 (use-package git-timemachine
   :ensure t)
 
+(use-package browse-at-remote
+  :ensure t
+  :config
+  (global-set-key (kbd "C-c g g ") 'browse-at-remote))
+
 ;; Helm
 (use-package helm
   :ensure t
