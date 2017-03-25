@@ -62,10 +62,6 @@
 ;; recent mode
 (recentf-mode 1)
 
-;; Scroll pages up and down
-(global-set-key "\M-p" (lambda () (interactive) (scroll-down 4)))
-(global-set-key "\M-n" (lambda () (interactive) (scroll-up 4)))
-
 ;; File backup management
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
 (setq delete-old-versions -1)
@@ -345,6 +341,21 @@
   :ensure t
   :config
   (pdf-tools-install))
+
+;; Highlight-symbol
+(use-package highlight-symbol
+  :ensure t
+  :config
+  (define-key prog-mode-map (kbd "M-n") 'highlight-symbol-next)
+  (define-key prog-mode-map (kbd "M-p") 'highlight-symbol-prev)
+  ;; Modes that inherit from c-mode aren't affected by prog-mode-map,
+  ;; so we have to set bindings again.
+  (define-key c-mode-map (kbd "M-n") 'highlight-symbol-next)
+  (define-key c-mode-map (kbd "M-p") 'highlight-symbol-prev)
+  (define-key c++-mode-map (kbd "M-n") 'highlight-symbol-next)
+  (define-key c++-mode-map (kbd "M-p") 'highlight-symbol-prev)
+  (define-key java-mode-map (kbd "M-n") 'highlight-symbol-next)
+  (define-key java-mode-map (kbd "M-p") 'highlight-symbol-prev))
 
 ;;;;;;;;;;;;;;;;;
 ;; KEYBINDINGS ;;
