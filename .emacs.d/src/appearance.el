@@ -1,8 +1,8 @@
 ;; Custom color scheme, to reduce eye strain
-(use-package solarized-theme
+(use-package tangotango-theme
   :ensure t
-  :config
-  (load-theme 'solarized-dark t))
+  :init
+  (load-theme 'tangotango t))
 
 ;; Ditch the splash screen
 (setq inhibit-splash-screen t)
