@@ -1,5 +1,11 @@
-(setq org-directory "~/Org-Mode")
+;;; org-mode-config.el --- Org-Mode configuration file.
+
+;;; Commentary:
+
+;;; Code:
+(setq org-directory "~/Documents/Org-Mode")
 (setq org-fontify-done-headline t)
+(setq org-src-fontify-natively t)
 (custom-set-faces
  '(org-done ((t (:foreground "PaleGreen"
                              :weight normal
@@ -17,17 +23,16 @@
 (define-key global-map "\C-ca" 'org-agenda)
 
 ;; Org-Mode Capture
-(setq org-default-notes-file "~/Org-Mode/organizer.org")
+(setq org-default-notes-file "~/Documents/Org-Mode/organizer.org")
 (define-key global-map "\C-cc" 'org-capture)
 
 ;; Org-Mode Agenda
-(setq org-agenda-files '("~/Org-Mode/"))
+(setq org-agenda-files '("~/Documents/Org-Mode"))
 
 ;; Org-Babel
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((emacs-lisp . t)
-   (swift . t)
    (dot . t)))
 
 (global-font-lock-mode 1)		     ; for all buffers
@@ -39,3 +44,4 @@
 (add-to-list 'org-latex-packages-alist '("" "listings"))
 
 (provide 'org-mode-config)
+;;; org-mode-config.el ends here

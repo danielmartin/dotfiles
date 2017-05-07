@@ -1,3 +1,9 @@
+;;; keybindings.el --- General customized keybindings.
+
+;;; Commentary:
+
+;;; Code:
+
 ;; Recenter-defun is C-c d
 (global-set-key "\C-cd" 'recenter-defun)
 ;; Other-window is M-o
@@ -15,3 +21,4 @@
 (global-set-key (kbd "C-x <right>") 'enlarge-window-horizontally)
 
 (provide 'keybindings)
+;;; keybindings.el ends here

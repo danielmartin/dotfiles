@@ -1,4 +1,4 @@
-;;; defuns-config.el --- Some useful, custom functions
+;;; defuns-config.el --- Some useful functions I've written.
 
 ;;; Commentary:
 
