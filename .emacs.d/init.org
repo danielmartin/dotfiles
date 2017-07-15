@@ -394,7 +394,7 @@ code files. I use YouCompleteMe (ycm) for that.
     :ensure t
     :config
     (add-hook 'c++-mode-hook 'ycmd-mode)
-    (set-variable 'ycmd-server-command (list "python" (substitute-in-file-name "$HOME/ycmd/ycmd/__main__.py")))
+    (set-variable 'ycmd-server-command (list "python" (substitute-in-file-name "$HOME/Projects/ycmd/ycmd/__main__.py")))
     (setq ycmd-parse-conditions '(save new-line mode-enabled idle-change))
     (setq url-show-status nil))
 #+END_SRC
