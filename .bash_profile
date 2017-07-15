@@ -1,6 +1,9 @@
 PATH="/usr/local/bin:$ANDROID_HOME/tools:${PATH}"
 export PATH
 
+# We want to install Casks without root privileges.
+export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
+
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
 alias ll='ls -alF'
