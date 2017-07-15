@@ -3,11 +3,11 @@ Dotfiles
 
 This repository contains some configuration files for typical Unix tools. If you want them, follow these instructions:
 
-Clone this repository on your $HOME directory (typically /home/username or /Users/username). The `--recursive` option of `git` will automatically download every submodule in the repository:
+Clone this repository on your $HOME directory (typically /home/username or /Users/username).
 
 ```sh
 cd $HOME
-git clone --recursive https://github.com/danielmartin/dotfiles.git
+git clone https://github.com/danielmartin/dotfiles.git
 ```
 
 Change directory to `dotfiles` and run this command:
