@@ -299,6 +299,16 @@ Use js2-mode for JavaScript.
     :mode ("\\.js\\'" . js2-mode))
 #+END_SRC
 
+*** Kotlin
+
+Use kotlin-mode for Kotlin development.
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package kotlin-mode
+    :ensure t
+    :mode ("\\.kt\\'" . kotlin-mode))
+#+END_SRC
+
 *** LaTeX
 
 Use Auctex with tex-site for an excellent LaTeX environment. Also,

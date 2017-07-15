@@ -221,6 +221,14 @@
   :ensure t
   :mode ("\\.js\\'" . js2-mode))
 
+;; Kotlin
+
+;; Use kotlin-mode for Kotlin development.
+
+(use-package kotlin-mode
+  :ensure t
+  :mode ("\\.kt\\'" . kotlin-mode))
+
 ;; LaTeX
 
 ;; Use Auctex with tex-site for an excellent LaTeX environment. Also,
