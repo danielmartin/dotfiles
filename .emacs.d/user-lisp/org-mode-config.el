@@ -23,11 +23,27 @@
 (define-key global-map "\C-ca" 'org-agenda)
 
 ;; Org-Mode Capture
-(setq org-default-notes-file "~/Documents/Org-Mode/organizer.org")
+(setq org-capture-templates '(("t" "Todo [inbox]" entry
+                               (file+headline "~/Documents/Org-Mode/inbox.org" "Tasks")
+                               "* TODO %i%?")
+                              ("T" "Tickler" entry
+                               (file+headline "~/Documents/Org-Mode/tickler.org" "Tickler")
+                               "* %i%? \n %U")))
+
 (define-key global-map "\C-cc" 'org-capture)
 
 ;; Org-Mode Agenda
-(setq org-agenda-files '("~/Documents/Org-Mode"))
+(setq org-agenda-files '("~/Documents/Org-Mode/inbox.org"
+                         "~/Documents/Org-Mode/gtd.org"
+                         "~/Documents/Org-Mode/tickler.org"))
+
+;; Org-Mode Refile
+(setq org-refile-targets '(("~/Documents/Org-Mode/gtd.org" :maxlevel . 3)
+                           ("~/Documents/Org-Mode/someday.org" :level . 1)
+                           ("~/Documents/Org-Mode/tickler.org" :maxlevel . 2)))
+
+;; Org-Mode Todo Keywords
+(setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
 
 ;; Org-Babel
 (org-babel-do-load-languages
