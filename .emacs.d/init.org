@@ -616,7 +616,7 @@ For checking spelling and grammar, I use a external Java tool: Language-tool.
   (use-package langtool
     :ensure t
     :config
-    (setq langtool-language-tool-jar "/usr/local/Cellar/languagetool/3.6/libexec/languagetool-commandline.jar"))
+    (setq langtool-language-tool-jar "/usr/local/Cellar/languagetool/3.7/libexec/languagetool-commandline.jar"))
 #+END_SRC
 
 *** Org-Mode
