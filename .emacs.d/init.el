@@ -198,6 +198,13 @@
 
 (add-to-list 'auto-mode-alist '("\\.mm$" . objc-mode))
 
+;; Use a modern font lock mechanism.
+
+(use-package modern-cpp-font-lock
+  :ensure t
+  :config
+  (add-hook 'c++-mode-hook #'modern-c++-font-lock-mode))
+
 ;; Clojure
 
 ;; Cider is the "de facto" package for working on Clojure projects.
