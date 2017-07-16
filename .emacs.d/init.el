@@ -512,6 +512,13 @@
 (use-package helm-projectile
   :ensure t)
 
+;; Pandoc
+
+;; Pandoc is a tool to convert between almost every document format.
+
+(use-package pandoc-mode
+  :ensure t)
+
 ;; REST
 
 ;; For making REST calls from Emacs, I use the convenient restclient package.

@@ -659,6 +659,15 @@ I also integrate Projectile with Helm.
     :ensure t)
 #+END_SRC
 
+*** Pandoc
+
+Pandoc is a tool to convert between almost every document format.
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package pandoc-mode
+    :ensure t)
+#+END_SRC
+
 *** REST
 
 For making REST calls from Emacs, I use the convenient restclient package.
