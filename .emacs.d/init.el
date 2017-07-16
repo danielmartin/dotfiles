@@ -13,7 +13,7 @@
 ;; General Folder Structure
 
 ;;  The load path is the list of directories that Emacs searches for
-;;  executing Elisp code (ie. by using "require").
+;;  executing Elisp code (i.e. by using "require").
 
 ;;  I store the Emacs Lisp code that I write inside the user-lisp folder.
 
@@ -69,7 +69,7 @@
     (setq exec-path-from-shell-arguments '("-l"))
     (exec-path-from-shell-initialize)))
 
-;; Apperance and Themes
+;; Appearance and Themes
 
 ;; I use a custom black theme by default, but I open the possibility to
 ;; use another for a special purpose (excellent Org-Mode support, a
@@ -473,7 +473,7 @@
 
 ;; Natural Languages
 
-;; For checking spelling and grammar, I use a external Java tool: Language-tool.
+;; For checking spelling and grammar, I use an external Java tool: Language-tool.
 
 (use-package langtool
   :ensure t

@@ -8,7 +8,7 @@ This file describes the configuration of my Emacs environment.
 
 This file is a literate programming document written with Org-mode and
 Org-babel. You can generate an Emacs Lisp (.el) file for configuring
-Emacs, and a HTML (.htm) file you can display in your favorite
+Emacs, and an HTML (.htm) file you can display in your favorite
 browser.
 
 * Generating This Document
@@ -29,7 +29,7 @@ the previous section:
 ** General Folder Structure
 
  The load path is the list of directories that Emacs searches for
- executing Elisp code (ie. by using "require").
+ executing Elisp code (i.e. by using "require").
 
  I store the Emacs Lisp code that I write inside the user-lisp folder.
 
@@ -101,7 +101,7 @@ that.
       (exec-path-from-shell-initialize)))
 #+END_SRC
 
-*** Apperance and Themes
+*** Appearance and Themes
 
 I use a custom black theme by default, but I open the possibility to
 use another for a special purpose (excellent Org-Mode support, a
@@ -610,7 +610,7 @@ Helm is a great incremental completion and selection narrowing framework.
 
 *** Natural Languages
 
-For checking spelling and grammar, I use a external Java tool: Language-tool.
+For checking spelling and grammar, I use an external Java tool: Language-tool.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package langtool
