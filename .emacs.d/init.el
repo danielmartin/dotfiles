@@ -136,6 +136,15 @@
 (use-package diminish
   :ensure t)
 
+;; Navigation Tree
+
+;; Show a project navigation tree using Neotree package.
+
+(use-package neotree
+  :ensure t
+  :config
+  (global-set-key [f8] 'neotree-toggle))
+
 ;; Pairs
 
 ;; To ease working with pairs, I use the smartparens package.

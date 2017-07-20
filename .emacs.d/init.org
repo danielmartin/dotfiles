@@ -190,6 +190,17 @@ diminish package to avoid that.
     :ensure t)
 #+END_SRC
 
+*** Navigation Tree
+
+Show a project navigation tree using Neotree package.
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package neotree
+    :ensure t
+    :config
+    (global-set-key [f8] 'neotree-toggle))
+#+END_SRC
+
 *** Pairs
 
 To ease working with pairs, I use the smartparens package.
