@@ -13,6 +13,10 @@ export ANDROID_SDK_ROOT="/usr/local/share/android-sdk"
 # Android NDK
 export ANDROID_NDK_HOME="/usr/local/share/android-ndk"
 
+# Use CCache for Android NDK
+export USE_CCACHE=1
+export NDK_CCACHE="/usr/local/bin/ccache"
+
 # We want Homebrew and the Android SDK in path.
 PATH="/usr/local/bin:$ANDROID_SDK_ROOT/tools:${PATH}"
 export PATH
