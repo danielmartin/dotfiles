@@ -588,6 +588,13 @@
   (setq undo-tree-visualizer-timestamps t)
   (setq undo-tree-visualizer-diff t))
 
+;; X.509
+
+;; I've created a simple major mode that toggles between showing raw and
+;; detailed information about a X.509 certificate.
+
+(require 'x509-certificate-mode)
+
 ;; Xcode Projects
 
 ;; I've created a package for working on Xcode projects.
