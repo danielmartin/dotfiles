@@ -350,7 +350,13 @@ I use markdown-mode to work on Markdown (.md) documents.
     :ensure t
     :mode ("\\.\\(m\\(ark\\)?down\\|md\\)$" . markdown-mode))
 #+END_SRC
-<
+
+I want to fontify code blocks in Markdown:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (setq markdown-fontify-code-blocks-natively t)
+#+END_SRC
+
 *** PHP
 
 Emacs does not come with a mode for editing PHP mode. Just use

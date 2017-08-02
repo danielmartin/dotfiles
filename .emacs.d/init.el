@@ -263,6 +263,10 @@
   :ensure t
   :mode ("\\.\\(m\\(ark\\)?down\\|md\\)$" . markdown-mode))
 
+;; I want to fontify code blocks in Markdown:
+
+(setq markdown-fontify-code-blocks-natively t)
+
 ;; PHP
 
 ;; Emacs does not come with a mode for editing PHP mode. Just use
