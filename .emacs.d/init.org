@@ -361,6 +361,16 @@ Integrate Irony with Flycheck.
       (add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 #+END_SRC
 
+Integrate Irony with Eldoc.
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package irony-eldoc
+    :ensure t
+    :after irony
+    :config
+    (add-hook 'irony-mode-hook #'irony-eldoc))
+#+END_SRC
+
 Use cmake-ide for managing Rtags and Irony automatically.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
