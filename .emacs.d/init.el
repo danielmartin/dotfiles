@@ -386,38 +386,6 @@
   (add-hook 'after-init-hook 'global-company-mode)
   (setq company-backends (delete 'company-semantic company-backends)))
 
-;; Syntactic autocompletion for C++ and related languages provides me
-;; with more appropriate autocompletion options provided that I instruct
-;; the system with the compilation flags, so that it can parse source
-;; code files. I use YouCompleteMe (ycm) for that.
-
-(use-package ycmd
-  :ensure t
-  :config
-  (add-hook 'c++-mode-hook 'ycmd-mode)
-  (set-variable 'ycmd-server-command (list "python" (substitute-in-file-name "$HOME/Projects/ycmd/ycmd/__main__.py")))
-  (setq ycmd-parse-conditions '(save new-line mode-enabled idle-change))
-  (setq url-show-status nil))
-
-;; I integrate ycm with company.
-
-(use-package company-ycmd
-  :ensure t
-  :init
-  (company-ycmd-setup)
-  :config
-  (setq company-idle-delay 0.1)
-  (add-hook 'c++-mode-hook 'company-mode))
-
-;; And also with flycheck.
-
-(use-package flycheck-ycmd
-  :ensure t
-  :init
-  (flycheck-ycmd-setup)
-  :config
-  (add-hook 'c++-mode-hook 'flycheck-mode))
-
 ;; CMake
 
 ;; CMake is a meta-build system that is commonly used in C++ projects.
