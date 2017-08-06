@@ -17,8 +17,11 @@ export ANDROID_NDK_HOME="/usr/local/share/android-ndk"
 export USE_CCACHE=1
 export NDK_CCACHE="/usr/local/bin/ccache"
 
-# We want Homebrew and the Android SDK in path.
-PATH="/usr/local/bin:$ANDROID_SDK_ROOT/tools:${PATH}"
+# LLVM configuration path
+export LLVM_PATH=/usr/local/opt/llvm/bin
+
+# We want LLVM, Homebrew and the Android SDK in path.
+PATH="/usr/local/bin:${LLVM_PATH}:$ANDROID_SDK_ROOT/tools:${PATH}"
 export PATH
 
 # We want to install Casks without root privileges.
