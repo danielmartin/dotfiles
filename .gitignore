@@ -9,3 +9,4 @@
 /.emacs.d/src/org2blog-config.el
 /.emacs.d/projectile-bookmarks.eld
 /.emacs.d/bookmarks
+/.emacs.d/irony/*

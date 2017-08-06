@@ -290,6 +290,90 @@ Use a modern font lock mechanism.
     (add-hook 'c++-mode-hook #'modern-c++-font-lock-mode))
 #+END_SRC
 
+Use RTags for code navigation, searching references, refactoring, and symbol information.
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package rtags
+    :ensure t
+    :config
+    (setq rtags-display-result-backend 'helm)
+    :bind
+    (:map c-mode-base-map
+          ("M-." . rtags-find-symbol-at-point)
+          ("M-," . rtags-find-references-at-point)
+          ("M-;" . rtags-find-file)
+          ("C-." . rtags-find-symbol)
+          ("C-," . rtags-find-references)
+          ("C-<" . rtags-find-virtuals-at-point)
+          ("M-s" . rtags-imenu)
+          ("C-c r" . rtags-print-symbol-info)
+          ("M-<left>" . rtags-location-stack-back)
+          ("M-<right>" . rtags-location-stack-forward)
+          ("M-n" . rtags-next-match)
+          ("M-p" . rtags-previous-match)
+          :map rtags-mode-map
+          ("n" . rtags-next-match)
+          ("p" . rtags-next-prev-match)))
+#+END_SRC
+
+Integrate RTags with Helm.
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+    (use-package helm-rtags
+      :ensure t
+      :after helm)
+#+END_SRC
+
+Use Irony for autocompletion and on the fly syntax checking.
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package irony
+    :ensure t
+    :config
+      (add-hook 'c++-mode-hook 'irony-mode)
+      (add-hook 'c-mode-hook 'irony-mode)
+      (defun my-irony-mode-hook ()
+        (define-key irony-mode-map [remap completion-at-point]
+          'irony-completion-at-point-async)
+        (define-key irony-mode-map [remap complete-symbol]
+          'irony-completion-at-point-async))
+      (add-hook 'irony-mode-hook 'my-irony-mode-hook)
+      (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
+#+END_SRC
+
+Integrate Irony with Company.
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package company-irony
+    :ensure t
+    :after company
+    :config
+    (add-to-list 'company-backends 'company-irony))
+#+END_SRC
+
+Integrate Irony with Flycheck.
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+    (use-package flycheck-irony
+      :ensure t
+      :after flycheck
+      :config
+      (add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+#+END_SRC
+
+Use cmake-ide for managing Rtags and Irony automatically.
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package cmake-ide
+    :after rtags
+    :ensure t
+    :config
+    (require 'rtags)
+    (cmake-ide-setup)
+    :bind
+    ("C-c m" . cmake-ide-compile))
+#+END_SRC
+
 *** Clojure
 
 Cider is the "de facto" package for working on Clojure projects.

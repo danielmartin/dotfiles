@@ -214,6 +214,78 @@
   :config
   (add-hook 'c++-mode-hook #'modern-c++-font-lock-mode))
 
+;; Use RTags for code navigation, searching references, refactoring, and symbol information.
+
+(use-package rtags
+  :ensure t
+  :config
+  (setq rtags-display-result-backend 'helm)
+  :bind
+  (:map c-mode-base-map
+        ("M-." . rtags-find-symbol-at-point)
+        ("M-," . rtags-find-references-at-point)
+        ("M-;" . rtags-find-file)
+        ("C-." . rtags-find-symbol)
+        ("C-," . rtags-find-references)
+        ("C-<" . rtags-find-virtuals-at-point)
+        ("M-s" . rtags-imenu)
+        ("C-c r" . rtags-print-symbol-info)
+        ("M-<left>" . rtags-location-stack-back)
+        ("M-<right>" . rtags-location-stack-forward)
+        ("M-n" . rtags-next-match)
+        ("M-p" . rtags-previous-match)
+        :map rtags-mode-map
+        ("n" . rtags-next-match)
+        ("p" . rtags-next-prev-match)))
+
+;; Integrate RTags with Helm.
+
+(use-package helm-rtags
+  :ensure t
+  :after helm)
+
+;; Use Irony for autocompletion and on the fly syntax checking.
+
+(use-package irony
+  :ensure t
+  :config
+    (add-hook 'c++-mode-hook 'irony-mode)
+    (add-hook 'c-mode-hook 'irony-mode)
+    (defun my-irony-mode-hook ()
+      (define-key irony-mode-map [remap completion-at-point]
+        'irony-completion-at-point-async)
+      (define-key irony-mode-map [remap complete-symbol]
+        'irony-completion-at-point-async))
+    (add-hook 'irony-mode-hook 'my-irony-mode-hook)
+    (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
+
+;; Integrate Irony with Company.
+
+(use-package company-irony
+  :ensure t
+  :after company
+  :config
+  (add-to-list 'company-backends 'company-irony))
+
+;; Integrate Irony with Flycheck.
+
+(use-package flycheck-irony
+  :ensure t
+  :after flycheck
+  :config
+  (add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+
+;; Use cmake-ide for managing Rtags and Irony automatically.
+
+(use-package cmake-ide
+  :after rtags
+  :ensure t
+  :config
+  (require 'rtags)
+  (cmake-ide-setup)
+  :bind
+  ("C-c m" . cmake-ide-compile))
+
 ;; Clojure
 
 ;; Cider is the "de facto" package for working on Clojure projects.
