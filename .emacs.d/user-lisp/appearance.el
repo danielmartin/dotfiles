@@ -13,7 +13,7 @@
 (defun use-light-theme ()
   (interactive)
   (use-package leuven-theme)
-  (load-theme 'leuven-dark t))
+  (load-theme 'leuven t))
 
 (use-default-theme)
 
