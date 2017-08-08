@@ -224,7 +224,6 @@
   (:map c-mode-base-map
         ("M-." . rtags-find-symbol-at-point)
         ("M-," . rtags-find-references-at-point)
-        ("M-;" . rtags-find-file)
         ("C-." . rtags-find-symbol)
         ("C-," . rtags-find-references)
         ("C-<" . rtags-find-virtuals-at-point)
