@@ -290,97 +290,42 @@ Use a modern font lock mechanism.
     (add-hook 'c++-mode-hook #'modern-c++-font-lock-mode))
 #+END_SRC
 
-Use RTags for code navigation, searching references, refactoring, and symbol information.
+I use YouCompleteMe for C/C++ semantic autocompletion.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package rtags
+  (use-package ycmd
     :ensure t
     :config
-    (setq rtags-display-result-backend 'helm)
-    :bind
-    (:map c-mode-base-map
-          ("M-." . rtags-find-symbol-at-point)
-          ("M-," . rtags-find-references-at-point)
-          ("C-." . rtags-find-symbol)
-          ("C-," . rtags-find-references)
-          ("C-<" . rtags-find-virtuals-at-point)
-          ("M-s" . rtags-imenu)
-          ("C-c r" . rtags-print-symbol-info)
-          ("M-<left>" . rtags-location-stack-back)
-          ("M-<right>" . rtags-location-stack-forward)
-          ("M-n" . rtags-next-match)
-          ("M-p" . rtags-previous-match)
-          :map rtags-mode-map
-          ("n" . rtags-next-match)
-          ("p" . rtags-next-prev-match)))
+    (add-hook 'c++-mode-hook 'ycmd-mode)
+    (set-variable 'ycmd-server-command (list "python" (substitute-in-file-name "$HOME/.emacs.d/vendor/ycmd/ycmd/__main__.py")))
+    (setq ycmd-parse-conditions '(save new-line mode-enabled idle-change))
+    (setq-default ycmd-request-log-level 'verbose)
+    (setq-default ycmd-request-message-level 'verbose)
+    (set-variable 'ycmd-extra-conf-whitelist '("~/Projects/*"))
+    (setq url-show-status nil))
 #+END_SRC
 
-Integrate RTags with Helm.
+I integrate ycm with company.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-    (use-package helm-rtags
-      :ensure t
-      :after helm)
-#+END_SRC
-
-Use Irony for autocompletion and on the fly syntax checking.
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package irony
+  (use-package company-ycmd
     :ensure t
+    :init
+    (company-ycmd-setup)
     :config
-      (add-hook 'c++-mode-hook 'irony-mode)
-      (add-hook 'c-mode-hook 'irony-mode)
-      (defun my-irony-mode-hook ()
-        (define-key irony-mode-map [remap completion-at-point]
-          'irony-completion-at-point-async)
-        (define-key irony-mode-map [remap complete-symbol]
-          'irony-completion-at-point-async))
-      (add-hook 'irony-mode-hook 'my-irony-mode-hook)
-      (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
+    (setq company-idle-delay 0.1)
+    (add-hook 'c++-mode-hook 'company-mode))
 #+END_SRC
 
-Integrate Irony with Company.
+And also with flycheck.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package company-irony
-    :ensure t
-    :after company
+  (use-package flycheck-ycmd
+    :defer t
+    :init
+    (add-hook 'ycmd-mode-hook 'flycheck-ycmd-setup)
     :config
-    (add-to-list 'company-backends 'company-irony))
-#+END_SRC
-
-Integrate Irony with Flycheck.
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-    (use-package flycheck-irony
-      :ensure t
-      :after flycheck
-      :config
-      (add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
-#+END_SRC
-
-Integrate Irony with Eldoc.
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package irony-eldoc
-    :ensure t
-    :after irony
-    :config
-    (add-hook 'irony-mode-hook #'irony-eldoc))
-#+END_SRC
-
-Use cmake-ide for managing Rtags and Irony automatically.
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package cmake-ide
-    :after rtags
-    :ensure t
-    :config
-    (require 'rtags)
-    (cmake-ide-setup)
-    :bind
-    ("C-c m" . cmake-ide-compile))
+    (add-hook 'c++-mode-hook 'flycheck-mode))
 #+END_SRC
 
 *** Clojure
@@ -470,6 +415,27 @@ There are several packages for writing Python code. I use python.
     :ensure t
     :mode ("\\.py\\'" . python-mode)
     :interpreter ("python" . python-mode))
+#+END_SRC
+
+Anaconda provides navigation documentation lookup and code completion
+for Python:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package anaconda-mode
+    :ensure t
+    :config
+    (add-hook 'python-mode-hook 'anaconda-mode)
+    (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
+#+END_SRC
+
+Integrate Anaconda with company:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package company-anaconda
+    :ensure t
+    :after company
+    :config
+    (add-to-list 'company-backends 'company-anaconda))
 #+END_SRC
 
 *** Shell

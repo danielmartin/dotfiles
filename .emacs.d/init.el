@@ -214,84 +214,37 @@
   :config
   (add-hook 'c++-mode-hook #'modern-c++-font-lock-mode))
 
-;; Use RTags for code navigation, searching references, refactoring, and symbol information.
+;; I use YouCompleteMe for C/C++ semantic autocompletion.
 
-(use-package rtags
+(use-package ycmd
   :ensure t
   :config
-  (setq rtags-display-result-backend 'helm)
-  :bind
-  (:map c-mode-base-map
-        ("M-." . rtags-find-symbol-at-point)
-        ("M-," . rtags-find-references-at-point)
-        ("C-." . rtags-find-symbol)
-        ("C-," . rtags-find-references)
-        ("C-<" . rtags-find-virtuals-at-point)
-        ("M-s" . rtags-imenu)
-        ("C-c r" . rtags-print-symbol-info)
-        ("M-<left>" . rtags-location-stack-back)
-        ("M-<right>" . rtags-location-stack-forward)
-        ("M-n" . rtags-next-match)
-        ("M-p" . rtags-previous-match)
-        :map rtags-mode-map
-        ("n" . rtags-next-match)
-        ("p" . rtags-next-prev-match)))
+  (add-hook 'c++-mode-hook 'ycmd-mode)
+  (set-variable 'ycmd-server-command (list "python" (substitute-in-file-name "$HOME/.emacs.d/vendor/ycmd/ycmd/__main__.py")))
+  (setq ycmd-parse-conditions '(save new-line mode-enabled idle-change))
+  (setq-default ycmd-request-log-level 'verbose)
+  (setq-default ycmd-request-message-level 'verbose)
+  (set-variable 'ycmd-extra-conf-whitelist '("~/Projects/*"))
+  (setq url-show-status nil))
 
-;; Integrate RTags with Helm.
+;; I integrate ycm with company.
 
-(use-package helm-rtags
+(use-package company-ycmd
   :ensure t
-  :after helm)
-
-;; Use Irony for autocompletion and on the fly syntax checking.
-
-(use-package irony
-  :ensure t
+  :init
+  (company-ycmd-setup)
   :config
-    (add-hook 'c++-mode-hook 'irony-mode)
-    (add-hook 'c-mode-hook 'irony-mode)
-    (defun my-irony-mode-hook ()
-      (define-key irony-mode-map [remap completion-at-point]
-        'irony-completion-at-point-async)
-      (define-key irony-mode-map [remap complete-symbol]
-        'irony-completion-at-point-async))
-    (add-hook 'irony-mode-hook 'my-irony-mode-hook)
-    (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options))
+  (setq company-idle-delay 0.1)
+  (add-hook 'c++-mode-hook 'company-mode))
 
-;; Integrate Irony with Company.
+;; And also with flycheck.
 
-(use-package company-irony
-  :ensure t
-  :after company
+(use-package flycheck-ycmd
+  :defer t
+  :init
+  (add-hook 'ycmd-mode-hook 'flycheck-ycmd-setup)
   :config
-  (add-to-list 'company-backends 'company-irony))
-
-;; Integrate Irony with Flycheck.
-
-(use-package flycheck-irony
-  :ensure t
-  :after flycheck
-  :config
-  (add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
-
-;; Integrate Irony with Eldoc.
-
-(use-package irony-eldoc
-  :ensure t
-  :after irony
-  :config
-  (add-hook 'irony-mode-hook #'irony-eldoc))
-
-;; Use cmake-ide for managing Rtags and Irony automatically.
-
-(use-package cmake-ide
-  :after rtags
-  :ensure t
-  :config
-  (require 'rtags)
-  (cmake-ide-setup)
-  :bind
-  ("C-c m" . cmake-ide-compile))
+  (add-hook 'c++-mode-hook 'flycheck-mode))
 
 ;; Clojure
 
@@ -363,6 +316,23 @@
   :ensure t
   :mode ("\\.py\\'" . python-mode)
   :interpreter ("python" . python-mode))
+
+;; Anaconda provides navigation documentation lookup and code completion
+;; for Python:
+
+(use-package anaconda-mode
+  :ensure t
+  :config
+  (add-hook 'python-mode-hook 'anaconda-mode)
+  (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
+
+;; Integrate Anaconda with company:
+
+(use-package company-anaconda
+  :ensure t
+  :after company
+  :config
+  (add-to-list 'company-backends 'company-anaconda))
 
 ;; Shell
 
