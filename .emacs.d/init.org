@@ -542,6 +542,17 @@ particular symbol in a source file.
     (define-key java-mode-map (kbd "M-p") 'highlight-symbol-prev))
 #+END_SRC
 
+*** Code selection
+
+Use expand-region to increase the selected region by semantic units.
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package expand-region
+    :ensure t
+    :init
+    (global-set-key (kbd "C-=") 'er/expand-region))
+#+END_SRC
+
 *** Debugging
 
 Debugging is very important when working on a program. I use RealGud,

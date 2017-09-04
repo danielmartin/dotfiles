@@ -416,6 +416,15 @@
   (define-key java-mode-map (kbd "M-n") 'highlight-symbol-next)
   (define-key java-mode-map (kbd "M-p") 'highlight-symbol-prev))
 
+;; Code selection
+
+;; Use expand-region to increase the selected region by semantic units.
+
+(use-package expand-region
+  :ensure t
+  :init
+  (global-set-key (kbd "C-=") 'er/expand-region))
+
 ;; Debugging
 
 ;; Debugging is very important when working on a program. I use RealGud,
