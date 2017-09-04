@@ -14,8 +14,17 @@ export ANDROID_NDK_HOME="/usr/local/share/android-ndk"
 export USE_CCACHE=1
 export NDK_CCACHE="/usr/local/bin/ccache"
 
-# LLVM configuration path
+# Configuration path for Homebrewed LLVM
 export LLVM_PATH=/usr/local/opt/llvm/bin
+
+# LLVM source root
+export LLVM_SOURCE_ROOT=~/Projects/llvm/
+
+# Swift source root
+export SWIFT_SOURCE_ROOT=~/Projects/swift-source/
+
+# Default Swift build dir
+export SWIFT_BUILD_DIR=~/Projects/swift-source/build/Ninja-ReleaseAssert+swift-DebugAssert/swift-macosx-x86_64/
 
 # We want LLVM, Homebrew and the Android SDK in path.
 PATH="/usr/local/bin:${LLVM_PATH}:$ANDROID_SDK_ROOT/tools:${PATH}"
@@ -42,3 +51,7 @@ eval "$(rbenv init -)"
 # Convenient aliases to switch between Xcode and Xcode beta.
 alias xcode='sudo xcode-select -s /Applications/Xcode.app/Contents/Developer/ && xcode-select -p'
 alias xcodeb='sudo xcode-select -s /Applications/Xcode-beta.app/Contents/Developer/ && xcode-select -p'
+
+# Convenient aliases to run lit.py
+alias lit='${LLVM_SOURCE_ROOT}/utils/lit/lit.py -sv --param swift_site_config=${SWIFT_BUILD_DIR}/test-macosx-x86_64/lit.site.cfg'
+alias litsimulator='${LLVM_SOURCE_ROOT}/utils/lit/lit.py -sv --param swift_site_config=${SWIFT_BUILD_DIR}/test-iphonesimulator-x86_64/lit.site.cfg'
