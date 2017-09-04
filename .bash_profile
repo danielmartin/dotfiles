@@ -1,9 +1,6 @@
 # My GPG key
 export GPGKEY=19993523339747A9
 
-# My GPG key
-export GPGKEY=19993523339747A9
-
 # Java SDK
 export JAVA_HOME="$(/usr/libexec/java_home -v 1.8)"
 
