@@ -459,6 +459,16 @@ I use swift-mode for Swift code.
     (add-to-list 'flycheck-checkers 'swift))
 #+END_SRC
 
+*** TableGen
+
+TableGen is an abstract IDL used by LLVM and related projects to
+generate code automatically.
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (add-to-list 'load-path "~/Projects/llvm/utils/emacs")
+  (require 'tablegen-mode)
+#+END_SRC
+
 ** General Productivity Packages
 
 This is the list of the packages I use for productivity when

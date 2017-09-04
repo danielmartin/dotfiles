@@ -351,6 +351,14 @@
   (setq flycheck-swift-sdk-path "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk")
   (add-to-list 'flycheck-checkers 'swift))
 
+;; TableGen
+
+;; TableGen is an abstract IDL used by LLVM and related projects to
+;; generate code automatically.
+
+(add-to-list 'load-path "~/Projects/llvm/utils/emacs")
+(require 'tablegen-mode)
+
 ;; Autocompletion
 
 ;; Autocompletion is very important for programming languages and natural
