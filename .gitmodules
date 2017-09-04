@@ -1,0 +1,3 @@
+[submodule ".emacs.d/vendor/ycmd"]
+	path = .emacs.d/vendor/ycmd
+	url = git@github.com:danielmartin/ycmd.git
