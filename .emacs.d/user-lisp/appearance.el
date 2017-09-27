@@ -21,7 +21,7 @@
 (setq inhibit-splash-screen t)
 
 ;; Set a nice font
-(set-frame-font "Monaco-12")
+(set-frame-font "Inconsolata-16")
 
 (when window-system
   (setq frame-title-format '(buffer-file-name "%f" ("%b")))
