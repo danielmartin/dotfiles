@@ -518,6 +518,13 @@
    ("C-i" . helm-execute-persistent-action)
    ("C-z" . helm-select-action)))
 
+;; Helpful
+
+;; Better help system.
+
+(use-package helpful
+  :ensure t)
+
 ;; Natural Languages
 
 ;; For checking spelling and grammar, I use an external Java tool: Language-tool.

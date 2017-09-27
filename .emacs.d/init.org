@@ -667,6 +667,15 @@ Helm is a great incremental completion and selection narrowing framework.
      ("C-z" . helm-select-action)))
 #+END_SRC
 
+*** Helpful
+
+Better help system.
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package helpful
+    :ensure t)
+#+END_SRC
+
 *** Natural Languages
 
 For checking spelling and grammar, I use an external Java tool: Language-tool.
