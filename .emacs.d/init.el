@@ -67,6 +67,8 @@
   :config
   (progn
     (setq exec-path-from-shell-arguments '("-l"))
+    (setq exec-path-from-shell-variables
+          (append exec-path-from-shell-variables '("JAVA_HOME")))
     (exec-path-from-shell-initialize)))
 
 ;; Appearance and Themes
