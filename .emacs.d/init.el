@@ -544,6 +544,8 @@
 
 ;; I want a nice way to work on PDF documents graphically.
 
+;; Install with `brew install pdf-tools`.
+
 (use-package pdf-tools
   :ensure t
   :config

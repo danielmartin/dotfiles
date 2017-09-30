@@ -699,6 +699,8 @@ Org-Mode configuration is handled in a separate file.
 
 I want a nice way to work on PDF documents graphically.
 
+Install with `brew install pdf-tools`.
+
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package pdf-tools
     :ensure t
