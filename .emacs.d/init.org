@@ -83,24 +83,24 @@ And some general keybinding modifications.
 On a Mac, I use the Command key as Meta.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
- (setq mac-option-modifier 'none)
- (setq mac-command-modifier 'meta)
- (setq ns-function-modifier 'hyper)
+  (setq mac-option-modifier 'none)
+  (setq mac-command-modifier 'meta)
+  (setq ns-function-modifier 'hyper)
 #+END_SRC
 
 GUI apps on macOS do not inherit $PATH from shell. This package solves
 that.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-    (use-package exec-path-from-shell
-      :ensure t
-      :if (memq window-system '(mac ns))
-      :config
-      (progn
-        (setq exec-path-from-shell-arguments '("-l"))
-        (setq exec-path-from-shell-variables
-              (append exec-path-from-shell-variables '("JAVA_HOME")))
-        (exec-path-from-shell-initialize)))
+  (use-package exec-path-from-shell
+    :ensure t
+    :if (memq window-system '(mac ns))
+    :config
+    (progn
+      (setq exec-path-from-shell-arguments '("-l"))
+      (setq exec-path-from-shell-variables
+            (append exec-path-from-shell-variables '("JAVA_HOME")))
+      (exec-path-from-shell-initialize)))
 #+END_SRC
 
 *** Appearance and Themes
