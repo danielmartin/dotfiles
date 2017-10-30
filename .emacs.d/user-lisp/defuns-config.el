@@ -40,5 +40,19 @@ With arg N, insert N newlines."
 
 (global-set-key (kbd "C-a") 'beginning-of-line-dwim)
 
+(defun dwim-goto-char ()
+  "Goto-char using the offset at point, or fallback to standard
+  goto-char if the word at point is not a number. Useful for
+  navigating offsets inside raw PDF documents, for example."
+  (interactive)
+  (let ((string-at-point (thing-at-point 'word)))
+    (push-mark)
+    (if (string-match "\\`[0-9]*[1-9][0-9]*\\'" string-at-point)
+        (goto-char (string-to-number string-at-point))
+      (let ((char (read-from-minibuffer "Go to char: ")))
+        (goto-char (string-to-number char))))))
+
+(global-set-key (kbd "M-g c") 'dwim-goto-char)
+
 (provide 'defuns-config)
 ;;; defuns-config.el ends here
