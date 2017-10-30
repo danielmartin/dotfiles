@@ -556,6 +556,11 @@
   (setq pdf-info-epdfinfo-program "/usr/local/bin/epdfinfo")
   (pdf-tools-install))
 
+;; pdf-linter will "lint" a PDF document using PDFBox Preflight app.
+
+(require 'pdf-linter)
+(setq pdf-linter-jar "$HOME/PDFBox/preflight-app-2.0.7.jar")
+
 ;; Project Management
 
 ;; Programs are usually organized in projects, being a Git repo a natural

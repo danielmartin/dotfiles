@@ -713,6 +713,13 @@ Install with `brew install pdf-tools`.
     (pdf-tools-install))
 #+END_SRC
 
+pdf-linter will "lint" a PDF document using PDFBox Preflight app.
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (require 'pdf-linter)
+  (setq pdf-linter-jar "$HOME/PDFBox/preflight-app-2.0.7.jar")
+#+END_SRC
+
 *** Project Management
 
 Programs are usually organized in projects, being a Git repo a natural
