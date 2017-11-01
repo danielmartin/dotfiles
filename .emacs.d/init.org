@@ -483,6 +483,18 @@ Integrate Anaconda with company:
     (add-to-list 'company-backends 'company-anaconda))
 #+END_SRC
 
+Format Python code according to PEP8:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package py-autopep8
+    :ensure t
+    :bind
+    (:map python-mode-map
+          ("C-c u" . py-autopep8-buffer))
+    :config
+    (setq py-autopep8-options '("--max-line-length=79")))
+#+END_SRC
+
 *** Shell
 
 For linting Shell scripts, I integrate Shellcheck with Flycheck.
@@ -555,8 +567,9 @@ clang-format for C++ and related languages.
   (use-package clang-format
     :ensure t
     :bind
-    ("C-c i" . clang-format-region)
-    ("C-c u" . clang-format-buffer))
+    (:map c-mode-map
+          ("C-c i" . clang-format-region)
+          ("C-c u" . clang-format-buffer)))
 #+END_SRC
 
 *** Code Navigation
@@ -782,7 +795,6 @@ way to define one. I use Projectile to work on projects.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package projectile
     :ensure t
-    :defer t
     :config
     (projectile-global-mode)
     (setq projectile-completion-system 'helm)
@@ -794,7 +806,7 @@ I also integrate Projectile with Helm.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package helm-projectile
     :ensure t
-    :defer t)
+    :after projectile)
 #+END_SRC
 
 *** Pandoc

@@ -375,6 +375,16 @@
   :config
   (add-to-list 'company-backends 'company-anaconda))
 
+;; Format Python code according to PEP8:
+
+(use-package py-autopep8
+  :ensure t
+  :bind
+  (:map python-mode-map
+        ("C-c u" . py-autopep8-buffer))
+  :config
+  (setq py-autopep8-options '("--max-line-length=79")))
+
 ;; Shell
 
 ;; For linting Shell scripts, I integrate Shellcheck with Flycheck.
@@ -430,8 +440,9 @@
 (use-package clang-format
   :ensure t
   :bind
-  ("C-c i" . clang-format-region)
-  ("C-c u" . clang-format-buffer))
+  (:map c-mode-map
+        ("C-c i" . clang-format-region)
+        ("C-c u" . clang-format-buffer)))
 
 ;; Code Navigation
 
@@ -618,7 +629,6 @@
 
 (use-package projectile
   :ensure t
-  :defer t
   :config
   (projectile-global-mode)
   (setq projectile-completion-system 'helm)
@@ -628,7 +638,7 @@
 
 (use-package helm-projectile
   :ensure t
-  :defer t)
+  :after projectile)
 
 ;; Pandoc
 
