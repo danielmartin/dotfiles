@@ -189,7 +189,8 @@ diminish package to avoid that.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package diminish
-    :ensure t)
+    :ensure t
+    :defer t)
 #+END_SRC
 
 *** Navigation Tree
@@ -199,6 +200,7 @@ Show a project navigation tree using Neotree package.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package neotree
     :ensure t
+    :defer t
     :config
     (global-set-key [f8] 'neotree-toggle))
 #+END_SRC
@@ -209,12 +211,14 @@ To ease working with pairs, I use the smartparens package.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package smartparens
-    :ensure t)
+    :ensure t
+    :defer t)
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package smartparens-config
     :ensure smartparens
+    :defer t
     :config
     (progn
       (show-smartparens-global-mode t))
@@ -270,10 +274,10 @@ For C languages, I use K&R style, with an indentation of 2 spaces.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package cc-mode
-  :config
-  (add-hook 'c-mode-hook (lambda ()
-                           (c-set-style "k&r")
-                           (setq c-basic-offset 2))))
+    :config
+    (add-hook 'c-mode-hook (lambda ()
+                             (c-set-style "k&r")
+                             ((setq )etq c-basic-offset 2))))
 #+END_SRC
 
 As there's not a specific Emacs mode for this programming language,
@@ -288,6 +292,7 @@ Use a modern font lock mechanism.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package modern-cpp-font-lock
     :ensure t
+    :defer t
     :config
     (add-hook 'c++-mode-hook #'modern-c++-font-lock-mode))
 #+END_SRC
@@ -297,6 +302,7 @@ I use YouCompleteMe for C/C++ semantic autocompletion.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package ycmd
     :ensure t
+    :defer t
     :config
     (add-hook 'c++-mode-hook 'ycmd-mode)
     (set-variable 'ycmd-server-command (list "python" (substitute-in-file-name "$HOME/.emacs.d/vendor/ycmd/ycmd/__main__.py")))
@@ -312,6 +318,7 @@ I integrate ycm with company.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package company-ycmd
     :ensure t
+    :defer t
     :init
     (company-ycmd-setup)
     :config
@@ -323,6 +330,7 @@ And also with flycheck.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package flycheck-ycmd
+    :ensure t
     :defer t
     :init
     (add-hook 'ycmd-mode-hook 'flycheck-ycmd-setup)
@@ -336,7 +344,8 @@ Cider is the "de facto" package for working on Clojure projects.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package cider
-    :ensure t)
+    :ensure t
+    :defer t)
 #+END_SRC
 
 *** Emacs Lisp
@@ -346,7 +355,8 @@ that do what you want.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package suggest
-    :ensure t)
+    :ensure t
+    :defer t)
 #+END_SRC
 
 *** JavaScript
@@ -377,6 +387,7 @@ enable RefTeX mode whenever a LaTeX document is open.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package tex-site
     :ensure auctex
+    :defer t
     :config
     (add-hook 'LaTeX-mode-hook 'turn-on-reftex))
 #+END_SRC
@@ -425,6 +436,7 @@ for Python:
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package anaconda-mode
     :ensure t
+    :after python
     :config
     (add-hook 'python-mode-hook 'anaconda-mode)
     (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
@@ -485,6 +497,7 @@ languages. I use company for that.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package company
     :ensure t
+    :defer t
     :diminish company-mode
     :config
     (add-hook 'after-init-hook 'global-company-mode)
@@ -497,7 +510,8 @@ CMake is a meta-build system that is commonly used in C++ projects.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package cmake-mode
-    :ensure t)
+    :ensure t
+    :defer t)
 #+END_SRC
 
 *** Code Formatting
@@ -520,7 +534,8 @@ For quick navigation inside a source file, I use ace-jump-mode.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package ace-jump-mode
-    :ensure ace-jump-mode
+    :ensure t
+    :defer t
     :init
     (global-set-key (kbd "C-c SPC") 'ace-jump-mode))
 #+END_SRC
@@ -551,6 +566,7 @@ Use expand-region to increase the selected region by semantic units.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package expand-region
     :ensure t
+    :defer t
     :init
     (global-set-key (kbd "C-=") 'er/expand-region))
 #+END_SRC
@@ -563,7 +579,8 @@ languages.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package realgud
-    :ensure t)
+    :ensure t
+    :defer t)
 #+END_SRC
 
 *** Documentation
@@ -573,6 +590,7 @@ For showing inline documentation for Emacs Lisp functions, I use eldoc.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package eldoc
     :ensure t
+    :defer t
     :diminish eldoc-mode
     :config
     (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
@@ -618,6 +636,7 @@ MagitHub extends Magit with functions to work on GitHub repositories
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package magithub
     :after magit
+    :ensure t
     :config
     (magithub-feature-autoinject t))
 #+END_SRC
@@ -629,7 +648,8 @@ of a particular file from a Git repository.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package git-timemachine
-    :ensure t)
+    :ensure t
+    :defer t)
 #+END_SRC
 
 **** Browse at Remote
@@ -639,8 +659,8 @@ This package browses target pages at GitHub/Bitbucket.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package browse-at-remote
     :ensure t
-    :config
-    (global-set-key (kbd "C-c g g ") 'browse-at-remote))
+    :bind
+    ("C-c g g" . browse-at-remote))
 #+END_SRC
 
 *** Helm
@@ -675,7 +695,8 @@ Better help system.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package helpful
-    :ensure t)
+    :ensure t
+    :defer t)
 #+END_SRC
 
 *** Natural Languages
@@ -685,6 +706,7 @@ For checking spelling and grammar, I use an external Java tool: Language-tool.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package langtool
     :ensure t
+    :defer t
     :config
     (setq langtool-language-tool-jar "/usr/local/Cellar/languagetool/3.7/libexec/languagetool-commandline.jar"))
 #+END_SRC
@@ -706,6 +728,7 @@ Install with `brew install pdf-tools`.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package pdf-tools
     :ensure t
+    :defer t
     :config
     (custom-set-variables
      '(pdf-tools-handle-upgrades nil))
@@ -728,6 +751,7 @@ way to define one. I use Projectile to work on projects.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package projectile
     :ensure t
+    :defer t
     :config
     (projectile-global-mode)
     (setq projectile-completion-system 'helm)
@@ -738,7 +762,8 @@ I also integrate Projectile with Helm.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package helm-projectile
-    :ensure t)
+    :ensure t
+    :defer t)
 #+END_SRC
 
 *** Pandoc
@@ -747,7 +772,8 @@ Pandoc is a tool to convert between almost every document format.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package pandoc-mode
-    :ensure t)
+    :ensure t
+    :defer t)
 #+END_SRC
 
 *** REST
@@ -756,7 +782,8 @@ For making REST calls from Emacs, I use the convenient restclient package.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package restclient
-    :ensure t)
+    :ensure t
+    :defer t)
 #+END_SRC
 
 *** Search
@@ -778,6 +805,7 @@ I use yasnippet for managing text snippets.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package yasnippet
     :ensure t
+    :defer t
     :diminish yas-minor-mode
     :init (yas-global-mode 1))
 #+END_SRC
@@ -796,6 +824,7 @@ I use flycheck for "on the fly" syntax checking.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package flycheck
     :ensure t
+    :defer t
     :init (global-flycheck-mode))
 #+END_SRC
 
@@ -813,6 +842,7 @@ the default undo/redo system.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package undo-tree
     :ensure t
+    :defer t
     :diminish undo-tree-mode
     :init (global-undo-tree-mode)
     :config

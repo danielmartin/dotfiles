@@ -136,7 +136,8 @@
 ;; diminish package to avoid that.
 
 (use-package diminish
-  :ensure t)
+  :ensure t
+  :defer t)
 
 ;; Navigation Tree
 
@@ -144,6 +145,7 @@
 
 (use-package neotree
   :ensure t
+  :defer t
   :config
   (global-set-key [f8] 'neotree-toggle))
 
@@ -152,10 +154,12 @@
 ;; To ease working with pairs, I use the smartparens package.
 
 (use-package smartparens
-  :ensure t)
+  :ensure t
+  :defer t)
 
 (use-package smartparens-config
   :ensure smartparens
+  :defer t
   :config
   (progn
     (show-smartparens-global-mode t))
@@ -199,10 +203,10 @@
 ;; For C languages, I use K&R style, with an indentation of 2 spaces.
 
 (use-package cc-mode
-:config
-(add-hook 'c-mode-hook (lambda ()
-                         (c-set-style "k&r")
-                         (setq c-basic-offset 2))))
+  :config
+  (add-hook 'c-mode-hook (lambda ()
+                           (c-set-style "k&r")
+                           ((setq )etq c-basic-offset 2))))
 
 ;; As there's not a specific Emacs mode for this programming language,
 ;; for Objective-C++ files, use Objective-C mode.
@@ -213,6 +217,7 @@
 
 (use-package modern-cpp-font-lock
   :ensure t
+  :defer t
   :config
   (add-hook 'c++-mode-hook #'modern-c++-font-lock-mode))
 
@@ -220,6 +225,7 @@
 
 (use-package ycmd
   :ensure t
+  :defer t
   :config
   (add-hook 'c++-mode-hook 'ycmd-mode)
   (set-variable 'ycmd-server-command (list "python" (substitute-in-file-name "$HOME/.emacs.d/vendor/ycmd/ycmd/__main__.py")))
@@ -233,6 +239,7 @@
 
 (use-package company-ycmd
   :ensure t
+  :defer t
   :init
   (company-ycmd-setup)
   :config
@@ -242,6 +249,7 @@
 ;; And also with flycheck.
 
 (use-package flycheck-ycmd
+  :ensure t
   :defer t
   :init
   (add-hook 'ycmd-mode-hook 'flycheck-ycmd-setup)
@@ -253,7 +261,8 @@
 ;; Cider is the "de facto" package for working on Clojure projects.
 
 (use-package cider
-  :ensure t)
+  :ensure t
+  :defer t)
 
 ;; Emacs Lisp
 
@@ -261,7 +270,8 @@
 ;; that do what you want.
 
 (use-package suggest
-  :ensure t)
+  :ensure t
+  :defer t)
 
 ;; JavaScript
 
@@ -286,6 +296,7 @@
 
 (use-package tex-site
   :ensure auctex
+  :defer t
   :config
   (add-hook 'LaTeX-mode-hook 'turn-on-reftex))
 
@@ -324,6 +335,7 @@
 
 (use-package anaconda-mode
   :ensure t
+  :after python
   :config
   (add-hook 'python-mode-hook 'anaconda-mode)
   (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
@@ -368,6 +380,7 @@
 
 (use-package company
   :ensure t
+  :defer t
   :diminish company-mode
   :config
   (add-hook 'after-init-hook 'global-company-mode)
@@ -378,7 +391,8 @@
 ;; CMake is a meta-build system that is commonly used in C++ projects.
 
 (use-package cmake-mode
-  :ensure t)
+  :ensure t
+  :defer t)
 
 ;; Code Formatting
 
@@ -397,7 +411,8 @@
 ;; For quick navigation inside a source file, I use ace-jump-mode.
 
 (use-package ace-jump-mode
-  :ensure ace-jump-mode
+  :ensure t
+  :defer t
   :init
   (global-set-key (kbd "C-c SPC") 'ace-jump-mode))
 
@@ -424,6 +439,7 @@
 
 (use-package expand-region
   :ensure t
+  :defer t
   :init
   (global-set-key (kbd "C-=") 'er/expand-region))
 
@@ -434,7 +450,8 @@
 ;; languages.
 
 (use-package realgud
-  :ensure t)
+  :ensure t
+  :defer t)
 
 ;; Documentation
 
@@ -442,6 +459,7 @@
 
 (use-package eldoc
   :ensure t
+  :defer t
   :diminish eldoc-mode
   :config
   (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
@@ -476,6 +494,7 @@
 
 (use-package magithub
   :after magit
+  :ensure t
   :config
   (magithub-feature-autoinject t))
 
@@ -485,7 +504,8 @@
 ;; of a particular file from a Git repository.
 
 (use-package git-timemachine
-  :ensure t)
+  :ensure t
+  :defer t)
 
 ;; Browse at Remote
 
@@ -493,8 +513,8 @@
 
 (use-package browse-at-remote
   :ensure t
-  :config
-  (global-set-key (kbd "C-c g g ") 'browse-at-remote))
+  :bind
+  ("C-c g g" . browse-at-remote))
 
 ;; Helm
 
@@ -525,7 +545,8 @@
 ;; Better help system.
 
 (use-package helpful
-  :ensure t)
+  :ensure t
+  :defer t)
 
 ;; Natural Languages
 
@@ -533,6 +554,7 @@
 
 (use-package langtool
   :ensure t
+  :defer t
   :config
   (setq langtool-language-tool-jar "/usr/local/Cellar/languagetool/3.7/libexec/languagetool-commandline.jar"))
 
@@ -550,6 +572,7 @@
 
 (use-package pdf-tools
   :ensure t
+  :defer t
   :config
   (custom-set-variables
    '(pdf-tools-handle-upgrades nil))
@@ -568,6 +591,7 @@
 
 (use-package projectile
   :ensure t
+  :defer t
   :config
   (projectile-global-mode)
   (setq projectile-completion-system 'helm)
@@ -576,21 +600,24 @@
 ;; I also integrate Projectile with Helm.
 
 (use-package helm-projectile
-  :ensure t)
+  :ensure t
+  :defer t)
 
 ;; Pandoc
 
 ;; Pandoc is a tool to convert between almost every document format.
 
 (use-package pandoc-mode
-  :ensure t)
+  :ensure t
+  :defer t)
 
 ;; REST
 
 ;; For making REST calls from Emacs, I use the convenient restclient package.
 
 (use-package restclient
-  :ensure t)
+  :ensure t
+  :defer t)
 
 ;; Search
 
@@ -608,6 +635,7 @@
 
 (use-package yasnippet
   :ensure t
+  :defer t
   :diminish yas-minor-mode
   :init (yas-global-mode 1))
 
@@ -622,6 +650,7 @@
 
 (use-package flycheck
   :ensure t
+  :defer t
   :init (global-flycheck-mode))
 
 ;; Don't check documentation by default (good thing for small throwaway scripts).
@@ -635,6 +664,7 @@
 
 (use-package undo-tree
   :ensure t
+  :defer t
   :diminish undo-tree-mode
   :init (global-undo-tree-mode)
   :config
