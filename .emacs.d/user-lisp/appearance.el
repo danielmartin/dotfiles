@@ -8,11 +8,20 @@
 
 (defun use-default-theme ()
   (interactive)
-  (load-theme 'default-black t))
+  (use-package color-theme-sanityinc-tomorrow
+    :ensure t
+    :config
+    (setf custom-safe-themes t)
+    (color-theme-sanityinc-tomorrow-night)
+    (custom-set-faces
+     '(cursor ((t :background "#eebb28"))))))
 
 (defun use-light-theme ()
   (interactive)
-  (use-package leuven-theme)
+  (use-package leuven-theme
+    :ensure t
+    :defer t
+    :defer-install t)
   (load-theme 'leuven t))
 
 (use-default-theme)
