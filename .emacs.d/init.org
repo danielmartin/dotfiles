@@ -193,6 +193,18 @@ diminish package to avoid that.
     :defer t)
 #+END_SRC
 
+Show the current time.
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package time
+    :config
+    (progn
+      (setf display-time-default-load-average nil
+            display-time-use-mail-icon t
+            display-time-24hr-format nil)
+      (display-time-mode t)))
+#+END_SRC
+
 *** Navigation Tree
 
 Show a project navigation tree using Neotree package.

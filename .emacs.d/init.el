@@ -139,6 +139,16 @@
   :ensure t
   :defer t)
 
+;; Show the current time.
+
+(use-package time
+  :config
+  (progn
+    (setf display-time-default-load-average nil
+          display-time-use-mail-icon t
+          display-time-24hr-format nil)
+    (display-time-mode t)))
+
 ;; Navigation Tree
 
 ;; Show a project navigation tree using Neotree package.
