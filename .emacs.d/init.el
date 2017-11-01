@@ -188,6 +188,23 @@
 
 (electric-pair-mode 1)
 
+;; Rainbow-delimiters is a package which highlights delimiters such as
+;; parentheses, brackets or braces according to their depth
+
+(use-package rainbow-delimiters
+  :ensure t
+  :defer t
+  :init
+  (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
+  (add-hook 'ielm-mode-hook #'rainbow-delimiters-mode)
+  :config
+  (set-face-foreground 'rainbow-delimiters-depth-1-face "snow4")
+  (setf rainbow-delimiters-max-face-count 1)
+  (set-face-attribute 'rainbow-delimiters-unmatched-face nil
+                      :foreground 'unspecified
+                      :inherit 'error)
+  (set-face-foreground 'rainbow-delimiters-depth-1-face "snow4"))
+
 ;; Trailing Whitespace
 
 ;; Remove trailing whitespace before saving a file.
