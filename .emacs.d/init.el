@@ -42,6 +42,10 @@
 
 ;; General Customizations
 
+;; Start Emacs fully maximized:
+
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
+
 ;; Some general functions that I've written.
 
 (require 'defuns-config)

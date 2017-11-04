@@ -66,6 +66,12 @@ Add an environment variable required by the PDF Tools package:
 
 ** General Customizations
 
+Start Emacs fully maximized:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (add-to-list 'default-frame-alist '(fullscreen . maximized))
+#+END_SRC
+
 Some general functions that I've written.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
