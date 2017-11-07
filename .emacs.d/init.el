@@ -614,7 +614,6 @@
 
 (use-package pdf-tools
   :ensure t
-  :defer t
   :config
   (custom-set-variables
    '(pdf-tools-handle-upgrades nil))
