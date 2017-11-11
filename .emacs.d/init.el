@@ -475,7 +475,7 @@
   (define-key java-mode-map (kbd "M-n") 'highlight-symbol-next)
   (define-key java-mode-map (kbd "M-p") 'highlight-symbol-prev))
 
-;; Code selection
+;; Code Selection
 
 ;; Use expand-region to increase the selected region by semantic units.
 
