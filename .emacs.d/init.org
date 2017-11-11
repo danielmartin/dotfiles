@@ -580,6 +580,16 @@ clang-format for C++ and related languages.
 
 *** Code Navigation
 
+Sourcetrail is a great indexer to make sense of a big C/C++/Java
+project.
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package sourcetrail
+    :ensure t
+    :bind
+    ("C-c s" . sourcetrail-send-location))
+#+END_SRC
+
 For quick navigation inside a source file, I use ace-jump-mode.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org

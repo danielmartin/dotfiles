@@ -450,6 +450,14 @@
 
 ;; Code Navigation
 
+;; Sourcetrail is a great indexer to make sense of a big C/C++/Java
+;; project.
+
+(use-package sourcetrail
+  :ensure t
+  :bind
+  ("C-c s" . sourcetrail-send-location))
+
 ;; For quick navigation inside a source file, I use ace-jump-mode.
 
 (use-package ace-jump-mode
