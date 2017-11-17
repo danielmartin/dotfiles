@@ -47,7 +47,7 @@ With arg N, insert N newlines."
   (interactive)
   (let ((string-at-point (thing-at-point 'word)))
     (push-mark)
-    (if (string-match "\\`[0-9]*[1-9][0-9]*\\'" string-at-point)
+    (if (and (stringp string-at-point) (string-match "\\`[0-9]*[1-9][0-9]*\\'" string-at-point))
         (goto-char (string-to-number string-at-point))
       (let ((char (read-from-minibuffer "Go to char: ")))
         (goto-char (string-to-number char))))))
