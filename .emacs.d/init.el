@@ -237,7 +237,7 @@
   :config
   (add-hook 'c-mode-hook (lambda ()
                            (c-set-style "k&r")
-                           ((setq )etq c-basic-offset 2))))
+                           (setq c-basic-offset 2))))
 
 ;; As there's not a specific Emacs mode for this programming language,
 ;; for Objective-C++ files, use Objective-C mode.

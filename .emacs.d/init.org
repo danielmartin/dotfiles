@@ -314,7 +314,7 @@ For C languages, I use K&R style, with an indentation of 2 spaces.
     :config
     (add-hook 'c-mode-hook (lambda ()
                              (c-set-style "k&r")
-                             ((setq )etq c-basic-offset 2))))
+                             (setq c-basic-offset 2))))
 #+END_SRC
 
 As there's not a specific Emacs mode for this programming language,
