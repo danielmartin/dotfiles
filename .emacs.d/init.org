@@ -908,6 +908,13 @@ the default undo/redo system.
     (setq undo-tree-visualizer-diff t))
 #+END_SRC
 
+*** Wordpress
+
+For editing a Wordpress blog, use org2blog.
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (require 'org2blog-config)
+#+END_SRC
 *** X.509
 
 I've created a simple major mode that toggles between showing raw and

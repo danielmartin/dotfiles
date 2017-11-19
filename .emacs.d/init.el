@@ -719,6 +719,13 @@
   (setq undo-tree-visualizer-timestamps t)
   (setq undo-tree-visualizer-diff t))
 
+;; Wordpress
+
+;; For editing a Wordpress blog, use org2blog.
+
+
+(require 'org2blog-config)
+
 ;; X.509
 
 ;; I've created a simple major mode that toggles between showing raw and
