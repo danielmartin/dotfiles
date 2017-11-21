@@ -712,6 +712,16 @@ of a particular file from a Git repository.
     :defer t)
 #+END_SRC
 
+**** Git Undo
+
+
+Git-undo lets you select a region and revert changes in that region to
+the most recent Git historical version.
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (add-to-list 'load-path "~/.emacs.d/user-lisp/git-undo")
+#+END_SRC
+
 **** Browse at Remote
 
 This package browses target pages at GitHub/Bitbucket.
