@@ -55,3 +55,6 @@ alias xcodeb='sudo xcode-select -s /Applications/Xcode-beta.app/Contents/Develop
 # Convenient aliases to run lit.py
 alias lit='${LLVM_SOURCE_ROOT}/utils/lit/lit.py -sv --param swift_site_config=${SWIFT_BUILD_DIR}/test-macosx-x86_64/lit.site.cfg'
 alias litsimulator='${LLVM_SOURCE_ROOT}/utils/lit/lit.py -sv --param swift_site_config=${SWIFT_BUILD_DIR}/test-iphonesimulator-x86_64/lit.site.cfg'
+
+# ASDF configuration.
+source /usr/local/opt/asdf/asdf.sh
