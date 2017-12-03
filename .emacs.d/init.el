@@ -322,6 +322,7 @@
 
 
 (use-package ycmd
+  :disabled
   :ensure t
   :defer t
   :config
@@ -339,6 +340,7 @@
 
 
 (use-package company-ycmd
+  :disabled
   :ensure t
   :defer t
   :init
@@ -353,6 +355,7 @@
 
 
 (use-package flycheck-ycmd
+  :disabled
   :ensure t
   :defer t
   :init

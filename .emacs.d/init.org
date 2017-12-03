@@ -338,6 +338,7 @@ I use YouCompleteMe for C/C++ semantic autocompletion.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package ycmd
+    :disabled
     :ensure t
     :defer t
     :config
@@ -354,6 +355,7 @@ I integrate ycm with company.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package company-ycmd
+    :disabled
     :ensure t
     :defer t
     :init
@@ -367,6 +369,7 @@ And also with flycheck.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package flycheck-ycmd
+    :disabled
     :ensure t
     :defer t
     :init
