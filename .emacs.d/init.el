@@ -318,6 +318,25 @@
 
 
 
+;; Use LSP with flycheck, company, and cquery as C++ client.
+
+
+(use-package lsp-mode
+  :ensure t
+  :config
+  (require 'lsp-flycheck))
+
+(use-package company-lsp
+  :ensure t
+  :config
+  (add-to-list 'company-backends 'company-lsp))
+
+(add-to-list 'load-path "~/Projects/cquery/emacs/")
+  (require 'cquery)
+  (setq cquery-executable (expand-file-name "~/Projects/cquery/build/app"))
+
+
+
 ;; I use YouCompleteMe for C/C++ semantic autocompletion.
 
 

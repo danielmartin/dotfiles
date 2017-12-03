@@ -334,6 +334,27 @@ Use a modern font lock mechanism.
     (add-hook 'c++-mode-hook #'modern-c++-font-lock-mode))
 #+END_SRC
 
+Use LSP with flycheck, company, and cquery as C++ client.
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package lsp-mode
+    :ensure t
+    :config
+    (require 'lsp-flycheck))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package company-lsp
+    :ensure t
+    :config
+    (add-to-list 'company-backends 'company-lsp))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (add-to-list 'load-path "~/Projects/cquery/emacs/")
+  (require 'cquery)
+  (setq cquery-executable (expand-file-name "~/Projects/cquery/build/app"))
+#+END_SRC
 I use YouCompleteMe for C/C++ semantic autocompletion.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
