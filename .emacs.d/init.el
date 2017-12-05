@@ -401,6 +401,14 @@
   :ensure t
   :defer t)
 
+;; Haskell
+
+;; For Haskell I use haskell-mode.
+
+
+(use-package haskell-mode
+  :ensure t)
+
 ;; JavaScript
 
 ;; Use js2-mode for JavaScript.

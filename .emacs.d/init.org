@@ -420,6 +420,15 @@ that do what you want.
     :defer t)
 #+END_SRC
 
+*** Haskell
+
+For Haskell I use haskell-mode.
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package haskell-mode
+    :ensure t)
+#+END_SRC
+
 *** JavaScript
 
 Use js2-mode for JavaScript.
