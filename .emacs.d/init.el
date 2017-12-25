@@ -796,6 +796,15 @@
 (require 'pdf-linter)
 (setq pdf-linter-jar "$HOME/PDFBox/preflight-app-2.0.7.jar")
 
+
+
+;; Interleave is a minor mode to interleave notes in PDF books/papers.
+
+
+(use-package interleave
+  :ensure t
+  :after pdf-tools)
+
 ;; Project Management
 
 ;; Programs are usually organized in projects, being a Git repo a natural

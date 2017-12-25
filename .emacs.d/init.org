@@ -845,6 +845,13 @@ pdf-linter will "lint" a PDF document using PDFBox Preflight app.
   (setq pdf-linter-jar "$HOME/PDFBox/preflight-app-2.0.7.jar")
 #+END_SRC
 
+Interleave is a minor mode to interleave notes in PDF books/papers.
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package interleave
+    :ensure t
+    :after pdf-tools)
+#+END_SRC
 *** Project Management
 
 Programs are usually organized in projects, being a Git repo a natural
