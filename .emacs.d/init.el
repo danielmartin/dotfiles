@@ -332,8 +332,8 @@
   (add-to-list 'company-backends 'company-lsp))
 
 (add-to-list 'load-path "~/Projects/cquery/emacs/")
-  (require 'cquery)
-  (setq cquery-executable (expand-file-name "~/Projects/cquery/build/app"))
+(require 'cquery)
+(setq cquery-executable (expand-file-name "~/Projects/cquery/build/app"))
 
 
 
