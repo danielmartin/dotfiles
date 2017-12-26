@@ -20,8 +20,7 @@
   (interactive)
   (use-package leuven-theme
     :ensure t
-    :defer t
-    :defer-install t)
+    :defer t)
   (load-theme 'leuven t))
 
 (use-default-theme)
