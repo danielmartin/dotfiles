@@ -322,9 +322,19 @@
 
 
 (use-package lsp-mode
-  :ensure t
-  :config
-  (require 'lsp-flycheck))
+  :ensure t)
+
+
+
+;; LSP UI contains higher level UI modules for lsp-mode, like flycheck
+;; support or code lenses.
+
+
+(add-to-list 'load-path "~/.emacs.d/user-lisp/lsp-ui")
+(require 'lsp-ui)
+(require 'lsp-ui-flycheck)
+(with-eval-after-load 'lsp-mode
+  (add-hook 'lsp-after-open-hook (lambda () (lsp-ui-flycheck-enable t))))
 
 (use-package company-lsp
   :ensure t
@@ -333,7 +343,8 @@
 
 (add-to-list 'load-path "~/Projects/cquery/emacs/")
 (require 'cquery)
-(setq cquery-executable (expand-file-name "~/Projects/cquery/build/app"))
+(setq cquery-executable (expand-file-name "~/Projects/cquery/build/release/bin/cquery"))
+(setq cquery-additional-arguments '("--log-stdin-stdout-to-stderr"))
 
 
 
@@ -793,6 +804,7 @@
 ;; pdf-linter will "lint" a PDF document using PDFBox Preflight app.
 
 
+(add-to-list 'load-path "~/.emacs.d/user-lisp/pdf-linter")
 (require 'pdf-linter)
 (setq pdf-linter-jar "$HOME/PDFBox/preflight-app-2.0.7.jar")
 
