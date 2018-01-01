@@ -53,6 +53,26 @@
   :type 'boolean
   :group 'lsp-ui-sideline)
 
+(defcustom lsp-ui-sideline-show-symbol t
+  "Whether to show the symbol on the right of the information"
+  :type 'boolean
+  :group 'lsp-ui-sideline)
+
+(defcustom lsp-ui-sideline-show-hover t
+  "Whether to show hover messages in sideline"
+  :type 'boolean
+  :group 'lsp-ui-sideline)
+
+(defcustom lsp-ui-sideline-show-flycheck t
+  "Whether to show flycheck messages in sideline"
+  :type 'boolean
+  :group 'lsp-ui-sideline)
+
+(defcustom lsp-ui-sideline-show-code-actions t
+  "Whether to show code actions in sideline"
+  :type 'boolean
+  :group 'lsp-ui-sideline)
+
 (defvar lsp-ui-sideline-code-actions-prefix
   (propertize "💡 " 'face '(:foreground "yellow"))
   "Prefix to insert before the code action title.")
@@ -86,6 +106,11 @@ It is used to know when the window has changed of width.")
        :box (:line-width -1 :color "white")
        :height 0.99))
   "Face used to highlight the symbol on point."
+  :group 'lsp-ui-sideline)
+
+(defface lsp-ui-sideline-code-action
+  '((t :foreground "yellow"))
+  "Face used to highlight code action text."
   :group 'lsp-ui-sideline)
 
 (defun lsp-ui-sideline--calc-space (win-width str-len index)
@@ -145,19 +170,16 @@ MarkedString | MarkedString[] | MarkupContent (as defined in the LSP).
 We prioritize string with a language (which is probably a type or a
 function signature)."
   (when contents
-    (let* ((strings (when (listp contents) (seq-group-by 'hash-table-p contents)))
-           (string (alist-get nil strings))
-           (strings-with-language (alist-get t strings)))
-      (or (when (stringp contents) contents)
-          (when (hash-table-p contents) contents)
-          (when (listp strings-with-language)
-            (or (car (seq-filter (lambda (s) (string= (gethash "language" s)
-                                                      (lsp-ui-sideline--get-language)))
-                                 strings-with-language))
-                (car strings-with-language)))
-          strings-with-language
-          (when (listp string) (car string))
-          string))))
+    (cond
+     ((stringp contents) contents)
+     ((listp contents) ;; MarkedString[]
+      (--first (and (hash-table-p it)
+                    (lsp-ui-sideline--get-renderer (gethash "language" it)))
+               contents))
+     ((gethash "kind" contents) (gethash "value" contents)) ;; MarkupContent
+     ((gethash "language" contents) ;; MarkedString
+      (and (lsp-ui-sideline--get-renderer (gethash "language" contents))
+           (gethash "value" contents))))))
 
 (defun lsp-ui-sideline--format-info (marked-string)
   "Format MARKED-STRING.
@@ -180,8 +202,10 @@ MARKED-STRING is the string returned by `lsp-ui-sideline--extract-info'."
 INFO is the information to display.
 SYMBOL is the symbol associated to the info.
 CURRENT is non-nil when the point is on the symbol."
-  (let* ((str (concat info " " (propertize (concat " " symbol " ")
-                                           'face (if current 'lsp-ui-sideline-current-symbol 'lsp-ui-sideline-symbol))))
+  (let* ((str (if lsp-ui-sideline-show-symbol
+                  (concat info " " (propertize (concat " " symbol " ")
+                                               'face (if current 'lsp-ui-sideline-current-symbol 'lsp-ui-sideline-symbol)))
+                info))
          (len (length str)))
     (concat
      (propertize " " 'display `(space :align-to (- right-fringe ,(+ 1 len))))
@@ -248,7 +272,7 @@ CURRENT is non-nil when the point is on the symbol."
                                                          ('warning 'warning)
                                                          (_ 'success)))))
              (pos-ov (lsp-ui-sideline--find-line (window-text-width) (length message) t))
-             (ov (make-overlay pos-ov pos-ov)))
+             (ov (and pos-ov (make-overlay pos-ov pos-ov))))
         (when pos-ov
           (overlay-put ov 'after-string string)
           (push ov lsp-ui-sideline--ovs))))))
@@ -260,7 +284,7 @@ CURRENT is non-nil when the point is on the symbol."
                         (replace-regexp-in-string "[\n\t]+" " " it)
                         (concat lsp-ui-sideline-code-actions-prefix it)))
             (string (concat (propertize " " 'display `(space :align-to (- right-fringe ,(1+ (length title)))))
-                            title))
+                            (propertize title 'face 'lsp-ui-sideline-code-action)))
             (pos-ov (lsp-ui-sideline--find-line (window-text-width) (length title) t))
             (ov (and pos-ov (make-overlay pos-ov pos-ov))))
       (when pos-ov
@@ -283,25 +307,28 @@ to the language server."
         (setq lsp-ui-sideline--occupied-lines nil
               lsp-ui-sideline--line line
               lsp-ui-sideline--last-width (window-text-width))
-        (lsp-ui-sideline--flycheck)
-        (lsp--send-request-async (lsp--make-request
-                                  "textDocument/codeAction"
-                                  (list :textDocument (lsp--text-document-identifier)
-                                        :range (lsp--region-to-range bol eol)
-                                        :context (list :diagnostics (lsp--cur-line-diagnotics))))
-                                 #'lsp-ui-sideline--code-actions)
-        (while (and (<= (point) eol) (< (point) eob))
-          (let ((symbol (thing-at-point 'symbol t))
-                (bounds (bounds-of-thing-at-point 'symbol))
-                (column (lsp--cur-column)))
-            (when symbol
-              (lsp--send-request-async
-               (lsp--make-request
-                "textDocument/hover"
-                (list :textDocument doc-id
-                      :position (lsp--position (1- line) (if (= column 0) 0 (1- column)))))
-               (lambda (info) (if info (lsp-ui-sideline--push-info symbol line bounds info)))))
-            (forward-symbol 1)))))))
+        (when lsp-ui-sideline-show-flycheck
+          (lsp-ui-sideline--flycheck))
+        (when lsp-ui-sideline-show-code-actions
+          (lsp--send-request-async (lsp--make-request
+                                    "textDocument/codeAction"
+                                    (list :textDocument (lsp--text-document-identifier)
+                                          :range (lsp--region-to-range bol eol)
+                                          :context (list :diagnostics (lsp--cur-line-diagnotics))))
+                                   #'lsp-ui-sideline--code-actions))
+        (when lsp-ui-sideline-show-hover
+          (while (and (<= (point) eol) (< (point) eob))
+            (let ((symbol (thing-at-point 'symbol t))
+                  (bounds (bounds-of-thing-at-point 'symbol))
+                  (column (lsp--cur-column)))
+              (when symbol
+                (lsp--send-request-async
+                 (lsp--make-request
+                  "textDocument/hover"
+                  (list :textDocument doc-id
+                        :position (lsp--position (1- line) (if (= column 0) 0 (1- column)))))
+                 (lambda (info) (if info (lsp-ui-sideline--push-info symbol line bounds info)))))
+              (forward-symbol 1))))))))
 
 (defun lsp-ui-sideline ()
   "Show informations of the current line."
