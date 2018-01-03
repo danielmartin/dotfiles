@@ -330,11 +330,11 @@
 ;; support or code lenses.
 
 
-(add-to-list 'load-path "~/.emacs.d/user-lisp/lsp-ui")
-(require 'lsp-ui)
-(require 'lsp-ui-flycheck)
-(with-eval-after-load 'lsp-mode
-  (add-hook 'lsp-after-open-hook (lambda () (lsp-ui-flycheck-enable t))))
+(use-package lsp-ui
+  :ensure t
+  :config
+  (with-eval-after-load 'lsp-mode
+    (add-hook 'lsp-after-open-hook (lambda () (lsp-ui-flycheck-enable t)))))
 
 (use-package company-lsp
   :ensure t
