@@ -95,5 +95,19 @@ expects some output that isn't there and triggers an error"
                 (y-or-n-p "The binary files differ, look at the differences in hexl-mode? ")))
      (error (error-message-string err)))))
 
+(defun copy-file-to-keyboard ()
+  "Copy the current buffer file name to the clipboard."
+  (interactive)
+  (let ((filename (if (equal major-mode 'dired-mode)
+                      default-directory
+                    (buffer-file-name))))
+    (if filename
+        (progn
+          (kill-new filename)
+          (message "Copied buffer file name '%s' to the clipboard." filename))
+      (user-error "Buffer does not visit a file, so no filename to copy."))))
+
+(global-set-key (kbd "C-c w") 'copy-file-to-keyboard)
+
 (provide 'defuns-config)
 ;;; defuns-config.el ends here
