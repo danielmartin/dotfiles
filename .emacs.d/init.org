@@ -324,16 +324,6 @@ for Objective-C++ files, use Objective-C mode.
   (add-to-list 'auto-mode-alist '("\\.mm$" . objc-mode))
 #+END_SRC
 
-Use a modern font lock mechanism.
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package modern-cpp-font-lock
-    :ensure t
-    :defer t
-    :config
-    (add-hook 'c++-mode-hook #'modern-c++-font-lock-mode))
-#+END_SRC
-
 Use LSP with flycheck, company, and cquery as C++ client.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org

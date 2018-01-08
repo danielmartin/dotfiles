@@ -307,17 +307,6 @@
 
 
 
-;; Use a modern font lock mechanism.
-
-
-(use-package modern-cpp-font-lock
-  :ensure t
-  :defer t
-  :config
-  (add-hook 'c++-mode-hook #'modern-c++-font-lock-mode))
-
-
-
 ;; Use LSP with flycheck, company, and cquery as C++ client.
 
 
