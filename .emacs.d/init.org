@@ -337,6 +337,7 @@ support or code lenses.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package lsp-ui
     :ensure t
+    :load-path "~/.emacs.d/user-lisp/lsp-ui"
     :config
     (with-eval-after-load 'lsp-mode
       (add-hook 'lsp-after-open-hook (lambda () (lsp-ui-flycheck-enable t)))))
@@ -349,55 +350,38 @@ support or code lenses.
     (add-to-list 'company-backends 'company-lsp))
 #+END_SRC
 
+Helm for cross references:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package helm-xref
+    :ensure t
+    :init
+    (setq xref-show-xrefs-function 'helm-xref-show-xrefs))
+#+END_SRC
+
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (add-to-list 'load-path "~/Projects/cquery/emacs/")
   (require 'cquery)
   (setq cquery-executable (expand-file-name "~/Projects/cquery/build/release/bin/cquery"))
-  (setq cquery-additional-arguments '("--log-stdin-stdout-to-stderr"))
 #+END_SRC
 
-I use YouCompleteMe for C/C++ semantic autocompletion.
+Function to launch cquery whenever there's a compilation database in
+the C/C++ project I'm working on.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package ycmd
-    :disabled
-    :ensure t
-    :defer t
-    :config
-    (add-hook 'c++-mode-hook 'ycmd-mode)
-    (set-variable 'ycmd-server-command (list "python" (substitute-in-file-name "$HOME/.emacs.d/vendor/ycmd/ycmd/__main__.py")))
-    (setq ycmd-parse-conditions '(save new-line mode-enabled idle-change))
-    (setq-default ycmd-request-log-level 'verbose)
-    (setq-default ycmd-request-message-level 'verbose)
-    (set-variable 'ycmd-extra-conf-whitelist '("~/Projects/*"))
-    (setq url-show-status nil))
-#+END_SRC
-
-I integrate ycm with company.
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package company-ycmd
-    :disabled
-    :ensure t
-    :defer t
-    :init
-    (company-ycmd-setup)
-    :config
-    (setq company-idle-delay 0.1)
-    (add-hook 'c++-mode-hook 'company-mode))
-#+END_SRC
-
-And also with flycheck.
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package flycheck-ycmd
-    :disabled
-    :ensure t
-    :defer t
-    :init
-    (add-hook 'ycmd-mode-hook 'flycheck-ycmd-setup)
-    :config
-    (add-hook 'c++-mode-hook 'flycheck-mode))
+    (defun dm/enable-cquery-if-compile-commands-json ()
+      "Enables cquery (a C++ LSP server) if the current project has
+  a compile_commands.json or .cquery file."
+      (interactive)
+      (when
+          (and (not (and (boundp 'lsp-mode) lsp-mode))
+               (or (locate-dominating-file default-directory "compile_commands.json")
+                   (locate-dominating-file default-directory ".cquery")))
+        (setq eldoc-idle-delay 0.2)
+        (lsp-cquery-enable)
+        ;; (lsp-enable-imenu)
+        (when (>= emacs-major-version 26)
+          (lsp-ui-doc-mode 1))))
 #+END_SRC
 
 *** Clojure

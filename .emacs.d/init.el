@@ -321,6 +321,7 @@
 
 (use-package lsp-ui
   :ensure t
+  :load-path "~/.emacs.d/user-lisp/lsp-ui"
   :config
   (with-eval-after-load 'lsp-mode
     (add-hook 'lsp-after-open-hook (lambda () (lsp-ui-flycheck-enable t)))))
@@ -330,57 +331,39 @@
   :config
   (add-to-list 'company-backends 'company-lsp))
 
+
+
+;; Helm for cross references:
+
+
+(use-package helm-xref
+  :ensure t
+  :init
+  (setq xref-show-xrefs-function 'helm-xref-show-xrefs))
+
 (add-to-list 'load-path "~/Projects/cquery/emacs/")
 (require 'cquery)
 (setq cquery-executable (expand-file-name "~/Projects/cquery/build/release/bin/cquery"))
-(setq cquery-additional-arguments '("--log-stdin-stdout-to-stderr"))
 
 
 
-;; I use YouCompleteMe for C/C++ semantic autocompletion.
+;; Function to launch cquery whenever there's a compilation database in
+;; the C/C++ project I'm working on.
 
 
-(use-package ycmd
-  :disabled
-  :ensure t
-  :defer t
-  :config
-  (add-hook 'c++-mode-hook 'ycmd-mode)
-  (set-variable 'ycmd-server-command (list "python" (substitute-in-file-name "$HOME/.emacs.d/vendor/ycmd/ycmd/__main__.py")))
-  (setq ycmd-parse-conditions '(save new-line mode-enabled idle-change))
-  (setq-default ycmd-request-log-level 'verbose)
-  (setq-default ycmd-request-message-level 'verbose)
-  (set-variable 'ycmd-extra-conf-whitelist '("~/Projects/*"))
-  (setq url-show-status nil))
-
-
-
-;; I integrate ycm with company.
-
-
-(use-package company-ycmd
-  :disabled
-  :ensure t
-  :defer t
-  :init
-  (company-ycmd-setup)
-  :config
-  (setq company-idle-delay 0.1)
-  (add-hook 'c++-mode-hook 'company-mode))
-
-
-
-;; And also with flycheck.
-
-
-(use-package flycheck-ycmd
-  :disabled
-  :ensure t
-  :defer t
-  :init
-  (add-hook 'ycmd-mode-hook 'flycheck-ycmd-setup)
-  :config
-  (add-hook 'c++-mode-hook 'flycheck-mode))
+(defun dm/enable-cquery-if-compile-commands-json ()
+    "Enables cquery (a C++ LSP server) if the current project has
+a compile_commands.json or .cquery file."
+    (interactive)
+    (when
+        (and (not (and (boundp 'lsp-mode) lsp-mode))
+             (or (locate-dominating-file default-directory "compile_commands.json")
+                 (locate-dominating-file default-directory ".cquery")))
+      (setq eldoc-idle-delay 0.2)
+      (lsp-cquery-enable)
+      ;; (lsp-enable-imenu)
+      (when (>= emacs-major-version 26)
+        (lsp-ui-doc-mode 1))))
 
 ;; Clojure
 
@@ -939,3 +922,21 @@
 (add-to-list 'load-path "~/.emacs.d/user-lisp/flycheck-pbxproj")
 (require 'flycheck-pbxproj)
 (flycheck-pbxproj-setup)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-enabled-themes (quote (sanityinc-tomorrow-night)))
+ '(package-selected-packages
+   (quote
+    (ztree yasnippet use-package undo-tree swift-mode suggest sourcetrail smartparens restclient realgud rainbow-delimiters py-autopep8 php-mode pdf-tools pandoc-mode org2blog ob-swift neotree magithub lsp-ui leuven-theme langtool kotlin-mode js2-mode interleave howdoi highlight-symbol helpful helm-xref helm-projectile helm-ag haskell-mode git-timemachine expand-region exec-path-from-shell dired-sidebar diminish dash-at-point company-lsp company-anaconda color-theme-sanityinc-tomorrow cmake-mode clang-format cider browse-at-remote auctex all-the-icons-dired ace-jump-mode)))
+ '(pdf-tools-handle-upgrades nil))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(Org-headline-done ((((class color) (min-colors 16) (background dark)) (:foreground "LightSalmon" :strike-through t))))
+ '(cursor ((t :background "#eebb28")))
+ '(org-done ((t (:foreground "PaleGreen" :weight normal :strike-through t)))))
