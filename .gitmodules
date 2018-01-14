@@ -1,3 +1,9 @@
 [submodule ".emacs.d/vendor/ycmd"]
 	path = .emacs.d/vendor/ycmd
 	url = git@github.com:danielmartin/ycmd.git
+[submodule ".emacs.d/vendor/lsp-mode"]
+	path = .emacs.d/vendor/lsp-mode
+	url = git@github.com:danielmartin/lsp-mode.git
+[submodule ".emacs.d/vendor/lsp-ui"]
+	path = .emacs.d/vendor/lsp-ui
+	url = git@github.com:danielmartin/lsp-ui.git
