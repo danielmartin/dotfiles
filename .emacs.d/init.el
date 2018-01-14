@@ -311,7 +311,8 @@
 
 
 (use-package lsp-mode
-  :ensure t)
+  :ensure t
+  :load-path "~/.emacs.d/vendor/lsp-ui")
 
 
 
@@ -321,7 +322,7 @@
 
 (use-package lsp-ui
   :ensure t
-  :load-path "~/.emacs.d/user-lisp/lsp-ui"
+  :load-path "~/.emacs.d/vendor/lsp-ui"
   :config
   (with-eval-after-load 'lsp-mode
     (add-hook 'lsp-after-open-hook (lambda () (lsp-ui-flycheck-enable t)))))
@@ -361,7 +362,6 @@ a compile_commands.json or .cquery file."
                  (locate-dominating-file default-directory ".cquery")))
       (setq eldoc-idle-delay 0.2)
       (lsp-cquery-enable)
-      ;; (lsp-enable-imenu)
       (when (>= emacs-major-version 26)
         (lsp-ui-doc-mode 1))))
 
@@ -922,21 +922,3 @@ a compile_commands.json or .cquery file."
 (add-to-list 'load-path "~/.emacs.d/user-lisp/flycheck-pbxproj")
 (require 'flycheck-pbxproj)
 (flycheck-pbxproj-setup)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-enabled-themes (quote (sanityinc-tomorrow-night)))
- '(package-selected-packages
-   (quote
-    (ztree yasnippet use-package undo-tree swift-mode suggest sourcetrail smartparens restclient realgud rainbow-delimiters py-autopep8 php-mode pdf-tools pandoc-mode org2blog ob-swift neotree magithub lsp-ui leuven-theme langtool kotlin-mode js2-mode interleave howdoi highlight-symbol helpful helm-xref helm-projectile helm-ag haskell-mode git-timemachine expand-region exec-path-from-shell dired-sidebar diminish dash-at-point company-lsp company-anaconda color-theme-sanityinc-tomorrow cmake-mode clang-format cider browse-at-remote auctex all-the-icons-dired ace-jump-mode)))
- '(pdf-tools-handle-upgrades nil))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(Org-headline-done ((((class color) (min-colors 16) (background dark)) (:foreground "LightSalmon" :strike-through t))))
- '(cursor ((t :background "#eebb28")))
- '(org-done ((t (:foreground "PaleGreen" :weight normal :strike-through t)))))

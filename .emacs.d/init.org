@@ -327,8 +327,9 @@ for Objective-C++ files, use Objective-C mode.
 Use LSP with flycheck, company, and cquery as C++ client.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package lsp-mode
-    :ensure t)
+    (use-package lsp-mode
+      :ensure t
+      :load-path "~/.emacs.d/vendor/lsp-ui")
 #+END_SRC
 
 LSP UI contains higher level UI modules for lsp-mode, like flycheck
@@ -337,7 +338,7 @@ support or code lenses.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package lsp-ui
     :ensure t
-    :load-path "~/.emacs.d/user-lisp/lsp-ui"
+    :load-path "~/.emacs.d/vendor/lsp-ui"
     :config
     (with-eval-after-load 'lsp-mode
       (add-hook 'lsp-after-open-hook (lambda () (lsp-ui-flycheck-enable t)))))
@@ -379,7 +380,6 @@ the C/C++ project I'm working on.
                    (locate-dominating-file default-directory ".cquery")))
         (setq eldoc-idle-delay 0.2)
         (lsp-cquery-enable)
-        ;; (lsp-enable-imenu)
         (when (>= emacs-major-version 26)
           (lsp-ui-doc-mode 1))))
 #+END_SRC
