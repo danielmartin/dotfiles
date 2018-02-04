@@ -342,9 +342,11 @@
   :init
   (setq xref-show-xrefs-function 'helm-xref-show-xrefs))
 
-(add-to-list 'load-path "~/Projects/cquery/emacs/")
-(require 'cquery)
-(setq cquery-executable (expand-file-name "~/Projects/cquery/build/release/bin/cquery"))
+(use-package cquery
+  :ensure t
+  :config
+  (setq cquery-executable (expand-file-name "~/Projects/cquery/build/release/bin/cquery"))
+  (setq cquery-additional-arguments '("--log-stdin-stdout-to-stderr")))
 
 
 

@@ -361,9 +361,11 @@ Helm for cross references:
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (add-to-list 'load-path "~/Projects/cquery/emacs/")
-  (require 'cquery)
-  (setq cquery-executable (expand-file-name "~/Projects/cquery/build/release/bin/cquery"))
+  (use-package cquery
+    :ensure t
+    :config
+    (setq cquery-executable (expand-file-name "~/Projects/cquery/build/release/bin/cquery"))
+    (setq cquery-additional-arguments '("--log-stdin-stdout-to-stderr")))
 #+END_SRC
 
 Function to launch cquery whenever there's a compilation database in
