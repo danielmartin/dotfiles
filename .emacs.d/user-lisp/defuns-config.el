@@ -109,5 +109,14 @@ expects some output that isn't there and triggers an error"
 
 (global-set-key (kbd "C-c w") 'copy-file-to-keyboard)
 
+(defun dm/git-history-of-defun ()
+  "Ask source control about the history of the function under
+  point."
+  (interactive)
+  (mark-defun)
+  (magit-log-buffer-file nil (line-number-at-pos (region-beginning)) (line-number-at-pos (region-end))))
+
+(global-set-key (kbd "C-c v") 'dm/git-history-of-defun)
+
 (provide 'defuns-config)
 ;;; defuns-config.el ends here
