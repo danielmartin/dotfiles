@@ -344,6 +344,7 @@
 
 (use-package cquery
   :ensure t
+  :load-path "~/.emacs.d/vendor/emacs-cquery"
   :config
   (setq cquery-executable (expand-file-name "~/Projects/cquery/build/release/bin/cquery"))
   (setq cquery-additional-arguments '("--log-stdin-stdout-to-stderr")))
