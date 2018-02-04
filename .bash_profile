@@ -58,3 +58,7 @@ alias litsimulator='${LLVM_SOURCE_ROOT}/utils/lit/lit.py -sv --param swift_site_
 
 # ASDF configuration.
 source /usr/local/opt/asdf/asdf.sh
+
+# PSPDFKit changelog management.
+alias cla='bundle exec pspdfkit changelog add'
+alias clg='bundle exec pspdfkit changelog generate'
