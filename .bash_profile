@@ -24,7 +24,7 @@ export LLVM_SOURCE_ROOT=~/Projects/llvm/
 export SWIFT_SOURCE_ROOT=~/Projects/swift-source/
 
 # Default Swift build dir
-export SWIFT_BUILD_DIR=~/Projects/swift-source/build/Ninja-ReleaseAssert+swift-DebugAssert/swift-macosx-x86_64/
+export SWIFT_BUILD_DIR=~/Projects/swift-source/build/Ninja-RelWithDebInfoAssert+swift-DebugAssert/swift-macosx-x86_64/
 
 # We want LLVM, Homebrew and the Android SDK in path.
 PATH="/usr/local/bin:${LLVM_PATH}:$ANDROID_SDK_ROOT/tools:${PATH}"
