@@ -30,6 +30,8 @@ export SWIFT_BUILD_DIR=~/Projects/swift-source/build/Ninja-RelWithDebInfoAssert+
 PATH="/usr/local/bin:${LLVM_PATH}:$ANDROID_SDK_ROOT/tools:${PATH}"
 export PATH
 
+# Depot tools.
+export PATH="$HOME/Projects/depot_tools/:${PATH}"
 # We want to install Casks without root privileges.
 export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
 
