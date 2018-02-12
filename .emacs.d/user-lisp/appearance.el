@@ -14,6 +14,7 @@
     (setf custom-safe-themes t)
     (color-theme-sanityinc-tomorrow-night)
     (custom-set-faces
+     '(lsp-face-highlight-textual ((t :background "#464752")))
      '(cursor ((t :background "#eebb28"))))))
 
 (defun use-light-theme ()
