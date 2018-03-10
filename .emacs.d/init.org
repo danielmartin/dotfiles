@@ -397,6 +397,14 @@ Cider is the "de facto" package for working on Clojure projects.
     :defer t)
 #+END_SRC
 
+*** Djinni
+
+Djinni is a IDL by Dropbox that helps generating interface code in C++/Objective-C++/Java.
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (require 'djinni-mode)
+#+END_SRC
+
 *** Emacs Lisp
 
 Suggest.el is a nice package that helps you discover Elisp functions

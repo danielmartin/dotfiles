@@ -377,6 +377,13 @@ a compile_commands.json or .cquery file."
   :ensure t
   :defer t)
 
+;; Djinni
+
+;; Djinni is a IDL by Dropbox that helps generating interface code in C++/Objective-C++/Java.
+
+
+(require 'djinni-mode)
+
 ;; Emacs Lisp
 
 ;; Suggest.el is a nice package that helps you discover Elisp functions
