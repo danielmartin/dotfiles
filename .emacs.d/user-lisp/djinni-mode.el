@@ -28,6 +28,11 @@
 
 ;;; Code:
 
+(defcustom djinni-basic-offset 4
+  "Indentation width to use in Djinni files."
+  :type 'integer
+  :group 'djinni)
+
 (defvar djinni-syntax-table
   (let ((st (make-syntax-table)))
     ;; Comments
@@ -68,6 +73,25 @@
   (setq font-lock-defaults
         '((djinni-font-lock-keywords))))
 
+;; Indentation
+(defun djinni-indent-line ()
+  "Indent current line in `djinni-mode' buffers."
+  (interactive)
+  (let ((indent-col 0))
+    (save-excursion
+      (beginning-of-line)
+      (condition-case nil
+          (while t
+            (backward-up-list 1)
+            (when (looking-at "[{]")
+              (setq indent-col (+ indent-col djinni-basic-offset))))
+        (error nil)))
+    (save-excursion
+      (back-to-indentation)
+      (when (and (looking-at "[}]") (>= indent-col djinni-basic-offset))
+        (setq indent-col (- indent-col djinni-basic-offset))))
+    (indent-line-to indent-col)))
+
 ;;;###autoload
 (define-derived-mode djinni-mode prog-mode "Djinni"
   "Major mode for editing Djinni files."
@@ -75,6 +99,9 @@
   (set-syntax-table djinni-syntax-table)
   ;; Comments
   (setq-local comment-start "#")
+  ;; Indentation
+  (setq indent-tabs-mode nil)
+  (setq-local indent-line-function 'djinni-indent-line)
   ;; Font locking
   (djinni-font-lock-setup)
   )
