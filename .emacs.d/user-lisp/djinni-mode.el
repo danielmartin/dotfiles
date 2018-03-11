@@ -48,7 +48,7 @@
 
 (defvar djinni-font-lock-keywords
   (let* (;; Define categories of keywords.
-         (djinni-keywords '("interface" "record" "enum" "flags" "deriving" "eq" "ord" "const" "static"))
+         (djinni-keywords '("interface" "record" "enum" "flags" "deriving" "eq" "ord" "const" "static" "none" "all"))
          (djinni-types '("bool" "string" "i8" "i16" "i32" "i64" "f8" "f16" "f32" "f64"
                          "binary" "date" "list" "set" "map" "optional"))
 
