@@ -46,8 +46,6 @@ export GIT_PS1_SHOWUNTRACKEDFILES=1
 
 source ~/git-completion.bash
 
-eval "$(rbenv init -)"
-
 # Convenient aliases to switch between Xcode and Xcode beta.
 alias xcode='sudo xcode-select -s /Applications/Xcode.app/Contents/Developer/ && xcode-select -p'
 alias xcodeb='sudo xcode-select -s /Applications/Xcode-beta.app/Contents/Developer/ && xcode-select -p'
