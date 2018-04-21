@@ -312,9 +312,10 @@ For C languages, I use K&R style, with an indentation of 2 spaces.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package cc-mode
     :config
-    (add-hook 'c-mode-hook (lambda ()
+    (add-hook 'c-mode-common-hook (lambda ()
                              (c-set-style "k&r")
-                             (setq c-basic-offset 2))))
+                             (setq c-basic-offset 2)
+                             (dm/enable-cquery-if-compile-commands-json))))
 #+END_SRC
 
 As there's not a specific Emacs mode for this programming language,
