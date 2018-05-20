@@ -506,6 +506,30 @@ a compile_commands.json or .cquery file."
   :config
   (setq py-autopep8-options '("--max-line-length=79")))
 
+;; Rust
+
+;; Use rust-mode for editing Rust code:
+
+
+(use-package rust-mode
+  :ensure t)
+
+
+
+;; For code completion and navigation use Racer:
+
+
+(use-package racer
+  :ensure t
+  :config
+  (add-hook 'rust-mode-hook #'racer-mode)
+  (add-hook 'racer-mode-hook #'eldoc-mode)
+  (add-hook 'racer-mode-hook #'company-mode)
+  (require 'rust-mode)
+  (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
+  (setq company-tooltip-align-annotations t)
+  :after rust-mode)
+
 ;; Shell
 
 ;; For linting Shell scripts, I integrate Shellcheck with Flycheck.

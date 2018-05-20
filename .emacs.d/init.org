@@ -531,6 +531,30 @@ Format Python code according to PEP8:
     (setq py-autopep8-options '("--max-line-length=79")))
 #+END_SRC
 
+*** Rust
+
+Use rust-mode for editing Rust code:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package rust-mode
+    :ensure t)
+#+END_SRC
+
+For code completion and navigation use Racer:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package racer
+    :ensure t
+    :config
+    (add-hook 'rust-mode-hook #'racer-mode)
+    (add-hook 'racer-mode-hook #'eldoc-mode)
+    (add-hook 'racer-mode-hook #'company-mode)
+    (require 'rust-mode)
+    (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
+    (setq company-tooltip-align-annotations t)
+    :after rust-mode)
+#+END_SRC
+
 *** Shell
 
 For linting Shell scripts, I integrate Shellcheck with Flycheck.
