@@ -248,10 +248,6 @@ Highlight parentheses pairs.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (show-paren-mode 1)
-  (set-face-background 'show-paren-match-face "#aaaaaa")
-  (set-face-attribute 'show-paren-match-face nil
-  :weight 'bold :underline nil :overline nil :slant
-  'normal)
 #+END_SRC
 
 Close pairs automatically.

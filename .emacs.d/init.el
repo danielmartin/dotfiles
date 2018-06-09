@@ -231,10 +231,6 @@
 
 
 (show-paren-mode 1)
-(set-face-background 'show-paren-match-face "#aaaaaa")
-(set-face-attribute 'show-paren-match-face nil
-:weight 'bold :underline nil :overline nil :slant
-'normal)
 
 
 
