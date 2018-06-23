@@ -819,7 +819,14 @@ Better help system.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package helpful
     :ensure t
-    :defer t)
+    :defer t
+    :bind
+    (
+     ("C-h f" . helpful-callable)
+     ("C-h v" . helpful-variable)
+     ("C-h k" . helpful-key)
+     ("C-c C-d" . helpful-at-point)
+     ("C-h C" . helpful-command)))
 #+END_SRC
 
 *** Natural Languages

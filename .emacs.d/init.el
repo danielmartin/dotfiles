@@ -770,7 +770,14 @@ a compile_commands.json or .cquery file."
 
 (use-package helpful
   :ensure t
-  :defer t)
+  :defer t
+  :bind
+  (
+   ("C-h f" . helpful-callable)
+   ("C-h v" . helpful-variable)
+   ("C-h k" . helpful-key)
+   ("C-c C-d" . helpful-at-point)
+   ("C-h C" . helpful-command)))
 
 ;; Natural Languages
 
