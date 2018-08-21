@@ -400,6 +400,7 @@ Cider is the "de facto" package for working on Clojure projects.
 Djinni is a IDL by Dropbox that helps generating interface code in C++/Objective-C++/Java.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (add-to-list 'load-path "~/Projects/PSPDFKit/core/tools/")
   (require 'djinni-mode)
 #+END_SRC
 

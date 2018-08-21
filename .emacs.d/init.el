@@ -377,6 +377,7 @@ a compile_commands.json or .cquery file."
 ;; Djinni is a IDL by Dropbox that helps generating interface code in C++/Objective-C++/Java.
 
 
+(add-to-list 'load-path "~/Projects/PSPDFKit/core/tools/")
 (require 'djinni-mode)
 
 ;; Emacs Lisp
