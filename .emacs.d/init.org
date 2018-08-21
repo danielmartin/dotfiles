@@ -385,6 +385,18 @@ the C/C++ project I'm working on.
           (lsp-ui-doc-mode 1))))
 #+END_SRC
 
+I want to integrate clang-tidy checks with flycheck:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package flycheck-clang-tidy
+    :ensure t
+    :init
+    (eval-after-load 'flycheck
+      '(add-hook 'flycheck-mode-hook #'flycheck-clang-tidy-setup))
+    :config
+    (setq flycheck-c/c++-clang-tidy-executable "~/Projects/llvm/release/bin/clang-tidy"))
+#+END_SRC
+
 *** Clojure
 
 Cider is the "de facto" package for working on Clojure projects.

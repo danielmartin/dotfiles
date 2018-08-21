@@ -363,6 +363,19 @@ a compile_commands.json or .cquery file."
       (when (>= emacs-major-version 26)
         (lsp-ui-doc-mode 1))))
 
+
+
+;; I want to integrate clang-tidy checks with flycheck:
+
+
+(use-package flycheck-clang-tidy
+  :ensure t
+  :init
+  (eval-after-load 'flycheck
+    '(add-hook 'flycheck-mode-hook #'flycheck-clang-tidy-setup))
+  :config
+  (setq flycheck-c/c++-clang-tidy-executable "~/Projects/llvm/release/bin/clang-tidy"))
+
 ;; Clojure
 
 ;; Cider is the "de facto" package for working on Clojure projects.
