@@ -880,14 +880,13 @@ a compile_commands.json or .cquery file."
 
 ;; Search
 
-;; I like fast searches of text and symbols inside a project. As a faster
-;; way of grepping a project, I use Silver Searcher (ag) and integrate it
-;; with Helm.
+;; For searching things, I use deadgrep, a nice interface over
+;; ripgrep. Very fast.
 
 
-(use-package helm-ag
+(use-package deadgrep
   :ensure t
-  :bind ("C-c p A" . helm-do-ag-project-root))
+  :bind ("<f5>" . deadgrep))
 
 ;; Snippets and Abbreviations
 
