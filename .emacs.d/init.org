@@ -701,6 +701,12 @@ languages.
     :ensure t)
 #+END_SRC
 
+# #+BEGIN_SRC emacs-lisp :tangle yes :comments org
+#   (add-to-list 'load-path "~/Projects/realgud-lldb/lldb/")
+#   (require 'realgud-lldb)
+# #+END_SRC
+
+
 *** Documentation
 
 For showing inline documentation for Emacs Lisp functions, I use eldoc.
