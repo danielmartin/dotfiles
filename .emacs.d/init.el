@@ -291,8 +291,7 @@
   :config
   (add-hook 'c-mode-common-hook (lambda ()
                            (c-set-style "k&r")
-                           (setq c-basic-offset 2)
-                           (dm/enable-cquery-if-compile-commands-json))))
+                           (setq c-basic-offset 2))))
 
 
 
