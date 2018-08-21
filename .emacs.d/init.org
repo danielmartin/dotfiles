@@ -698,8 +698,7 @@ languages.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package realgud
-    :ensure t
-    :defer t)
+    :ensure t)
 #+END_SRC
 
 *** Documentation

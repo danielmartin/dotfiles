@@ -660,8 +660,7 @@ a compile_commands.json or .cquery file."
 
 
 (use-package realgud
-  :ensure t
-  :defer t)
+  :ensure t)
 
 ;; Documentation
 
