@@ -118,5 +118,13 @@ expects some output that isn't there and triggers an error"
 
 (global-set-key (kbd "C-c v") 'dm/git-history-of-defun)
 
+(defun dm/compile-finish (buf status)
+  (with-current-buffer buf
+    (if (string-match "^finished\\b" status)
+        (ns-do-applescript "display notification \"Compilation successful\"")
+      (ns-do-applescript "display notification \"Compilation failed\""))))
+
+(add-hook 'compilation-finish-functions #'dm/compile-finish)
+
 (provide 'defuns-config)
 ;;; defuns-config.el ends here
