@@ -746,31 +746,6 @@ a compile_commands.json or .cquery file."
   :bind
   ("C-c g g" . browse-at-remote))
 
-;; Helm
-
-;; Helm is a great incremental completion and selection narrowing framework.
-
-
-(use-package helm
-  :ensure t
-  :diminish helm-mode
-  :init (helm-mode)
-  :config
-  (setq helm-ff-auto-update-initial-value t)
-  :bind
-  (;; Redefine M-x to use Helm
-   ("M-x" . helm-M-x)
-   ;; File navigation on steroids
-   ("C-x C-f" . helm-find-files)
-   ;; Great kill ring cycling
-   ("M-y" . helm-show-kill-ring)
-   ;; Find buffers and recent files using Helm mini
-   ("C-x b" . helm-mini)
-   :map helm-map
-   ("<tab>" . helm-execute-persistent-action)
-   ("C-i" . helm-execute-persistent-action)
-   ("C-z" . helm-select-action)))
-
 ;; Helpful
 
 ;; Better help system.
