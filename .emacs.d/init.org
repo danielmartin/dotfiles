@@ -834,10 +834,10 @@ Install counsel first:
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-    (use-package counsel-projectile
-      :ensure t
-      :init
-      (setq counsel-projectile-mode 1))
+  (use-package counsel-projectile
+    :ensure t
+    :init
+    (counsel-projectile-mode))
 #+END_SRC
 
 Smex is an enhancement for M-x.

@@ -778,7 +778,7 @@ a compile_commands.json or .cquery file."
 (use-package counsel-projectile
   :ensure t
   :init
-  (setq counsel-projectile-mode 1))
+  (counsel-projectile-mode))
 
 
 
