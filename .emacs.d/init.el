@@ -896,7 +896,9 @@ a compile_commands.json or .cquery file."
 (use-package projectile
   :ensure t
   :config
-  (projectile-global-mode))
+  (projectile-global-mode)
+  :bind (:map projectile-mode-map
+              ("C-c p" . projectile-command-map)))
 
 ;; Pandoc
 

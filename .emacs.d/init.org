@@ -957,7 +957,9 @@ way to define one. I use Projectile to work on projects.
   (use-package projectile
     :ensure t
     :config
-    (projectile-global-mode))
+    (projectile-global-mode)
+    :bind (:map projectile-mode-map
+                ("C-c p" . projectile-command-map)))
 #+END_SRC
 
 *** Pandoc
