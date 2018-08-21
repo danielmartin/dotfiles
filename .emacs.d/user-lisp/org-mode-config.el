@@ -46,14 +46,21 @@
 (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
 
 ;; Org-Babel
+
+;; Swift
 (use-package ob-swift
+  :ensure t)
+
+;; Rust
+(use-package ob-rust
   :ensure t)
 
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((emacs-lisp . t)
    (dot . t)
-   (swift . t)))
+   (swift . t)
+   (rust . t)))
 
 (global-font-lock-mode 1)		     ; for all buffers
 (add-hook 'org-mode-hook 'turn-on-font-lock)  ; org-mode buffers only
