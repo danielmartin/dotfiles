@@ -291,6 +291,16 @@ I use winner-mode to manage my windows with convenient undo/redo functions.
   (winner-mode 1)
 #+END_SRC
 
+*** Cross References
+
+Use ivy-xref to select cross references:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package ivy-xref
+    :ensure t
+    :init (setq xref-show-xrefs-function #'ivy-xref-show-xrefs))
+#+END_SRC
+
 ** Programming Language Customizations
 
 These are my customizations for the programming languages I use most.

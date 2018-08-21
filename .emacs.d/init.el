@@ -273,6 +273,15 @@
 
 (winner-mode 1)
 
+;; Cross References
+
+;; Use ivy-xref to select cross references:
+
+
+(use-package ivy-xref
+  :ensure t
+  :init (setq xref-show-xrefs-function #'ivy-xref-show-xrefs))
+
 ;; Programming Language Customizations
 
 ;; These are my customizations for the programming languages I use most.
