@@ -882,18 +882,7 @@ a compile_commands.json or .cquery file."
 (use-package projectile
   :ensure t
   :config
-  (projectile-global-mode)
-  (setq projectile-completion-system 'helm)
-  (helm-projectile-on))
-
-
-
-;; I also integrate Projectile with Helm.
-
-
-(use-package helm-projectile
-  :ensure t
-  :after projectile)
+  (projectile-global-mode))
 
 ;; Pandoc
 

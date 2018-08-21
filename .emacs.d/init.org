@@ -944,17 +944,7 @@ way to define one. I use Projectile to work on projects.
   (use-package projectile
     :ensure t
     :config
-    (projectile-global-mode)
-    (setq projectile-completion-system 'helm)
-    (helm-projectile-on))
-#+END_SRC
-
-I also integrate Projectile with Helm.
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package helm-projectile
-    :ensure t
-    :after projectile)
+    (projectile-global-mode))
 #+END_SRC
 
 *** Pandoc
