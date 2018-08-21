@@ -787,6 +787,77 @@ a compile_commands.json or .cquery file."
    ("C-c C-d" . helpful-at-point)
    ("C-h C" . helpful-command)))
 
+;; Ivy
+
+;; Ivy is a lightweight completion framework.
+
+;; Install counsel first:
+
+
+(use-package counsel
+  :ensure t)
+
+(use-package counsel-projectile
+  :ensure t
+  :init
+  (setq counsel-projectile-mode 1))
+
+
+
+;; Smex is an enhancement for M-x.
+
+
+(use-package smex
+   :ensure t)
+
+(use-package ivy
+  :ensure t
+  :diminish ""
+  :config
+  (ivy-mode 1)
+
+  ;; When switching buffers, offer recently accessed files that we don't
+  ;; currently have open.
+  (setq ivy-use-virtual-buffers t)
+
+  (setq ivy-count-format "(%d/%d) ")
+
+  ;; Don't require order, so 'func descr' matches 'describe-function'
+  (setq ivy-re-builders-alist
+        '((t . ivy--regex-ignore-order)))
+
+  ;; Don't show ./ and ../ when finding files with ivy.
+  ;; To go up a directory, use backspace.
+  (setq ivy-extra-directories nil)
+
+  ;; Highlight the current selection with an arrow too.
+  (setq ivy-format-function 'ivy-format-function-arrow)
+
+  ;; Don't start the search term with ^ by default. I often have a
+  ;; substring in mind.
+  (setq ivy-initial-inputs-alist nil)
+
+  ;; Allow using the input as entered. This is useful when you want to
+  ;; input a value that doesn't yet exist, such as creating a new file
+  ;; with C-x C-f.
+  (setq ivy-use-selectable-prompt t)
+  :bind
+  (
+   ("M-x" . counsel-M-x)
+   ("C-x C-f" . counsel-find-file)
+   ("<f1> f" . counsel-describe-function)
+   ("<f1> v" . counsel-describe-variable)
+   ("C-s" . swiper)
+   ("<f7>" . counsel-imenu)
+   ("M-y" . counsel-yank-pop)
+   :map ivy-minibuffer-map
+   ("M-y" . ivy-next-line)))
+
+;; Use ido for projectile features, primarily C-x C-g (finding
+;; files) and C-c p p (switching projects).
+(require 'projectile)
+(setq projectile-completion-system 'ivy)
+
 ;; Natural Languages
 
 ;; For checking spelling and grammar, I use an external Java tool: Language-tool.
