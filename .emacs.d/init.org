@@ -357,14 +357,6 @@ support or code lenses.
     (add-to-list 'company-backends 'company-lsp))
 #+END_SRC
 
-Helm for cross references:
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package helm-xref
-    :ensure t
-    :init
-    (setq xref-show-xrefs-function 'helm-xref-show-xrefs))
-#+END_SRC
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package cquery

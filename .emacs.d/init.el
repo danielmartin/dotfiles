@@ -337,16 +337,6 @@
   :config
   (add-to-list 'company-backends 'company-lsp))
 
-
-
-;; Helm for cross references:
-
-
-(use-package helm-xref
-  :ensure t
-  :init
-  (setq xref-show-xrefs-function 'helm-xref-show-xrefs))
-
 (use-package cquery
   :ensure t
   :load-path "~/.emacs.d/vendor/emacs-cquery"
