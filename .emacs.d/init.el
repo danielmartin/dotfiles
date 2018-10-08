@@ -337,6 +337,12 @@
   :config
   (add-to-list 'company-backends 'company-lsp))
 
+(use-package ccls
+  :ensure t
+  :init
+  (setq ccls-executable (expand-file-name "~/Projects/ccls/release/ccls"))
+  (setq ccls-extra-args '("--log-file=/tmp/cq.log")))
+
 (use-package cquery
   :ensure t
   :load-path "~/.emacs.d/vendor/emacs-cquery"

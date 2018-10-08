@@ -357,6 +357,13 @@ support or code lenses.
     (add-to-list 'company-backends 'company-lsp))
 #+END_SRC
 
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package ccls
+    :ensure t
+    :init
+    (setq ccls-executable (expand-file-name "~/Projects/ccls/release/ccls"))
+    (setq ccls-extra-args '("--log-file=/tmp/cq.log")))
+#+END_SRC
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package cquery
