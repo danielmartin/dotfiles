@@ -829,6 +829,18 @@ Better help system.
      ("C-h C" . helpful-command)))
 #+END_SRC
 
+*** Image Editing
+
+Blimp is a great wrapper for ImageMagick:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package blimp
+    :ensure t
+    :defer t
+    :init
+    (add-hook 'image-minor-mode-hook 'blimp-mode))
+#+END_SRC
+
 *** Ivy
 
 Ivy is a lightweight completion framework.

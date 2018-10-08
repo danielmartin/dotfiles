@@ -771,6 +771,17 @@ a compile_commands.json or .cquery file."
    ("C-c C-d" . helpful-at-point)
    ("C-h C" . helpful-command)))
 
+;; Image Editing
+
+;; Blimp is a great wrapper for ImageMagick:
+
+
+(use-package blimp
+  :ensure t
+  :defer t
+  :init
+  (add-hook 'image-minor-mode-hook 'blimp-mode))
+
 ;; Ivy
 
 ;; Ivy is a lightweight completion framework.
