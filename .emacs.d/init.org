@@ -298,6 +298,7 @@ Use ivy-xref to select cross references:
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package ivy-xref
     :ensure t
+    :after ivy
     :init (setq xref-show-xrefs-function #'ivy-xref-show-xrefs))
 #+END_SRC
 
@@ -335,6 +336,7 @@ Use LSP with flycheck, company, and cquery as C++ client.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
     (use-package lsp-mode
       :ensure t
+      :defer t
       :load-path "~/.emacs.d/vendor/lsp-ui")
 #+END_SRC
 
@@ -353,6 +355,7 @@ support or code lenses.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package company-lsp
     :ensure t
+    :after lsp-mode
     :config
     (add-to-list 'company-backends 'company-lsp))
 #+END_SRC
@@ -368,6 +371,7 @@ support or code lenses.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package cquery
     :ensure t
+    :defer t
     :load-path "~/.emacs.d/vendor/emacs-cquery"
     :config
     (setq cquery-executable (expand-file-name "~/cquery/bin/cquery"))
@@ -397,6 +401,7 @@ I want to integrate clang-tidy checks with flycheck:
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package flycheck-clang-tidy
     :ensure t
+    :defer t
     :init
     (eval-after-load 'flycheck
       '(add-hook 'flycheck-mode-hook #'flycheck-clang-tidy-setup))
@@ -440,7 +445,8 @@ For Haskell I use haskell-mode.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package haskell-mode
-    :ensure t)
+    :ensure t
+    :defer t)
 #+END_SRC
 
 *** JavaScript
@@ -450,6 +456,7 @@ Use js2-mode for JavaScript.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package js2-mode
     :ensure t
+    :defer t
     :mode ("\\.js\\'" . js2-mode))
 #+END_SRC
 
@@ -460,6 +467,7 @@ Use kotlin-mode for Kotlin development.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package kotlin-mode
     :ensure t
+    :defer t
     :mode ("\\.kt\\'" . kotlin-mode))
 #+END_SRC
 
@@ -483,6 +491,7 @@ I use markdown-mode to work on Markdown (.md) documents.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package markdown-mode
     :ensure t
+    :defer t
     :mode ("\\.\\(m\\(ark\\)?down\\|md\\)$" . markdown-mode))
 #+END_SRC
 
@@ -500,6 +509,7 @@ php-mode form the package repository.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package php-mode
     :ensure t
+    :defer t
     :mode ("\\.php\\'" . php-mode))
 #+END_SRC
 
@@ -510,6 +520,7 @@ There are several packages for writing Python code. I use python.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package python
     :ensure t
+    :defer t
     :mode ("\\.py\\'" . python-mode)
     :interpreter ("python" . python-mode))
 #+END_SRC
@@ -518,22 +529,11 @@ Anaconda provides navigation documentation lookup and code completion
 for Python:
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package anaconda-mode
+  (use-package lsp-python
     :ensure t
     :after python
     :config
-    (add-hook 'python-mode-hook 'anaconda-mode)
-    (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
-#+END_SRC
-
-Integrate Anaconda with company:
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package company-anaconda
-    :ensure t
-    :after company
-    :config
-    (add-to-list 'company-backends 'company-anaconda))
+    (add-hook 'python-mode-hook #'lsp-python-enable))
 #+END_SRC
 
 Format Python code according to PEP8:
@@ -541,6 +541,7 @@ Format Python code according to PEP8:
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package py-autopep8
     :ensure t
+    :after python
     :bind
     (:map python-mode-map
           ("C-c u" . py-autopep8-buffer))
@@ -554,7 +555,8 @@ Use rust-mode for editing Rust code:
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package rust-mode
-    :ensure t)
+    :ensure t
+    :defer t)
 #+END_SRC
 
 For code completion and navigation use Racer:
@@ -562,6 +564,7 @@ For code completion and navigation use Racer:
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package racer
     :ensure t
+    :after rust-mode
     :config
     (add-hook 'rust-mode-hook #'racer-mode)
     (add-hook 'racer-mode-hook #'eldoc-mode)
@@ -587,6 +590,7 @@ I use swift-mode for Swift code.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package swift-mode
     :ensure t
+    :defer t
     :mode ("\\.swift\\'" . swift-mode)
     :config
     (setq flycheck-swift-sdk-path "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk")
@@ -657,6 +661,7 @@ project.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package sourcetrail
     :ensure t
+    :defer t
     :bind
     ("C-c s" . sourcetrail-send-location))
 #+END_SRC
@@ -710,7 +715,8 @@ languages.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package realgud
-    :ensure t)
+    :ensure t
+    :defer t)
 #+END_SRC
 
 # #+BEGIN_SRC emacs-lisp :tangle yes :comments org
@@ -740,6 +746,7 @@ dash-at-point only works for C++ files.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package dash-at-point
     :ensure t
+    :defer t
     :config
     (add-to-list 'dash-at-point-mode-alist '(c++-mode . "cpp"))
     :bind
@@ -808,6 +815,7 @@ This package browses target pages at GitHub/Bitbucket.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package browse-at-remote
     :ensure t
+    :defer t
     :bind
     ("C-c g g" . browse-at-remote))
 #+END_SRC
@@ -849,12 +857,14 @@ Install counsel first:
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package counsel
-    :ensure t)
+    :ensure t
+    :defer t)
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package counsel-projectile
     :ensure t
+    :after counsel
     :init
     (counsel-projectile-mode))
 #+END_SRC
@@ -863,7 +873,8 @@ Smex is an enhancement for M-x.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package smex
-     :ensure t)
+     :ensure t
+     :after counsel)
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
@@ -945,6 +956,7 @@ Install with `brew install pdf-tools`.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package pdf-tools
     :ensure t
+    :defer t
     :config
     (custom-set-variables
      '(pdf-tools-handle-upgrades nil))
@@ -975,6 +987,7 @@ way to define one. I use Projectile to work on projects.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package projectile
     :ensure t
+    :defer t
     :config
     (projectile-global-mode)
     :bind (:map projectile-mode-map
@@ -1009,6 +1022,7 @@ ripgrep. Very fast.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package deadgrep
     :ensure t
+    :defer t
     :bind ("<f5>" . deadgrep))
 #+END_SRC
 

@@ -280,6 +280,7 @@
 
 (use-package ivy-xref
   :ensure t
+  :after ivy
   :init (setq xref-show-xrefs-function #'ivy-xref-show-xrefs))
 
 ;; Programming Language Customizations
@@ -317,6 +318,7 @@
 
 (use-package lsp-mode
   :ensure t
+  :defer t
   :load-path "~/.emacs.d/vendor/lsp-ui")
 
 
@@ -334,6 +336,7 @@
 
 (use-package company-lsp
   :ensure t
+  :after lsp-mode
   :config
   (add-to-list 'company-backends 'company-lsp))
 
@@ -345,6 +348,7 @@
 
 (use-package cquery
   :ensure t
+  :defer t
   :load-path "~/.emacs.d/vendor/emacs-cquery"
   :config
   (setq cquery-executable (expand-file-name "~/cquery/bin/cquery"))
@@ -376,6 +380,7 @@ a compile_commands.json or .cquery file."
 
 (use-package flycheck-clang-tidy
   :ensure t
+  :defer t
   :init
   (eval-after-load 'flycheck
     '(add-hook 'flycheck-mode-hook #'flycheck-clang-tidy-setup))
@@ -415,7 +420,8 @@ a compile_commands.json or .cquery file."
 
 
 (use-package haskell-mode
-  :ensure t)
+  :ensure t
+  :defer t)
 
 ;; JavaScript
 
@@ -424,6 +430,7 @@ a compile_commands.json or .cquery file."
 
 (use-package js2-mode
   :ensure t
+  :defer t
   :mode ("\\.js\\'" . js2-mode))
 
 ;; Kotlin
@@ -433,6 +440,7 @@ a compile_commands.json or .cquery file."
 
 (use-package kotlin-mode
   :ensure t
+  :defer t
   :mode ("\\.kt\\'" . kotlin-mode))
 
 ;; LaTeX
@@ -454,6 +462,7 @@ a compile_commands.json or .cquery file."
 
 (use-package markdown-mode
   :ensure t
+  :defer t
   :mode ("\\.\\(m\\(ark\\)?down\\|md\\)$" . markdown-mode))
 
 
@@ -471,6 +480,7 @@ a compile_commands.json or .cquery file."
 
 (use-package php-mode
   :ensure t
+  :defer t
   :mode ("\\.php\\'" . php-mode))
 
 ;; Python
@@ -480,6 +490,7 @@ a compile_commands.json or .cquery file."
 
 (use-package python
   :ensure t
+  :defer t
   :mode ("\\.py\\'" . python-mode)
   :interpreter ("python" . python-mode))
 
@@ -489,23 +500,11 @@ a compile_commands.json or .cquery file."
 ;; for Python:
 
 
-(use-package anaconda-mode
+(use-package lsp-python
   :ensure t
   :after python
   :config
-  (add-hook 'python-mode-hook 'anaconda-mode)
-  (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
-
-
-
-;; Integrate Anaconda with company:
-
-
-(use-package company-anaconda
-  :ensure t
-  :after company
-  :config
-  (add-to-list 'company-backends 'company-anaconda))
+  (add-hook 'python-mode-hook #'lsp-python-enable))
 
 
 
@@ -514,6 +513,7 @@ a compile_commands.json or .cquery file."
 
 (use-package py-autopep8
   :ensure t
+  :after python
   :bind
   (:map python-mode-map
         ("C-c u" . py-autopep8-buffer))
@@ -526,7 +526,8 @@ a compile_commands.json or .cquery file."
 
 
 (use-package rust-mode
-  :ensure t)
+  :ensure t
+  :defer t)
 
 
 
@@ -535,6 +536,7 @@ a compile_commands.json or .cquery file."
 
 (use-package racer
   :ensure t
+  :after rust-mode
   :config
   (add-hook 'rust-mode-hook #'racer-mode)
   (add-hook 'racer-mode-hook #'eldoc-mode)
@@ -558,6 +560,7 @@ a compile_commands.json or .cquery file."
 
 (use-package swift-mode
   :ensure t
+  :defer t
   :mode ("\\.swift\\'" . swift-mode)
   :config
   (setq flycheck-swift-sdk-path "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk")
@@ -617,6 +620,7 @@ a compile_commands.json or .cquery file."
 
 (use-package sourcetrail
   :ensure t
+  :defer t
   :bind
   ("C-c s" . sourcetrail-send-location))
 
@@ -670,7 +674,8 @@ a compile_commands.json or .cquery file."
 
 
 (use-package realgud
-  :ensure t)
+  :ensure t
+  :defer t)
 
 ;; Documentation
 
@@ -694,6 +699,7 @@ a compile_commands.json or .cquery file."
 
 (use-package dash-at-point
   :ensure t
+  :defer t
   :config
   (add-to-list 'dash-at-point-mode-alist '(c++-mode . "cpp"))
   :bind
@@ -752,6 +758,7 @@ a compile_commands.json or .cquery file."
 
 (use-package browse-at-remote
   :ensure t
+  :defer t
   :bind
   ("C-c g g" . browse-at-remote))
 
@@ -790,10 +797,12 @@ a compile_commands.json or .cquery file."
 
 
 (use-package counsel
-  :ensure t)
+  :ensure t
+  :defer t)
 
 (use-package counsel-projectile
   :ensure t
+  :after counsel
   :init
   (counsel-projectile-mode))
 
@@ -803,7 +812,8 @@ a compile_commands.json or .cquery file."
 
 
 (use-package smex
-   :ensure t)
+   :ensure t
+   :after counsel)
 
 (use-package ivy
   :ensure t
@@ -880,6 +890,7 @@ a compile_commands.json or .cquery file."
 
 (use-package pdf-tools
   :ensure t
+  :defer t
   :config
   (custom-set-variables
    '(pdf-tools-handle-upgrades nil))
@@ -912,6 +923,7 @@ a compile_commands.json or .cquery file."
 
 (use-package projectile
   :ensure t
+  :defer t
   :config
   (projectile-global-mode)
   :bind (:map projectile-mode-map
@@ -943,6 +955,7 @@ a compile_commands.json or .cquery file."
 
 (use-package deadgrep
   :ensure t
+  :defer t
   :bind ("<f5>" . deadgrep))
 
 ;; Snippets and Abbreviations
