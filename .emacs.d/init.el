@@ -1097,3 +1097,7 @@ a compile_commands.json or .cquery file."
 (add-to-list 'load-path "~/.emacs.d/user-lisp/flycheck-pbxproj")
 (require 'flycheck-pbxproj)
 (flycheck-pbxproj-setup)
+
+(use-package bazel-mode
+  :ensure t
+  :defer t)

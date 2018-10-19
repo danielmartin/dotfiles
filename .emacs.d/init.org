@@ -1167,3 +1167,9 @@ I've also added on-the-fly syntax checking capabilities.
   (require 'flycheck-pbxproj)
   (flycheck-pbxproj-setup)
 #+END_SRC
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package bazel-mode
+    :ensure t
+    :defer t)
+#+END_SRC
