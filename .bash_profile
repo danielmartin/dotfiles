@@ -27,7 +27,7 @@ export SWIFT_SOURCE_ROOT=~/Projects/swift-source/swift
 export SWIFT_BUILD_DIR=~/Projects/swift-source/build/Ninja-RelWithDebInfoAssert+swift-DebugAssert/swift-macosx-x86_64/
 
 # We want LLVM, Homebrew and the Android SDK in path.
-PATH="/usr/local/bin:${LLVM_PATH}:$ANDROID_SDK_ROOT/tools:${PATH}"
+PATH="/usr/local/bin:${LLVM_PATH}:$ANDROID_SDK_ROOT/tools:${PATH}:${HOME}/go/bin"
 export PATH
 
 # We want to install Casks without root privileges.
