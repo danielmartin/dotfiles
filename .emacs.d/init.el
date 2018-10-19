@@ -904,7 +904,7 @@ a compile_commands.json or .cquery file."
 
 (add-to-list 'load-path "~/.emacs.d/user-lisp/pdf-linter")
 (require 'pdf-linter)
-(setq pdf-linter-jar "$HOME/PDFBox/preflight-app-2.0.7.jar")
+(setq pdf-linter-jar "$HOME/PDFBox/preflight-app-2.0.12.jar")
 
 
 

@@ -969,7 +969,7 @@ pdf-linter will "lint" a PDF document using PDFBox Preflight app.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (add-to-list 'load-path "~/.emacs.d/user-lisp/pdf-linter")
   (require 'pdf-linter)
-  (setq pdf-linter-jar "$HOME/PDFBox/preflight-app-2.0.7.jar")
+  (setq pdf-linter-jar "$HOME/PDFBox/preflight-app-2.0.12.jar")
 #+END_SRC
 
 Interleave is a minor mode to interleave notes in PDF books/papers.
