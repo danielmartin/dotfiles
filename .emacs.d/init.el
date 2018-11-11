@@ -483,6 +483,23 @@ a compile_commands.json or .cquery file."
   :defer t
   :mode ("\\.php\\'" . php-mode))
 
+;; Proselint
+
+
+(flycheck-define-checker proselint
+  "A linter for prose."
+  :command ("proselint" source-inplace)
+  :error-patterns
+  ((warning line-start (file-name) ":" line ":" column ": "
+            (id (one-or-more (not (any " "))))
+            (message) line-end))
+  :modes (gfm-mode
+          markdown-mode
+          org-mode
+          text-mode))
+
+(add-to-list 'flycheck-checkers 'proselint)
+
 ;; Python
 
 ;; There are several packages for writing Python code. I use python.
