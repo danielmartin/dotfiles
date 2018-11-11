@@ -872,7 +872,7 @@ a compile_commands.json or .cquery file."
   :ensure t
   :defer t
   :config
-  (setq langtool-language-tool-jar "/usr/local/Cellar/languagetool/4.1/libexec/languagetool-commandline.jar"))
+  (setq langtool-language-tool-jar "/usr/local/Cellar/languagetool/4.3/libexec/languagetool-commandline.jar"))
 
 ;; Org-Mode
 
