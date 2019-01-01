@@ -1123,8 +1123,7 @@ I use flycheck for "on the fly" syntax checking.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package flycheck
     :ensure t
-    :defer t
-    :init (global-flycheck-mode))
+    :defer t)
 #+END_SRC
 
 Don't check documentation by default (good thing for small throwaway scripts).
