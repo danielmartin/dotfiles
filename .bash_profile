@@ -1,3 +1,6 @@
+# Custom Homebrew directory
+export HOMEBREW_HOME="/usr/local"
+
 # My GPG key
 export GPGKEY=19993523339747A9
 
@@ -5,17 +8,14 @@ export GPGKEY=19993523339747A9
 export JAVA_HOME="$(/usr/libexec/java_home -v 1.8)"
 
 # Android SDK
-export ANDROID_SDK_ROOT="/usr/local/share/android-sdk"
+export ANDROID_SDK_ROOT="$HOMEBREW_HOME/share/android-sdk"
 
 # Android NDK
-export ANDROID_NDK_HOME="/usr/local/share/android-ndk"
+export ANDROID_NDK_HOME="$HOMEBREW_HOME/share/android-ndk"
 
 # Use CCache for Android NDK
-export USE_CCACHE=1
-export NDK_CCACHE="/usr/local/bin/ccache"
-
-# Configuration path for Homebrewed LLVM
-export LLVM_PATH=/usr/local/opt/llvm/bin
+export USE_CCACHE=0
+export NDK_CCACHE="$HOMEBREW_HOME/bin/ccache"
 
 # LLVM source root
 export LLVM_SOURCE_ROOT=~/Projects/llvm/
@@ -26,8 +26,10 @@ export SWIFT_SOURCE_ROOT=~/Projects/swift-source/swift
 # Default Swift build dir
 export SWIFT_BUILD_DIR=~/Projects/swift-source/build/Ninja-RelWithDebInfoAssert+swift-DebugAssert/swift-macosx-x86_64/
 
+export SOURCEKIT_TOOLCHAIN_PATH=/Library/Developer/Toolchains/swift-DEVELOPMENT-SNAPSHOT-2018-12-07-a.xctoolchain
+
 # We want LLVM, Homebrew and the Android SDK in path.
-PATH="/usr/local/bin:${LLVM_PATH}:$ANDROID_SDK_ROOT/tools:${PATH}:${HOME}/go/bin"
+PATH="$SOURCEKIT_TOOLCHAIN_PATH/usr/bin:${PATH}:/usr/local/bin:$HOME/homebrew/sbin:$HOME/homebrew/bin:$ANDROID_SDK_ROOT/tools:$HOME/.cargo/bin"
 export PATH
 
 # We want to install Casks without root privileges.
@@ -55,10 +57,8 @@ alias lit='${LLVM_SOURCE_ROOT}/utils/lit/lit.py -sv --param swift_site_config=${
 alias litsimulator='${LLVM_SOURCE_ROOT}/utils/lit/lit.py -sv --param swift_site_config=${SWIFT_BUILD_DIR}/test-iphonesimulator-x86_64/lit.site.cfg'
 
 # ASDF configuration.
-source /usr/local/opt/asdf/asdf.sh
+source $HOMEBREW_HOME/opt/asdf/asdf.sh
 
 # PSPDFKit changelog management.
 alias cla='bundle exec pspdfkit changelog add'
 alias clg='bundle exec pspdfkit changelog generate'
-
-export PATH="$HOME/.cargo/bin:$PATH"
