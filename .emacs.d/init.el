@@ -96,9 +96,7 @@
 
 ;; Appearance and Themes
 
-;; I use a custom black theme by default, but I open the possibility to
-;; use another for a special purpose (excellent Org-Mode support, a
-;; presentation, etc.)
+;; Appearances and themes are loaded from their own file.
 
 
 (require 'appearance)
@@ -175,16 +173,6 @@
 
 
 
-;; I don't want some minor modes polluting my mode line. I use the
-;; diminish package to avoid that.
-
-
-(use-package diminish
-  :ensure t
-  :defer t)
-
-
-
 ;; Show the current time.
 
 
@@ -196,16 +184,84 @@
           display-time-24hr-format nil)
     (display-time-mode t)))
 
+
+
+;; Moody is a package to improve the appearance of the mode line:
+
+
+(use-package moody
+  :ensure t
+  :config
+  (setq x-underline-at-descent-line t)
+  (moody-replace-mode-line-buffer-identification)
+  (moody-replace-vc-mode))
+
+
+
+;; Minions is a package to reduce clutter in the mode line by reducing
+;; the number of minor modes that are shown:
+
+
+(use-package minions
+  :ensure t
+  :config (minions-mode 1))
+
 ;; Navigation Tree
 
-;; Show a project navigation tree using Neotree package.
+;; Treemacs is a tree layout file explorer for Emacs:
 
 
-(use-package neotree
+(use-package treemacs
   :ensure t
   :defer t
+  :init
   :config
-  (global-set-key [f8] 'neotree-toggle))
+  (progn
+    (setq treemacs-collapse-dirs              (if (executable-find "python") 3 0)
+          treemacs-file-event-delay           5000
+          treemacs-follow-after-init          t
+          treemacs-follow-recenter-distance   0.1
+          treemacs-goto-tag-strategy          'refetch-index
+          treemacs-indentation                2
+          treemacs-indentation-string         " "
+          treemacs-is-never-other-window      nil
+          treemacs-no-png-images              nil
+          treemacs-project-follow-cleanup     nil
+          treemacs-recenter-after-file-follow nil
+          treemacs-recenter-after-tag-follow  nil
+          treemacs-show-hidden-files          t
+          treemacs-silent-filewatch           nil
+          treemacs-silent-refresh             nil
+          treemacs-sorting                    'alphabetic-desc
+          treemacs-tag-follow-cleanup         t
+          treemacs-tag-follow-delay           1.5
+          treemacs-width                      35)
+
+    (treemacs-follow-mode t)
+    (treemacs-filewatch-mode t)
+    (pcase (cons (not (null (executable-find "git")))
+                 (not (null (executable-find "python3"))))
+      (`(t . t)
+       (treemacs-git-mode 'extended))
+      (`(t . _)
+       (treemacs-git-mode 'simple))))
+  :bind
+  (:map global-map
+        ("M-0"       . treemacs-select-window)
+        ("C-x t 1"   . treemacs-delete-other-windows)
+        ("C-x t t"   . treemacs)
+        ("C-x t B"   . treemacs-bookmark)
+        ("C-x t C-t" . treemacs-find-file)
+        ("C-x t M-t" . treemacs-find-tag)))
+
+
+
+;; Integrate Treemacs with Projectile:
+
+
+(use-package treemacs-projectile
+  :after treemacs projectile
+  :ensure t)
 
 ;; Pairs
 
@@ -313,13 +369,27 @@
 
 
 
-;; Use LSP with flycheck, company, and cquery as C++ client.
+;; Use LSP with company, and ccls as C++ client.
 
 
 (use-package lsp-mode
   :ensure t
-  :defer t
-  :load-path "~/.emacs.d/vendor/lsp-ui")
+  :bind
+  (:map c-mode-base-map
+        ("C-c C-d" . lsp-describe-thing-at-point))
+  :commands lsp
+  :config
+  (require 'lsp-clients)
+  (setq xref-prompt-for-identifier '(not xref-find-definitions
+                                       xref-find-definitions-other-window
+                                       xref-find-definitions-other-frame
+                                       xref-find-references)))
+
+(use-package lsp-sourcekit
+  :load-path "~/Projects/lsp-sourcekit"
+  :config
+  (setenv "SOURCEKIT_TOOLCHAIN_PATH" "/Library/Developer/Toolchains/swift-DEVELOPMENT-SNAPSHOT-2018-12-07-a.xctoolchain")
+  (setq lsp-sourcekit-executable (expand-file-name "~/Projects/sourcekit-lsp/build-Xcode/SourceKitLSP/Build/Products/Debug/sourcekit-lsp")))
 
 
 
@@ -329,63 +399,23 @@
 
 (use-package lsp-ui
   :ensure t
-  :load-path "~/.emacs.d/vendor/lsp-ui"
   :config
-  (with-eval-after-load 'lsp-mode
-    (add-hook 'lsp-after-open-hook (lambda () (lsp-ui-flycheck-enable t)))))
+  (setq lsp-ui-sideline-enable nil))
 
 (use-package company-lsp
   :ensure t
-  :after lsp-mode
-  :config
-  (add-to-list 'company-backends 'company-lsp))
+  :commands company-lsp)
 
 (use-package ccls
   :ensure t
-  :init
+  :hook ((c-mode c++-mode objc-mode) .
+         (lambda () (cl-pushnew #'company-lsp company-backends) (require 'ccls) (lsp)))
+  :config
+  (setq ccls-sem-highlight-method 'font-lock)
+  (add-hook 'lsp-after-open-hook #'ccls-code-lens-mode)
+  (ccls-use-default-rainbow-sem-highlight)
   (setq ccls-executable (expand-file-name "~/Projects/ccls/release/ccls"))
-  (setq ccls-extra-args '("--log-file=/tmp/cq.log")))
-
-(use-package cquery
-  :ensure t
-  :defer t
-  :load-path "~/.emacs.d/vendor/emacs-cquery"
-  :config
-  (setq cquery-executable (expand-file-name "~/cquery/bin/cquery"))
-  (setq cquery-additional-arguments '("--log-stdin-stdout-to-stderr")))
-
-
-
-;; Function to launch cquery whenever there's a compilation database in
-;; the C/C++ project I'm working on.
-
-
-(defun dm/enable-cquery-if-compile-commands-json ()
-    "Enables cquery (a C++ LSP server) if the current project has
-a compile_commands.json or .cquery file."
-    (interactive)
-    (when
-        (and (not (and (boundp 'lsp-mode) lsp-mode))
-             (or (locate-dominating-file default-directory "compile_commands.json")
-                 (locate-dominating-file default-directory ".cquery")))
-      (setq eldoc-idle-delay 0.2)
-      (lsp-cquery-enable)
-      (when (>= emacs-major-version 26)
-        (lsp-ui-doc-mode 1))))
-
-
-
-;; I want to integrate clang-tidy checks with flycheck:
-
-
-(use-package flycheck-clang-tidy
-  :ensure t
-  :defer t
-  :init
-  (eval-after-load 'flycheck
-    '(add-hook 'flycheck-mode-hook #'flycheck-clang-tidy-setup))
-  :config
-  (setq flycheck-c/c++-clang-tidy-executable "~/Projects/llvm/release/bin/clang-tidy"))
+  (setq ccls-args '("--log-file=/tmp/cq.log")))
 
 ;; Clojure
 
@@ -513,18 +543,6 @@ a compile_commands.json or .cquery file."
 
 
 
-;; Anaconda provides navigation documentation lookup and code completion
-;; for Python:
-
-
-(use-package lsp-python
-  :ensure t
-  :after python
-  :config
-  (add-hook 'python-mode-hook #'lsp-python-enable))
-
-
-
 ;; Format Python code according to PEP8:
 
 
@@ -580,8 +598,8 @@ a compile_commands.json or .cquery file."
   :defer t
   :mode ("\\.swift\\'" . swift-mode)
   :config
-  (setq flycheck-swift-sdk-path "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk")
-  (add-to-list 'flycheck-checkers 'swift))
+  (advice-add 'magit-which-function :filter-return
+              (lambda (s) (car (last (split-string s "\\."))))))
 
 ;; TableGen
 
@@ -602,9 +620,19 @@ a compile_commands.json or .cquery file."
   :ensure t
   :defer t
   :diminish company-mode
-  :config
+  :init
   (add-hook 'after-init-hook 'global-company-mode)
+  :config
   (setq company-backends (delete 'company-semantic company-backends)))
+
+;; Bazel
+
+;; Bazel is a build system created by Google:
+
+
+(use-package bazel-mode
+  :ensure t
+  :defer t)
 
 ;; CMake
 
@@ -693,6 +721,19 @@ a compile_commands.json or .cquery file."
 (use-package realgud
   :ensure t
   :defer t)
+
+
+
+;; I'm also exploring DAP (Debug Adapter Protocol). A protocol created by
+;; Microsoft, similar to LSP, to interact with debuggers:
+
+
+(use-package dap-mode
+  :ensure t
+  :defer t
+  :init
+  (dap-mode 1)
+  (dap-ui-mode 1))
 
 ;; Documentation
 
@@ -1011,63 +1052,6 @@ a compile_commands.json or .cquery file."
 
 (setq flycheck-checkers (--remove (eq it 'emacs-lisp-checkdoc) flycheck-checkers))
 
-;; Treemacs
-
-;; Treemacs is a tree layout file explorer for Emacs:
-
-
-(use-package treemacs
-  :ensure t
-  :defer t
-  :init
-  :config
-  (progn
-    (setq treemacs-collapse-dirs              (if (executable-find "python") 3 0)
-          treemacs-file-event-delay           5000
-          treemacs-follow-after-init          t
-          treemacs-follow-recenter-distance   0.1
-          treemacs-goto-tag-strategy          'refetch-index
-          treemacs-indentation                2
-          treemacs-indentation-string         " "
-          treemacs-is-never-other-window      nil
-          treemacs-no-png-images              nil
-          treemacs-project-follow-cleanup     nil
-          treemacs-recenter-after-file-follow nil
-          treemacs-recenter-after-tag-follow  nil
-          treemacs-show-hidden-files          t
-          treemacs-silent-filewatch           nil
-          treemacs-silent-refresh             nil
-          treemacs-sorting                    'alphabetic-desc
-          treemacs-tag-follow-cleanup         t
-          treemacs-tag-follow-delay           1.5
-          treemacs-width                      35)
-
-    (treemacs-follow-mode t)
-    (treemacs-filewatch-mode t)
-    (pcase (cons (not (null (executable-find "git")))
-                 (not (null (executable-find "python3"))))
-      (`(t . t)
-       (treemacs-git-mode 'extended))
-      (`(t . _)
-       (treemacs-git-mode 'simple))))
-  :bind
-  (:map global-map
-        ("M-0"       . treemacs-select-window)
-        ("C-x t 1"   . treemacs-delete-other-windows)
-        ("C-x t t"   . treemacs)
-        ("C-x t B"   . treemacs-bookmark)
-        ("C-x t C-t" . treemacs-find-file)
-        ("C-x t M-t" . treemacs-find-tag)))
-
-
-
-;; Integrate Treemacs with Projectile:
-
-
-(use-package treemacs-projectile
-  :after treemacs projectile
-  :ensure t)
-
 ;; Undo
 
 ;; For a more intuitive undo/redo management, I use undo-tree instead of
@@ -1082,13 +1066,6 @@ a compile_commands.json or .cquery file."
   :config
   (setq undo-tree-visualizer-timestamps t)
   (setq undo-tree-visualizer-diff t))
-
-;; Wordpress
-
-;; For editing a Wordpress blog, use org2blog.
-
-
-(require 'org2blog-config)
 
 ;; X.509
 
@@ -1114,7 +1091,3 @@ a compile_commands.json or .cquery file."
 (add-to-list 'load-path "~/.emacs.d/user-lisp/flycheck-pbxproj")
 (require 'flycheck-pbxproj)
 (flycheck-pbxproj-setup)
-
-(use-package bazel-mode
-  :ensure t
-  :defer t)

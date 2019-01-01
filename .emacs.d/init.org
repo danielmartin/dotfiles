@@ -111,9 +111,7 @@ that.
 
 *** Appearance and Themes
 
-I use a custom black theme by default, but I open the possibility to
-use another for a special purpose (excellent Org-Mode support, a
-presentation, etc.)
+Appearances and themes are loaded from their own file.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (require 'appearance)
@@ -190,15 +188,6 @@ Show column numbers in the mode line.
   (column-number-mode 1)
 #+END_SRC
 
-I don't want some minor modes polluting my mode line. I use the
-diminish package to avoid that.
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package diminish
-    :ensure t
-    :defer t)
-#+END_SRC
-
 Show the current time.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
@@ -211,16 +200,81 @@ Show the current time.
       (display-time-mode t)))
 #+END_SRC
 
-*** Navigation Tree
-
-Show a project navigation tree using Neotree package.
+Moody is a package to improve the appearance of the mode line:
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package neotree
+  (use-package moody
+    :ensure t
+    :config
+    (setq x-underline-at-descent-line t)
+    (moody-replace-mode-line-buffer-identification)
+    (moody-replace-vc-mode))
+#+END_SRC
+
+Minions is a package to reduce clutter in the mode line by reducing
+the number of minor modes that are shown:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+(use-package minions
+  :ensure t
+  :config (minions-mode 1))
+#+END_SRC
+
+*** Navigation Tree
+
+Treemacs is a tree layout file explorer for Emacs:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package treemacs
     :ensure t
     :defer t
+    :init
     :config
-    (global-set-key [f8] 'neotree-toggle))
+    (progn
+      (setq treemacs-collapse-dirs              (if (executable-find "python") 3 0)
+            treemacs-file-event-delay           5000
+            treemacs-follow-after-init          t
+            treemacs-follow-recenter-distance   0.1
+            treemacs-goto-tag-strategy          'refetch-index
+            treemacs-indentation                2
+            treemacs-indentation-string         " "
+            treemacs-is-never-other-window      nil
+            treemacs-no-png-images              nil
+            treemacs-project-follow-cleanup     nil
+            treemacs-recenter-after-file-follow nil
+            treemacs-recenter-after-tag-follow  nil
+            treemacs-show-hidden-files          t
+            treemacs-silent-filewatch           nil
+            treemacs-silent-refresh             nil
+            treemacs-sorting                    'alphabetic-desc
+            treemacs-tag-follow-cleanup         t
+            treemacs-tag-follow-delay           1.5
+            treemacs-width                      35)
+
+      (treemacs-follow-mode t)
+      (treemacs-filewatch-mode t)
+      (pcase (cons (not (null (executable-find "git")))
+                   (not (null (executable-find "python3"))))
+        (`(t . t)
+         (treemacs-git-mode 'extended))
+        (`(t . _)
+         (treemacs-git-mode 'simple))))
+    :bind
+    (:map global-map
+          ("M-0"       . treemacs-select-window)
+          ("C-x t 1"   . treemacs-delete-other-windows)
+          ("C-x t t"   . treemacs)
+          ("C-x t B"   . treemacs-bookmark)
+          ("C-x t C-t" . treemacs-find-file)
+          ("C-x t M-t" . treemacs-find-tag)))
+#+END_SRC
+
+Integrate Treemacs with Projectile:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package treemacs-projectile
+    :after treemacs projectile
+    :ensure t)
 #+END_SRC
 
 *** Pairs
@@ -331,82 +385,58 @@ for Objective-C++ files, use Objective-C mode.
   (add-to-list 'auto-mode-alist '("\\.mm$" . objc-mode))
 #+END_SRC
 
-Use LSP with flycheck, company, and cquery as C++ client.
+Use LSP with company, and ccls as C++ client.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-    (use-package lsp-mode
-      :ensure t
-      :defer t
-      :load-path "~/.emacs.d/vendor/lsp-ui")
+  (use-package lsp-mode
+    :ensure t
+    :bind
+    (:map c-mode-base-map
+          ("C-c C-d" . lsp-describe-thing-at-point))
+    :commands lsp
+    :config
+    (require 'lsp-clients)
+    (setq xref-prompt-for-identifier '(not xref-find-definitions
+                                         xref-find-definitions-other-window
+                                         xref-find-definitions-other-frame
+                                         xref-find-references)))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package lsp-sourcekit
+    :load-path "~/Projects/lsp-sourcekit"
+    :config
+    (setenv "SOURCEKIT_TOOLCHAIN_PATH" "/Library/Developer/Toolchains/swift-DEVELOPMENT-SNAPSHOT-2018-12-07-a.xctoolchain")
+    (setq lsp-sourcekit-executable (expand-file-name "~/Projects/sourcekit-lsp/build-Xcode/SourceKitLSP/Build/Products/Debug/sourcekit-lsp")))
 #+END_SRC
 
 LSP UI contains higher level UI modules for lsp-mode, like flycheck
 support or code lenses.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package lsp-ui
-    :ensure t
-    :load-path "~/.emacs.d/vendor/lsp-ui"
-    :config
-    (with-eval-after-load 'lsp-mode
-      (add-hook 'lsp-after-open-hook (lambda () (lsp-ui-flycheck-enable t)))))
+    (use-package lsp-ui
+      :ensure t
+      :config
+      (setq lsp-ui-sideline-enable nil))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package company-lsp
     :ensure t
-    :after lsp-mode
-    :config
-    (add-to-list 'company-backends 'company-lsp))
+    :commands company-lsp)
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package ccls
     :ensure t
-    :init
+    :hook ((c-mode c++-mode objc-mode) .
+           (lambda () (cl-pushnew #'company-lsp company-backends) (require 'ccls) (lsp)))
+    :config
+    (setq ccls-sem-highlight-method 'font-lock)
+    (add-hook 'lsp-after-open-hook #'ccls-code-lens-mode)
+    (ccls-use-default-rainbow-sem-highlight)
     (setq ccls-executable (expand-file-name "~/Projects/ccls/release/ccls"))
-    (setq ccls-extra-args '("--log-file=/tmp/cq.log")))
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package cquery
-    :ensure t
-    :defer t
-    :load-path "~/.emacs.d/vendor/emacs-cquery"
-    :config
-    (setq cquery-executable (expand-file-name "~/cquery/bin/cquery"))
-    (setq cquery-additional-arguments '("--log-stdin-stdout-to-stderr")))
-#+END_SRC
-
-Function to launch cquery whenever there's a compilation database in
-the C/C++ project I'm working on.
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-    (defun dm/enable-cquery-if-compile-commands-json ()
-      "Enables cquery (a C++ LSP server) if the current project has
-  a compile_commands.json or .cquery file."
-      (interactive)
-      (when
-          (and (not (and (boundp 'lsp-mode) lsp-mode))
-               (or (locate-dominating-file default-directory "compile_commands.json")
-                   (locate-dominating-file default-directory ".cquery")))
-        (setq eldoc-idle-delay 0.2)
-        (lsp-cquery-enable)
-        (when (>= emacs-major-version 26)
-          (lsp-ui-doc-mode 1))))
-#+END_SRC
-
-I want to integrate clang-tidy checks with flycheck:
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package flycheck-clang-tidy
-    :ensure t
-    :defer t
-    :init
-    (eval-after-load 'flycheck
-      '(add-hook 'flycheck-mode-hook #'flycheck-clang-tidy-setup))
-    :config
-    (setq flycheck-c/c++-clang-tidy-executable "~/Projects/llvm/release/bin/clang-tidy"))
+    (setq ccls-args '("--log-file=/tmp/cq.log")))
 #+END_SRC
 
 *** Clojure
@@ -543,17 +573,6 @@ There are several packages for writing Python code. I use python.
     :interpreter ("python" . python-mode))
 #+END_SRC
 
-Anaconda provides navigation documentation lookup and code completion
-for Python:
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package lsp-python
-    :ensure t
-    :after python
-    :config
-    (add-hook 'python-mode-hook #'lsp-python-enable))
-#+END_SRC
-
 Format Python code according to PEP8:
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
@@ -606,13 +625,13 @@ For linting Shell scripts, I integrate Shellcheck with Flycheck.
 I use swift-mode for Swift code.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package swift-mode
-    :ensure t
-    :defer t
-    :mode ("\\.swift\\'" . swift-mode)
-    :config
-    (setq flycheck-swift-sdk-path "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk")
-    (add-to-list 'flycheck-checkers 'swift))
+    (use-package swift-mode
+      :ensure t
+      :defer t
+      :mode ("\\.swift\\'" . swift-mode)
+      :config
+      (advice-add 'magit-which-function :filter-return
+                  (lambda (s) (car (last (split-string s "\\."))))))
 #+END_SRC
 
 *** TableGen
@@ -641,9 +660,20 @@ languages. I use company for that.
     :ensure t
     :defer t
     :diminish company-mode
-    :config
+    :init
     (add-hook 'after-init-hook 'global-company-mode)
+    :config
     (setq company-backends (delete 'company-semantic company-backends)))
+#+END_SRC
+
+*** Bazel
+
+Bazel is a build system created by Google:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package bazel-mode
+    :ensure t
+    :defer t)
 #+END_SRC
 
 *** CMake
@@ -737,11 +767,17 @@ languages.
     :defer t)
 #+END_SRC
 
-# #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-#   (add-to-list 'load-path "~/Projects/realgud-lldb/lldb/")
-#   (require 'realgud-lldb)
-# #+END_SRC
+I'm also exploring DAP (Debug Adapter Protocol). A protocol created by
+Microsoft, similar to LSP, to interact with debuggers:
 
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package dap-mode
+    :ensure t
+    :defer t
+    :init
+    (dap-mode 1)
+    (dap-ui-mode 1))
+#+END_SRC
 
 *** Documentation
 
@@ -1080,63 +1116,6 @@ Don't check documentation by default (good thing for small throwaway scripts).
   (setq flycheck-checkers (--remove (eq it 'emacs-lisp-checkdoc) flycheck-checkers))
 #+END_SRC
 
-*** Treemacs
-
-Treemacs is a tree layout file explorer for Emacs:
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package treemacs
-    :ensure t
-    :defer t
-    :init
-    :config
-    (progn
-      (setq treemacs-collapse-dirs              (if (executable-find "python") 3 0)
-            treemacs-file-event-delay           5000
-            treemacs-follow-after-init          t
-            treemacs-follow-recenter-distance   0.1
-            treemacs-goto-tag-strategy          'refetch-index
-            treemacs-indentation                2
-            treemacs-indentation-string         " "
-            treemacs-is-never-other-window      nil
-            treemacs-no-png-images              nil
-            treemacs-project-follow-cleanup     nil
-            treemacs-recenter-after-file-follow nil
-            treemacs-recenter-after-tag-follow  nil
-            treemacs-show-hidden-files          t
-            treemacs-silent-filewatch           nil
-            treemacs-silent-refresh             nil
-            treemacs-sorting                    'alphabetic-desc
-            treemacs-tag-follow-cleanup         t
-            treemacs-tag-follow-delay           1.5
-            treemacs-width                      35)
-
-      (treemacs-follow-mode t)
-      (treemacs-filewatch-mode t)
-      (pcase (cons (not (null (executable-find "git")))
-                   (not (null (executable-find "python3"))))
-        (`(t . t)
-         (treemacs-git-mode 'extended))
-        (`(t . _)
-         (treemacs-git-mode 'simple))))
-    :bind
-    (:map global-map
-          ("M-0"       . treemacs-select-window)
-          ("C-x t 1"   . treemacs-delete-other-windows)
-          ("C-x t t"   . treemacs)
-          ("C-x t B"   . treemacs-bookmark)
-          ("C-x t C-t" . treemacs-find-file)
-          ("C-x t M-t" . treemacs-find-tag)))
-#+END_SRC
-
-Integrate Treemacs with Projectile:
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package treemacs-projectile
-    :after treemacs projectile
-    :ensure t)
-#+END_SRC
-
 *** Undo
 
 For a more intuitive undo/redo management, I use undo-tree instead of
@@ -1153,13 +1132,6 @@ the default undo/redo system.
     (setq undo-tree-visualizer-diff t))
 #+END_SRC
 
-*** Wordpress
-
-For editing a Wordpress blog, use org2blog.
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (require 'org2blog-config)
-#+END_SRC
 *** X.509
 
 I've created a simple major mode that toggles between showing raw and
@@ -1184,10 +1156,4 @@ I've also added on-the-fly syntax checking capabilities.
   (add-to-list 'load-path "~/.emacs.d/user-lisp/flycheck-pbxproj")
   (require 'flycheck-pbxproj)
   (flycheck-pbxproj-setup)
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package bazel-mode
-    :ensure t
-    :defer t)
 #+END_SRC
