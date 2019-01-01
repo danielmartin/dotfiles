@@ -990,6 +990,14 @@ Smex is an enhancement for M-x.
   (setq projectile-completion-system 'ivy)
 #+END_SRC
 
+*** iOS Simulators
+
+For accessing iOS simulator folders, I've created a simple minor mode:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (require 'ios-simulator)
+#+END_SRC
+
 *** Natural Languages
 
 For checking spelling and grammar, I use an external Java tool: Language-tool.

@@ -929,6 +929,13 @@
 (require 'projectile)
 (setq projectile-completion-system 'ivy)
 
+;; iOS Simulators
+
+;; For accessing iOS simulator folders, I've created a simple minor mode:
+
+
+(require 'ios-simulator)
+
 ;; Natural Languages
 
 ;; For checking spelling and grammar, I use an external Java tool: Language-tool.
