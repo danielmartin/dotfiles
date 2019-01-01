@@ -204,7 +204,10 @@
 
 (use-package minions
   :ensure t
-  :config (minions-mode 1))
+  :config
+  (minions-mode 1)
+  :custom
+  (minions-direct '(flymake-mode) "I always want flymake-mode visible because it shows counts of errors/warnings."))
 
 ;; Navigation Tree
 

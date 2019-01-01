@@ -217,7 +217,10 @@ the number of minor modes that are shown:
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
 (use-package minions
   :ensure t
-  :config (minions-mode 1))
+  :config
+  (minions-mode 1)
+  :custom
+  (minions-direct '(flymake-mode) "I always want flymake-mode visible because it shows counts of errors/warnings."))
 #+END_SRC
 
 *** Navigation Tree
