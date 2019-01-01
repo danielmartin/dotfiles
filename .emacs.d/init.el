@@ -820,6 +820,14 @@
   :bind
   ("C-c g g" . browse-at-remote))
 
+;; Google Test
+
+;; For running Google Tests from a given buffer, I have created a simple
+;; minor mode (must be enabled manually):
+
+
+(require 'gtest-mode)
+
 ;; Helpful
 
 ;; Better help system.

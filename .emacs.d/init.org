@@ -874,6 +874,15 @@ This package browses target pages at GitHub/Bitbucket.
     ("C-c g g" . browse-at-remote))
 #+END_SRC
 
+*** Google Test
+
+For running Google Tests from a given buffer, I have created a simple
+minor mode (must be enabled manually):
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (require 'gtest-mode)
+#+END_SRC
+
 *** Helpful
 
 Better help system.
