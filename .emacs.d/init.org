@@ -1132,6 +1132,16 @@ Don't check documentation by default (good thing for small throwaway scripts).
   (setq flycheck-checkers (--remove (eq it 'emacs-lisp-checkdoc) flycheck-checkers))
 #+END_SRC
 
+Display Flymake error messages on the minibuffer:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package flymake-cursor
+    :ensure t
+    :load-path "~/.emacs.d/user-lisp/emacs-flymake-cursor"
+    :config
+    (flymake-cursor-mode))
+#+END_SRC
+
 *** Undo
 
 For a more intuitive undo/redo management, I use undo-tree instead of

@@ -1066,6 +1066,17 @@
 
 (setq flycheck-checkers (--remove (eq it 'emacs-lisp-checkdoc) flycheck-checkers))
 
+
+
+;; Display Flymake error messages on the minibuffer:
+
+
+(use-package flymake-cursor
+  :ensure t
+  :load-path "~/.emacs.d/user-lisp/emacs-flymake-cursor"
+  :config
+  (flymake-cursor-mode))
+
 ;; Undo
 
 ;; For a more intuitive undo/redo management, I use undo-tree instead of
