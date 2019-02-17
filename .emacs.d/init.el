@@ -82,6 +82,17 @@
 
 (require 'keybindings)
 
+;; Custom Keymaps
+
+;; Define my custom prefix keys:
+
+
+(eval-and-compile
+  (mapc #'(lambda (entry)
+            (define-prefix-command (cdr entry))
+            (bind-key (car entry) (cdr entry)))
+        '(("C-c w" . my-ctrl-c-w-map))))
+
 ;; Mac
 
 ;; On a Mac, I use the Command key as Meta.
