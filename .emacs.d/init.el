@@ -379,11 +379,15 @@
 
 (use-package lsp-mode
   :ensure t
+  :load-path "~/Projects/lsp-mode"
   :bind
   (:map c-mode-base-map
         ("C-c C-d" . lsp-describe-thing-at-point))
+  :hook ((js2-mode swift-mode) .
+         (lambda () (lsp)))
   :commands lsp
   :config
+  (setq lsp-prefer-flymake nil)
   (require 'lsp-clients)
   (setq xref-prompt-for-identifier '(not xref-find-definitions
                                        xref-find-definitions-other-window
@@ -414,13 +418,12 @@
 (use-package ccls
   :ensure t
   :hook ((c-mode c++-mode objc-mode) .
-         (lambda () (cl-pushnew #'company-lsp company-backends) (require 'ccls) (lsp)))
+         (lambda () (require 'ccls) (lsp)))
   :config
   (setq ccls-sem-highlight-method 'font-lock)
   (add-hook 'lsp-after-open-hook #'ccls-code-lens-mode)
-  (ccls-use-default-rainbow-sem-highlight)
-  (setq ccls-executable (expand-file-name "~/Projects/ccls/release/ccls"))
-  (setq ccls-args '("--log-file=/tmp/cq.log")))
+  ;;(ccls-use-default-rainbow-sem-highlight)
+  (setq ccls-executable (expand-file-name "~/Projects/ccls/release/ccls")))
 
 ;; Clojure
 
