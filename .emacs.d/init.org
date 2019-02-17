@@ -487,6 +487,13 @@ that do what you want.
     :defer t)
 #+END_SRC
 
+Debug macros is easier with macrostep:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package macrostep
+    :ensure t)
+#+END_SRC
+
 *** Haskell
 
 For Haskell I use haskell-mode.

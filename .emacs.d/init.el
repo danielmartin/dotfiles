@@ -452,6 +452,14 @@
   :ensure t
   :defer t)
 
+
+
+;; Debug macros is easier with macrostep:
+
+
+(use-package macrostep
+  :ensure t)
+
 ;; Haskell
 
 ;; For Haskell I use haskell-mode.
