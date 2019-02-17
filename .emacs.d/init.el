@@ -643,6 +643,15 @@
   :ensure t
   :mode ("CMakeLists.txt" "\\.cmake\\'"))
 
+
+
+;; Enable type-aware highlighting support for CMake files:
+
+
+(use-package cmake-font-lock
+  :ensure t
+  :hook (cmake-mode . cmake-font-lock-activate))
+
 ;; Code Formatting
 
 ;; Code formatting tools make smarter decisions than typical Emacs

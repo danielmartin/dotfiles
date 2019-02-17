@@ -697,6 +697,13 @@ CMake is a meta-build system that is commonly used in C++ projects.
     :ensure t
     :mode ("CMakeLists.txt" "\\.cmake\\'"))
 #+END_SRC
+
+Enable type-aware highlighting support for CMake files:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package cmake-font-lock
+    :ensure t
+    :hook (cmake-mode . cmake-font-lock-activate))
 #+END_SRC
 
 *** Code Formatting
