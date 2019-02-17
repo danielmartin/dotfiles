@@ -180,16 +180,10 @@ Recentf is a mode for displaying recently open files.
 
 *** Line Numbers
 
-I use linum mode, but only for programming modes.
+I use display-line-numbers, but only for programming modes.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (add-hook 'prog-mode-hook 'linum-mode)
-#+END_SRC
-
-Format linum-mode output by appending a space at the end.
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (setq linum-format "%d ")
+  (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 #+END_SRC
 
 I also highlight the current line, only for programming modes.

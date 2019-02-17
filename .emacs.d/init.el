@@ -162,17 +162,17 @@
 
 ;; Line Numbers
 
-;; I use linum mode, but only for programming modes.
+;; I use display-line-numbers, but only for programming modes.
 
 
-(add-hook 'prog-mode-hook 'linum-mode)
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
 
 
 
-;; Format linum-mode output by appending a space at the end.
+;; I also highlight the current line, only for programming modes.
 
 
-(setq linum-format "%d ")
+(add-hook 'prog-mode-hook 'hl-line-mode)
 
 
 
