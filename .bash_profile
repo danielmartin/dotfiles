@@ -18,7 +18,7 @@ export USE_CCACHE=0
 export NDK_CCACHE="$HOMEBREW_HOME/bin/ccache"
 
 # LLVM source root
-export LLVM_SOURCE_ROOT=~/Projects/llvm/
+export LLVM_SOURCE_ROOT=~/Projects/llvm-project/llvm/
 
 # Swift source root
 export SWIFT_SOURCE_ROOT=~/Projects/swift-source/swift
