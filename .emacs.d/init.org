@@ -194,6 +194,15 @@ I also highlight the current line, only for programming modes.
 
 *** Mode Line
 
+
+Doom-modeline:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package doom-modeline
+        :ensure t
+        :hook (after-init . doom-modeline-mode))
+#+END_SRC
+
 Show in which function or method the point is.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
@@ -248,8 +257,7 @@ Treemacs is a tree layout file explorer for Emacs:
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package treemacs
     :ensure t
-    :defer t
-    :init
+    :commands treemacs
     :config
     (progn
       (setq treemacs-collapse-dirs              (if (executable-find "python") 3 0)
@@ -294,8 +302,8 @@ Integrate Treemacs with Projectile:
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package treemacs-projectile
-    :after treemacs projectile
-    :ensure t)
+    :ensure t
+    :after treemacs projectile)
 #+END_SRC
 
 *** Pairs
@@ -303,20 +311,8 @@ Integrate Treemacs with Projectile:
 To ease working with pairs, I use the smartparens package.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package smartparens
-    :ensure t
-    :defer t)
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package smartparens-config
-    :ensure smartparens
-    :defer t
-    :config
-    (progn
-      (show-smartparens-global-mode t))
-      (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
-      (add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode))
+    :commands smartparens-mode)
 #+END_SRC
 
 Highlight parentheses pairs.
@@ -337,10 +333,8 @@ parentheses, brackets or braces according to their depth
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package rainbow-delimiters
     :ensure t
-    :defer t
-    :init
-    (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
-    (add-hook 'ielm-mode-hook #'rainbow-delimiters-mode)
+    :hook ((emacs-lisp-mode . rainbow-delimiters-mode)
+           (ielm-mode . rainbow-delimiters-mode))
     :config
     (set-face-foreground 'rainbow-delimiters-depth-1-face "snow4")
     (setf rainbow-delimiters-max-face-count 1)
@@ -475,8 +469,8 @@ Cider is the "de facto" package for working on Clojure projects.
 Djinni is a IDL by Dropbox that helps generating interface code in C++/Objective-C++/Java.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (add-to-list 'load-path "~/Projects/PSPDFKit/core/tools/")
-  (require 'djinni-mode)
+  (use-package djinni-mode
+    :load-path "~/Projects/djinni-mode")
 #+END_SRC
 
 *** Emacs Lisp
@@ -507,8 +501,14 @@ Use js2-mode for JavaScript.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package js2-mode
     :ensure t
-    :defer t
-    :mode ("\\.js\\'" . js2-mode))
+    :mode ("\\.js\\'" . js2-mode)
+    :config
+    (setq js2-mode-show-parse-errors nil
+          js2-mode-show-strict-warnings nil)
+    ;; Use ESLint instead of JSHint.
+    (add-to-list 'flycheck-disabled-checkers #'javascript-jshint)
+    (flycheck-add-mode 'javascript-eslint 'js2-mode)
+)
 #+END_SRC
 
 *** Kotlin
@@ -518,7 +518,6 @@ Use kotlin-mode for Kotlin development.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package kotlin-mode
     :ensure t
-    :defer t
     :mode ("\\.kt\\'" . kotlin-mode))
 #+END_SRC
 
@@ -528,11 +527,9 @@ Use Auctex with tex-site for an excellent LaTeX environment. Also,
 enable RefTeX mode whenever a LaTeX document is open.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package tex-site
-    :ensure auctex
-    :defer t
-    :config
-    (add-hook 'LaTeX-mode-hook 'turn-on-reftex))
+    (use-package tex-site
+      :ensure auctex
+      :hook ('LaTeX-mode . turn-on-reftex))
 #+END_SRC
 
 *** Markdown
@@ -542,8 +539,10 @@ I use markdown-mode to work on Markdown (.md) documents.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package markdown-mode
     :ensure t
-    :defer t
-    :mode ("\\.\\(m\\(ark\\)?down\\|md\\)$" . markdown-mode))
+    :mode (("\\`README\\.md\\'" . gfm-mode)
+           ("\\.md\\'"          . markdown-mode)
+           ("\\.markdown\\'"    . markdown-mode))
+    :init (setq markdown-command "multimarkdown"))
 #+END_SRC
 
 I want to fontify code blocks in Markdown:
@@ -555,12 +554,11 @@ I want to fontify code blocks in Markdown:
 *** PHP
 
 Emacs does not come with a mode for editing PHP mode. Just use
-php-mode form the package repository.
+php-mode from the package repository.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package php-mode
     :ensure t
-    :defer t
     :mode ("\\.php\\'" . php-mode))
 #+END_SRC
 
@@ -589,7 +587,6 @@ There are several packages for writing Python code. I use python.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package python
     :ensure t
-    :defer t
     :mode ("\\.py\\'" . python-mode)
     :interpreter ("python" . python-mode))
 #+END_SRC
@@ -617,20 +614,18 @@ Use rust-mode for editing Rust code:
     :defer t)
 #+END_SRC
 
-For code completion and navigation use Racer:
+For code completion and navigation use Racer (TODO: Move to lsp-mode):
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package racer
     :ensure t
     :after rust-mode
+    :hook ((rust-mode . racer-mode)
+           (racer-mode . eldoc-mode)
+           (racer-mode . company-mode))
     :config
-    (add-hook 'rust-mode-hook #'racer-mode)
-    (add-hook 'racer-mode-hook #'eldoc-mode)
-    (add-hook 'racer-mode-hook #'company-mode)
-    (require 'rust-mode)
     (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
-    (setq company-tooltip-align-annotations t)
-    :after rust-mode)
+    (setq company-tooltip-align-annotations t))
 #+END_SRC
 
 *** Shell
@@ -646,13 +641,12 @@ For linting Shell scripts, I integrate Shellcheck with Flycheck.
 I use swift-mode for Swift code.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-    (use-package swift-mode
-      :ensure t
-      :defer t
-      :mode ("\\.swift\\'" . swift-mode)
-      :config
-      (advice-add 'magit-which-function :filter-return
-                  (lambda (s) (car (last (split-string s "\\."))))))
+  (use-package swift-mode
+    :ensure t
+    :mode ("\\.swift\\'" . swift-mode)
+    :config
+    (advice-add 'magit-which-function :filter-return
+                (lambda (s) (car (last (split-string s "\\."))))))
 #+END_SRC
 
 *** TableGen
@@ -679,10 +673,7 @@ languages. I use company for that.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package company
     :ensure t
-    :defer t
-    :diminish company-mode
-    :init
-    (add-hook 'after-init-hook 'global-company-mode)
+    :hook (after-init . global-company-mode)
     :config
     (setq company-backends (delete 'company-semantic company-backends)))
 #+END_SRC
@@ -704,7 +695,8 @@ CMake is a meta-build system that is commonly used in C++ projects.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package cmake-mode
     :ensure t
-    :defer t)
+    :mode ("CMakeLists.txt" "\\.cmake\\'"))
+#+END_SRC
 #+END_SRC
 
 *** Code Formatting
@@ -730,9 +722,7 @@ project.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package sourcetrail
     :ensure t
-    :defer t
-    :bind
-    ("C-c s" . sourcetrail-send-location))
+    :bind ("C-c s" . sourcetrail-send-location))
 #+END_SRC
 
 For quick navigation inside a source file, I use ace-jump-mode.
@@ -740,9 +730,7 @@ For quick navigation inside a source file, I use ace-jump-mode.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package ace-jump-mode
     :ensure t
-    :defer t
-    :init
-    (global-set-key (kbd "C-c SPC") 'ace-jump-mode))
+    :bind ("C-c SPC" . ace-jump-mode))
 #+END_SRC
 
 Typically, I want to navigate quickly over the instances of a
@@ -771,7 +759,8 @@ Use expand-region to increase the selected region by semantic units.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package expand-region
     :ensure t
-    :defer t
+    :bind ("C-=" . er/expand-region))
+#+END_SRC
     :init
     (global-set-key (kbd "C-=") 'er/expand-region))
 #+END_SRC
@@ -785,7 +774,7 @@ languages.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package realgud
     :ensure t
-    :defer t)
+    :disabled t)
 #+END_SRC
 
 I'm also exploring DAP (Debug Adapter Protocol). A protocol created by
@@ -821,7 +810,6 @@ dash-at-point only works for C++ files.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package dash-at-point
     :ensure t
-    :defer t
     :config
     (add-to-list 'dash-at-point-mode-alist '(c++-mode . "cpp"))
     :bind
@@ -890,7 +878,6 @@ This package browses target pages at GitHub/Bitbucket.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package browse-at-remote
     :ensure t
-    :defer t
     :bind
     ("C-c g g" . browse-at-remote))
 #+END_SRC
@@ -928,9 +915,7 @@ Blimp is a great wrapper for ImageMagick:
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package blimp
     :ensure t
-    :defer t
-    :init
-    (add-hook 'image-minor-mode-hook 'blimp-mode))
+    :hook (image-minor-mode . blimp-mode))
 #+END_SRC
 
 *** Ivy
@@ -964,7 +949,6 @@ Smex is an enhancement for M-x.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package ivy
     :ensure t
-    :diminish ""
     :config
     (ivy-mode 1)
 
@@ -1024,11 +1008,11 @@ For accessing iOS simulator folders, I've created a simple minor mode:
 For checking spelling and grammar, I use an external Java tool: Language-tool.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package langtool
-    :ensure t
-    :defer t
-    :config
-    (setq langtool-language-tool-jar "/usr/local/Cellar/languagetool/4.3/libexec/languagetool-commandline.jar"))
+    (use-package langtool
+      :ensure t
+      :commands langtool-check-buffer
+      :config
+      (setq langtool-language-tool-jar "/usr/local/Cellar/languagetool/4.3/libexec/languagetool-commandline.jar"))
 #+END_SRC
 
 *** Org-Mode
@@ -1079,7 +1063,6 @@ way to define one. I use Projectile to work on projects.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package projectile
     :ensure t
-    :defer t
     :config
     (projectile-global-mode)
     :bind (:map projectile-mode-map
@@ -1114,7 +1097,6 @@ ripgrep. Very fast.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package deadgrep
     :ensure t
-    :defer t
     :bind ("<f5>" . deadgrep))
 #+END_SRC
 
@@ -1126,7 +1108,6 @@ I use yasnippet for managing text snippets.
   (use-package yasnippet
     :ensure t
     :defer t
-    :diminish yas-minor-mode
     :init (yas-global-mode 1))
 #+END_SRC
 
@@ -1185,7 +1166,7 @@ I've created a simple major mode that toggles between showing raw and
 detailed information about a X.509 certificate.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (require 'x509-certificate-mode)
+  (use-package x509-certificate-mode)
 #+END_SRC
 
 *** Xcode Projects
@@ -1193,14 +1174,15 @@ detailed information about a X.509 certificate.
 I've created a package for working on Xcode projects.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (add-to-list 'load-path "~/.emacs.d/user-lisp/pbxproj-mode")
-  (require 'pbxproj-mode)
+  (use-package pbxproj-mode
+    :load-path "~/.emacs.d/user-lisp/pbxproj-mode")
 #+END_SRC
 
 I've also added on-the-fly syntax checking capabilities.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (add-to-list 'load-path "~/.emacs.d/user-lisp/flycheck-pbxproj")
-  (require 'flycheck-pbxproj)
-  (flycheck-pbxproj-setup)
+  (use-package flycheck-pbxproj
+    :load-path "~/.emacs.d/user-lisp/flycheck-pbxproj"
+    :config
+    (flycheck-pbxproj-setup))
 #+END_SRC

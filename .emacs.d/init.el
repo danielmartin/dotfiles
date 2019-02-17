@@ -174,14 +174,17 @@
 
 (add-hook 'prog-mode-hook 'hl-line-mode)
 
-
-
-;; I also highlight the current line, only for programming modes.
-
-
-(add-hook 'prog-mode-hook 'hl-line-mode)
-
 ;; Mode Line
+
+
+;; Doom-modeline:
+
+
+(use-package doom-modeline
+      :ensure t
+      :hook (after-init . doom-modeline-mode))
+
+
 
 ;; Show in which function or method the point is.
 
@@ -240,8 +243,7 @@
 
 (use-package treemacs
   :ensure t
-  :defer t
-  :init
+  :commands treemacs
   :config
   (progn
     (setq treemacs-collapse-dirs              (if (executable-find "python") 3 0)
@@ -287,26 +289,16 @@
 
 
 (use-package treemacs-projectile
-  :after treemacs projectile
-  :ensure t)
+  :ensure t
+  :after treemacs projectile)
 
 ;; Pairs
 
 ;; To ease working with pairs, I use the smartparens package.
 
 
-(use-package smartparens
-  :ensure t
-  :defer t)
-
 (use-package smartparens-config
-  :ensure smartparens
-  :defer t
-  :config
-  (progn
-    (show-smartparens-global-mode t))
-    (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
-    (add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode))
+  :commands smartparens-mode)
 
 
 
@@ -330,10 +322,8 @@
 
 (use-package rainbow-delimiters
   :ensure t
-  :defer t
-  :init
-  (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
-  (add-hook 'ielm-mode-hook #'rainbow-delimiters-mode)
+  :hook ((emacs-lisp-mode . rainbow-delimiters-mode)
+         (ielm-mode . rainbow-delimiters-mode))
   :config
   (set-face-foreground 'rainbow-delimiters-depth-1-face "snow4")
   (setf rainbow-delimiters-max-face-count 1)
@@ -458,8 +448,8 @@
 ;; Djinni is a IDL by Dropbox that helps generating interface code in C++/Objective-C++/Java.
 
 
-(add-to-list 'load-path "~/Projects/PSPDFKit/core/tools/")
-(require 'djinni-mode)
+(use-package djinni-mode
+  :load-path "~/Projects/djinni-mode")
 
 ;; Emacs Lisp
 
@@ -486,6 +476,17 @@
 
 
 (use-package js2-mode
+    :ensure t
+    :mode ("\\.js\\'" . js2-mode)
+    :config
+    (setq js2-mode-show-parse-errors nil
+          js2-mode-show-strict-warnings nil)
+    ;; Use ESLint instead of JSHint.
+    (add-to-list 'flycheck-disabled-checkers #'javascript-jshint)
+    (flycheck-add-mode 'javascript-eslint 'js2-mode)
+)
+
+
   :ensure t
   :defer t
   :mode ("\\.js\\'" . js2-mode))
@@ -497,7 +498,6 @@
 
 (use-package kotlin-mode
   :ensure t
-  :defer t
   :mode ("\\.kt\\'" . kotlin-mode))
 
 ;; LaTeX
@@ -508,9 +508,7 @@
 
 (use-package tex-site
   :ensure auctex
-  :defer t
-  :config
-  (add-hook 'LaTeX-mode-hook 'turn-on-reftex))
+  :hook ('LaTeX-mode . turn-on-reftex))
 
 ;; Markdown
 
@@ -519,8 +517,10 @@
 
 (use-package markdown-mode
   :ensure t
-  :defer t
-  :mode ("\\.\\(m\\(ark\\)?down\\|md\\)$" . markdown-mode))
+  :mode (("\\`README\\.md\\'" . gfm-mode)
+         ("\\.md\\'"          . markdown-mode)
+         ("\\.markdown\\'"    . markdown-mode))
+  :init (setq markdown-command "multimarkdown"))
 
 
 
@@ -532,12 +532,11 @@
 ;; PHP
 
 ;; Emacs does not come with a mode for editing PHP mode. Just use
-;; php-mode form the package repository.
+;; php-mode from the package repository.
 
 
 (use-package php-mode
   :ensure t
-  :defer t
   :mode ("\\.php\\'" . php-mode))
 
 ;; Proselint
@@ -564,7 +563,6 @@
 
 (use-package python
   :ensure t
-  :defer t
   :mode ("\\.py\\'" . python-mode)
   :interpreter ("python" . python-mode))
 
@@ -593,27 +591,18 @@
 
 
 
-;; For code completion and navigation use Racer:
+;; For code completion and navigation use Racer (TODO: Move to lsp-mode):
 
 
 (use-package racer
   :ensure t
   :after rust-mode
+  :hook ((rust-mode . racer-mode)
+         (racer-mode . eldoc-mode)
+         (racer-mode . company-mode))
   :config
-  (add-hook 'rust-mode-hook #'racer-mode)
-  (add-hook 'racer-mode-hook #'eldoc-mode)
-  (add-hook 'racer-mode-hook #'company-mode)
-  (require 'rust-mode)
   (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
-  (setq company-tooltip-align-annotations t)
-  :after rust-mode)
-
-;; Shell
-
-;; For linting Shell scripts, I integrate Shellcheck with Flycheck.
-
-
-(add-hook 'sh-mode-hook 'flycheck-mode)
+  (setq company-tooltip-align-annotations t))
 
 ;; Swift
 
@@ -622,7 +611,6 @@
 
 (use-package swift-mode
   :ensure t
-  :defer t
   :mode ("\\.swift\\'" . swift-mode)
   :config
   (advice-add 'magit-which-function :filter-return
@@ -645,10 +633,7 @@
 
 (use-package company
   :ensure t
-  :defer t
-  :diminish company-mode
-  :init
-  (add-hook 'after-init-hook 'global-company-mode)
+  :hook (after-init . global-company-mode)
   :config
   (setq company-backends (delete 'company-semantic company-backends)))
 
@@ -668,7 +653,7 @@
 
 (use-package cmake-mode
   :ensure t
-  :defer t)
+  :mode ("CMakeLists.txt" "\\.cmake\\'"))
 
 ;; Code Formatting
 
@@ -692,9 +677,7 @@
 
 (use-package sourcetrail
   :ensure t
-  :defer t
-  :bind
-  ("C-c s" . sourcetrail-send-location))
+  :bind ("C-c s" . sourcetrail-send-location))
 
 
 
@@ -703,9 +686,7 @@
 
 (use-package ace-jump-mode
   :ensure t
-  :defer t
-  :init
-  (global-set-key (kbd "C-c SPC") 'ace-jump-mode))
+  :bind ("C-c SPC" . ace-jump-mode))
 
 
 
@@ -734,7 +715,7 @@
 
 (use-package expand-region
   :ensure t
-  :defer t
+  :bind ("C-=" . er/expand-region))
   :init
   (global-set-key (kbd "C-=") 'er/expand-region))
 
@@ -747,7 +728,7 @@
 
 (use-package realgud
   :ensure t
-  :defer t)
+  :disabled t)
 
 
 
@@ -784,7 +765,6 @@
 
 (use-package dash-at-point
   :ensure t
-  :defer t
   :config
   (add-to-list 'dash-at-point-mode-alist '(c++-mode . "cpp"))
   :bind
@@ -843,7 +823,6 @@
 
 (use-package browse-at-remote
   :ensure t
-  :defer t
   :bind
   ("C-c g g" . browse-at-remote))
 
@@ -862,7 +841,6 @@
 
 (use-package helpful
   :ensure t
-  :defer t
   :bind
   (
    ("C-h f" . helpful-callable)
@@ -878,9 +856,7 @@
 
 (use-package blimp
   :ensure t
-  :defer t
-  :init
-  (add-hook 'image-minor-mode-hook 'blimp-mode))
+  :hook (image-minor-mode . blimp-mode))
 
 ;; Ivy
 
@@ -897,7 +873,14 @@
   :ensure t
   :after counsel
   :init
-  (counsel-projectile-mode))
+  (counsel-projectile-mode)
+  :config
+  (setq counsel-find-file-ignore-regexp
+      (concat
+       ;; File names beginning with # or .
+       "\\(?:\\`[#.]\\)"
+       ;; File names ending with # or ~
+       "\\|\\(?:\\`.+?[#~]\\'\\)")))
 
 
 
@@ -910,7 +893,6 @@
 
 (use-package ivy
   :ensure t
-  :diminish ""
   :config
   (ivy-mode 1)
 
@@ -970,7 +952,7 @@
 
 (use-package langtool
   :ensure t
-  :defer t
+  :commands langtool-check-buffer
   :config
   (setq langtool-language-tool-jar "/usr/local/Cellar/languagetool/4.3/libexec/languagetool-commandline.jar"))
 
@@ -1002,9 +984,10 @@
 ;; pdf-linter will "lint" a PDF document using PDFBox Preflight app.
 
 
-(add-to-list 'load-path "~/.emacs.d/user-lisp/pdf-linter")
-(require 'pdf-linter)
-(setq pdf-linter-jar "$HOME/PDFBox/preflight-app-2.0.12.jar")
+(use-package pdf-linter
+  :load-path "~/.emacs.d/user-lisp/pdf-linter"
+  :config
+  (setq pdf-linter-jar "$HOME/PDFBox/preflight-app-2.0.12.jar"))
 
 
 
@@ -1023,7 +1006,6 @@
 
 (use-package projectile
   :ensure t
-  :defer t
   :config
   (projectile-global-mode)
   :bind (:map projectile-mode-map
@@ -1055,7 +1037,6 @@
 
 (use-package deadgrep
   :ensure t
-  :defer t
   :bind ("<f5>" . deadgrep))
 
 ;; Snippets and Abbreviations
@@ -1066,7 +1047,6 @@
 (use-package yasnippet
   :ensure t
   :defer t
-  :diminish yas-minor-mode
   :init (yas-global-mode 1))
 
 
@@ -1125,21 +1105,22 @@
 ;; detailed information about a X.509 certificate.
 
 
-(require 'x509-certificate-mode)
+(use-package x509-certificate-mode)
 
 ;; Xcode Projects
 
 ;; I've created a package for working on Xcode projects.
 
 
-(add-to-list 'load-path "~/.emacs.d/user-lisp/pbxproj-mode")
-(require 'pbxproj-mode)
+(use-package pbxproj-mode
+  :load-path "~/.emacs.d/user-lisp/pbxproj-mode")
 
 
 
 ;; I've also added on-the-fly syntax checking capabilities.
 
 
-(add-to-list 'load-path "~/.emacs.d/user-lisp/flycheck-pbxproj")
-(require 'flycheck-pbxproj)
-(flycheck-pbxproj-setup)
+(use-package flycheck-pbxproj
+  :load-path "~/.emacs.d/user-lisp/flycheck-pbxproj"
+  :config
+  (flycheck-pbxproj-setup))
