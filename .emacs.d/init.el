@@ -50,6 +50,19 @@
 
 ;; General Customizations
 
+;; Make sure we can debug init errors more easily:
+
+
+(if init-file-debug
+    (setq use-package-verbose t
+          use-package-expand-minimally nil
+          use-package-compute-statistics t
+          debug-on-error t)
+  (setq use-package-verbose nil
+        use-package-expand-minimally t))
+
+
+
 ;; Start Emacs fully maximized:
 
 

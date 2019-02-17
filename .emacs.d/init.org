@@ -66,6 +66,18 @@ Add an environment variable required by the PDF Tools package:
 
 ** General Customizations
 
+Make sure we can debug init errors more easily:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (if init-file-debug
+      (setq use-package-verbose t
+            use-package-expand-minimally nil
+            use-package-compute-statistics t
+            debug-on-error t)
+    (setq use-package-verbose nil
+          use-package-expand-minimally t))
+#+END_SRC
+
 Start Emacs fully maximized:
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
