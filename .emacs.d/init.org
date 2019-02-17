@@ -854,19 +854,6 @@ Magit is the best Git porcelain I've ever used.
     (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
 #+END_SRC
 
-**** MagitHub
-
-MagitHub extends Magit with functions to work on GitHub repositories
-(show open issues, PRs, etc.).
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package magithub
-    :after magit
-    :ensure t
-    :config
-    (magithub-feature-autoinject t))
-#+END_SRC
-
 **** Git TimeMachine
 
 git-timemachine is a package that intuitively shows previous versions
@@ -899,6 +886,16 @@ This package browses target pages at GitHub/Bitbucket.
     ("C-c g g" . browse-at-remote))
 #+END_SRC
 
+**** Forge
+
+Forge is a package similar to Magithub:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package forge
+    :ensure t
+    :after magit)
+#+END_SRC
+
 *** Google Test
 
 For running Google Tests from a given buffer, I have created a simple
@@ -915,7 +912,6 @@ Better help system.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package helpful
     :ensure t
-    :defer t
     :bind
     (
      ("C-h f" . helpful-callable)

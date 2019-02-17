@@ -793,18 +793,6 @@
                           'magit-insert-unpulled-from-upstream)
   (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
 
-;; MagitHub
-
-;; MagitHub extends Magit with functions to work on GitHub repositories
-;; (show open issues, PRs, etc.).
-
-
-(use-package magithub
-  :after magit
-  :ensure t
-  :config
-  (magithub-feature-autoinject t))
-
 ;; Git TimeMachine
 
 ;; git-timemachine is a package that intuitively shows previous versions
@@ -833,6 +821,15 @@
   :ensure t
   :bind
   ("C-c g g" . browse-at-remote))
+
+;; Forge
+
+;; Forge is a package similar to Magithub:
+
+
+(use-package forge
+  :ensure t
+  :after magit)
 
 ;; Google Test
 
