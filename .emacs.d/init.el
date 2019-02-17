@@ -213,18 +213,6 @@
 
 
 
-;; Moody is a package to improve the appearance of the mode line:
-
-
-(use-package moody
-  :ensure t
-  :config
-  (setq x-underline-at-descent-line t)
-  (moody-replace-mode-line-buffer-identification)
-  (moody-replace-vc-mode))
-
-
-
 ;; Minions is a package to reduce clutter in the mode line by reducing
 ;; the number of minor modes that are shown:
 
@@ -234,7 +222,7 @@
   :config
   (minions-mode 1)
   :custom
-  (minions-direct '(flymake-mode) "I always want flymake-mode visible because it shows counts of errors/warnings."))
+  (minions-direct '(flymake-mode flycheck-mode lsp-mode) "I always want syntax checking and LSP status visible."))
 
 ;; Navigation Tree
 
