@@ -634,8 +634,8 @@
 ;; generate code automatically.
 
 
-(add-to-list 'load-path "~/Projects/llvm/utils/emacs")
-(require 'tablegen-mode)
+(use-package tablegen-mode
+  :load-path "~/Projects/llvm-project/llvm/utils/emacs")
 
 ;; Autocompletion
 

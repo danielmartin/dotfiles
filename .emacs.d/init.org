@@ -661,8 +661,8 @@ TableGen is an abstract IDL used by LLVM and related projects to
 generate code automatically.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (add-to-list 'load-path "~/Projects/llvm/utils/emacs")
-  (require 'tablegen-mode)
+  (use-package tablegen-mode
+    :load-path "~/Projects/llvm-project/llvm/utils/emacs")
 #+END_SRC
 
 ** General Productivity Packages
