@@ -63,11 +63,14 @@
     ;; or for treemacs users
     (doom-themes-treemacs-config)
     ;; Corrects (and improves) org-mode's native fontification.
-    (doom-themes-org-config)))
+   (doom-themes-org-config)))
 
-(use-default-theme)
+;;(use-default-theme)
 ;; (use-solarized-theme)
-;; (use-doom-theme)
+(use-doom-theme)
+;; (require 'midnight)
+;; (load-theme 'midnight)
+
 
 ;; Ditch the splash screen
 (setq inhibit-splash-screen t)
