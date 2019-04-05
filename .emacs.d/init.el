@@ -22,14 +22,14 @@
 
 ;; Package Management
 
-;; I use ELPA packages, mainly from the MELPA repository:
+;; Load package.el:
 
 
 (require 'package)
 (setq package-archives
       '(("gnu" . "https://elpa.gnu.org/packages/")
         ("melpa" . "https://melpa.org/packages/")
-        ("org" . "http://orgmode.org/elpa/")))
+        ("org" . "http://orgmode.org/elpa")))
 (package-initialize)
 
 
@@ -40,6 +40,9 @@
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
+
+(eval-when-compile
+  (require 'use-package))
 
 
 
@@ -176,20 +179,13 @@
 
 ;; Mode Line
 
-
-;; Doom-modeline:
-
-
-(use-package doom-modeline
-      :ensure t
-      :hook (after-init . doom-modeline-mode))
-
-
-
 ;; Show in which function or method the point is.
 
+;; Disabled for now until this problem with swift-mode is fixed:
+;; https://github.com/swift-emacs/swift-mode/issues/157
 
-(which-function-mode 1)
+
+(which-function-mode 0)
 
 
 
@@ -204,25 +200,13 @@
 
 
 (use-package time
+  :ensure t
   :config
   (progn
     (setf display-time-default-load-average nil
           display-time-use-mail-icon t
           display-time-24hr-format nil)
     (display-time-mode t)))
-
-
-
-;; Minions is a package to reduce clutter in the mode line by reducing
-;; the number of minor modes that are shown:
-
-
-(use-package minions
-  :ensure t
-  :config
-  (minions-mode 1)
-  :custom
-  (minions-direct '(flymake-mode flycheck-mode lsp-mode) "I always want syntax checking and LSP status visible."))
 
 ;; Navigation Tree
 
@@ -362,7 +346,13 @@
   :config
   (add-hook 'c-mode-common-hook (lambda ()
                            (c-set-style "k&r")
-                           (setq c-basic-offset 2))))
+                           (setq c-basic-offset 2)))
+  ;; Enable LSP support.
+  :hook ((c-mode c++-mode objc-mode) .
+         (lambda () (require 'ccls) (lsp)))
+  ;; Format with clang-format.
+  :bind (:map c-mode-base-map
+              ("C-c u" . clang-format)))
 
 
 
@@ -378,27 +368,23 @@
 
 
 (use-package lsp-mode
-  :ensure t
   :load-path "~/Projects/lsp-mode"
-  :bind
-  (:map c-mode-base-map
-        ("C-c C-d" . lsp-describe-thing-at-point))
-  :hook ((js2-mode swift-mode) .
-         (lambda () (lsp)))
+  :bind (:map lsp-mode-map
+              ("C-c C-d" . lsp-describe-thing-at-point))
   :commands lsp
   :config
   (setq lsp-prefer-flymake nil)
-  (require 'lsp-clients)
   (setq xref-prompt-for-identifier '(not xref-find-definitions
-                                       xref-find-definitions-other-window
-                                       xref-find-definitions-other-frame
-                                       xref-find-references)))
+                                         xref-find-definitions-other-window
+                                         xref-find-definitions-other-frame
+                                         xref-find-references)))
 
 (use-package lsp-sourcekit
+  :after lsp-mode
   :load-path "~/Projects/lsp-sourcekit"
   :config
-  (setenv "SOURCEKIT_TOOLCHAIN_PATH" "/Library/Developer/Toolchains/swift-DEVELOPMENT-SNAPSHOT-2018-12-07-a.xctoolchain")
-  (setq lsp-sourcekit-executable (expand-file-name "~/Projects/sourcekit-lsp/build-Xcode/SourceKitLSP/Build/Products/Debug/sourcekit-lsp")))
+  (setenv "SOURCEKIT_TOOLCHAIN_PATH" "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain")
+  (setq lsp-sourcekit-executable (expand-file-name "~/Projects/sourcekit-lsp/.build/release/sourcekit-lsp")))
 
 
 
@@ -408,6 +394,7 @@
 
 (use-package lsp-ui
   :ensure t
+  :commands lsp-ui-mode
   :config
   (setq lsp-ui-sideline-enable nil))
 
@@ -417,13 +404,11 @@
 
 (use-package ccls
   :ensure t
-  :hook ((c-mode c++-mode objc-mode) .
-         (lambda () (require 'ccls) (lsp)))
+  :diminish ccls-code-lens-mode
+  :after lsp-mode
   :config
-  (setq ccls-sem-highlight-method 'font-lock)
   (add-hook 'lsp-after-open-hook #'ccls-code-lens-mode)
-  ;;(ccls-use-default-rainbow-sem-highlight)
-  (setq ccls-executable (expand-file-name "~/Projects/ccls/release/ccls")))
+  (setq ccls-executable (expand-file-name "~/Projects/ccls/Release/ccls")))
 
 ;; Clojure
 
@@ -442,6 +427,15 @@
 (use-package djinni-mode
   :load-path "~/Projects/djinni-mode")
 
+;; Elixir
+
+;; Simple mode for working with Elixir files.
+
+
+(use-package elixir-mode
+  :ensure t
+  :defer t)
+
 ;; Emacs Lisp
 
 ;; Suggest.el is a nice package that helps you discover Elisp functions
@@ -458,7 +452,8 @@
 
 
 (use-package macrostep
-  :ensure t)
+  :ensure t
+  :commands macrostep-mode)
 
 ;; Haskell
 
@@ -471,24 +466,41 @@
 
 ;; JavaScript
 
-;; Use js2-mode for JavaScript.
+;; For JavaScript and other related web technologies, use web-mode:
 
 
-(use-package js2-mode
-    :ensure t
-    :mode ("\\.js\\'" . js2-mode)
-    :config
-    (setq js2-mode-show-parse-errors nil
-          js2-mode-show-strict-warnings nil)
-    ;; Use ESLint instead of JSHint.
-    (add-to-list 'flycheck-disabled-checkers #'javascript-jshint)
-    (flycheck-add-mode 'javascript-eslint 'js2-mode)
-)
-
-
+(use-package web-mode
   :ensure t
-  :defer t
-  :mode ("\\.js\\'" . js2-mode))
+  :mode
+  (("\\.js\\'" . web-mode)
+   ("\\.html?\\'" . web-mode)
+   ("\\.phtml?\\'" . web-mode)
+   ("\\.tpl\\.php\\'" . web-mode)
+   ("\\.[agj]sp\\'" . web-mode)
+   ("\\.as[cp]x\\'" . web-mode)
+   ("\\.erb\\'" . web-mode)
+   ("\\.mustache\\'" . web-mode)
+   ("\\.djhtml\\'" . web-mode)
+   ("\\.jsx$" . web-mode))
+  :commands web-mode
+  ;; Enable LSP support.
+  :hook ((web-mode) . (lambda ()
+                        ;; Set a local path to the Flow LSP binary.
+                        (require 'lsp-clients)
+                        (setq lsp-clients-flow-server (concat (projectile-project-root) "node_modules/.bin/flow"))
+                        (lsp)))
+  ;; Format code with Prettier.
+  :bind (:map web-mode-map
+              ("C-c u" . prettier)))
+
+
+
+;; Also a minor mode for Flow:
+
+
+(use-package flow-minor-mode
+  :ensure t
+  :hook ('web-mode . flow-minor-enable-automatically))
 
 ;; Kotlin
 
@@ -497,7 +509,7 @@
 
 (use-package kotlin-mode
   :ensure t
-  :mode ("\\.kt\\'" . kotlin-mode))
+  :defer t)
 
 ;; LaTeX
 
@@ -516,9 +528,7 @@
 
 (use-package markdown-mode
   :ensure t
-  :mode (("\\`README\\.md\\'" . gfm-mode)
-         ("\\.md\\'"          . markdown-mode)
-         ("\\.markdown\\'"    . markdown-mode))
+  :mode (("\\`README\\.md\\'" . gfm-mode))
   :init (setq markdown-command "multimarkdown"))
 
 
@@ -535,25 +545,7 @@
 
 
 (use-package php-mode
-  :ensure t
-  :mode ("\\.php\\'" . php-mode))
-
-;; Proselint
-
-
-(flycheck-define-checker proselint
-  "A linter for prose."
-  :command ("proselint" source-inplace)
-  :error-patterns
-  ((warning line-start (file-name) ":" line ":" column ": "
-            (id (one-or-more (not (any " "))))
-            (message) line-end))
-  :modes (gfm-mode
-          markdown-mode
-          org-mode
-          text-mode))
-
-(add-to-list 'flycheck-checkers 'proselint)
+  :ensure t)
 
 ;; Python
 
@@ -562,7 +554,6 @@
 
 (use-package python
   :ensure t
-  :mode ("\\.py\\'" . python-mode)
   :interpreter ("python" . python-mode))
 
 
@@ -610,10 +601,7 @@
 
 (use-package swift-mode
   :ensure t
-  :mode ("\\.swift\\'" . swift-mode)
-  :config
-  (advice-add 'magit-which-function :filter-return
-              (lambda (s) (car (last (split-string s "\\."))))))
+  :hook (swift-mode . (lambda () (lsp))))
 
 ;; TableGen
 
@@ -622,7 +610,8 @@
 
 
 (use-package tablegen-mode
-  :load-path "~/Projects/llvm-project/llvm/utils/emacs")
+  :load-path "~/Projects/llvm-project/llvm/utils/emacs"
+  :defer t)
 
 ;; Autocompletion
 
@@ -632,6 +621,7 @@
 
 (use-package company
   :ensure t
+  :diminish
   :hook (after-init . global-company-mode)
   :config
   (setq company-backends (delete 'company-semantic company-backends)))
@@ -670,12 +660,21 @@
 ;; clang-format for C++ and related languages.
 
 
-(use-package clang-format
+(use-package reformatter
   :ensure t
-  :bind
-  (:map c++-mode-map
-        ("C-c i" . clang-format-region)
-        ("C-c u" . clang-format-buffer)))
+  :after projectile
+  :config
+  ;; Clang-format (C/C++/Objective-C)
+  (defconst clang-format-command "clang-format")
+  (reformatter-define clang-format
+    :program clang-format-command
+    :lighter "Clang-format")
+
+  ;; Prettier (JavaScript)
+  (reformatter-define prettier
+    :program (concat (projectile-project-root) "node_modules/.bin/prettier")
+    :args (list "--stdin" "--stdin-filepath" buffer-file-name)
+    :lighter "Prettier"))
 
 ;; Code Navigation
 
@@ -704,17 +703,9 @@
 
 (use-package highlight-symbol
   :ensure t
-  :config
-  (define-key prog-mode-map (kbd "M-n") 'highlight-symbol-next)
-  (define-key prog-mode-map (kbd "M-p") 'highlight-symbol-prev)
-  ;; Modes that inherit from c-mode aren't affected by prog-mode-map,
-  ;; so we have to set bindings again.
-  (define-key c-mode-map (kbd "M-n") 'highlight-symbol-next)
-  (define-key c-mode-map (kbd "M-p") 'highlight-symbol-prev)
-  (define-key c++-mode-map (kbd "M-n") 'highlight-symbol-next)
-  (define-key c++-mode-map (kbd "M-p") 'highlight-symbol-prev)
-  (define-key java-mode-map (kbd "M-n") 'highlight-symbol-next)
-  (define-key java-mode-map (kbd "M-p") 'highlight-symbol-prev))
+  :bind (:map prog-mode-map
+              ("M-n" . highlight-symbol-next)
+              ("M-p" . highlight-symbol-prev)))
 
 ;; Code Selection
 
@@ -724,8 +715,39 @@
 (use-package expand-region
   :ensure t
   :bind ("C-=" . er/expand-region))
+
+;; Compiler Explorer
+
+;; Rmsbolt is an offline alternative for Compiler Explorer:
+
+
+(use-package rmsbolt
+  :load-path "~/Projects/rmsbolt")
+
+;; Copy as Format
+
+;; I use a package to copy text from buffers in various formats:
+
+
+(use-package copy-as-format
+  :ensure t
+  :bind (("C-c w m" . copy-as-format-markdown)
+         ("C-c w g" . copy-as-format-slack)
+         ("C-c w o" . copy-as-format-org-mode)
+         ("C-c w r" . copy-as-format-rst)
+         ("C-c w s" . copy-as-format-github)
+         ("C-c w w" . copy-as-format))
   :init
-  (global-set-key (kbd "C-=") 'er/expand-region))
+  (setq copy-as-format-default "github"))
+
+;; Cucumber
+
+;; Enable syntax highlighting and indentation for Cucumber test files:
+
+
+(use-package feature-mode
+  :ensure t
+  :mode (".feature$" . feature-mode))
 
 ;; Debugging
 
@@ -745,11 +767,30 @@
 
 
 (use-package dap-mode
-  :ensure t
-  :defer t
-  :init
+  :after lsp-mode
+  :load-path "~/Projects/dap-mode"
+  :config
   (dap-mode 1)
-  (dap-ui-mode 1))
+  (dap-ui-mode 1)
+  (require 'dap-lldb))
+
+;; Diminish
+
+;; Use diminish.el to reduce the number of lighters to show in the mode line:
+
+
+(use-package diminish
+  :ensure t
+  :demand t)
+
+;; Directory Diffing
+
+;; Use ztree for diffing two directories:
+
+
+(use-package ztree
+  :ensure t
+  :defer t)
 
 ;; Documentation
 
@@ -778,6 +819,15 @@
   :bind
   ("C-c h" . dash-at-point))
 
+;; Edit Indirect
+
+;; The edit-indirect package lets me edit source code in a separate buffer.
+
+
+(use-package edit-indirect
+  :ensure t
+  :defer t)
+
 ;; Magit
 
 ;; Magit is the best Git porcelain I've ever used.
@@ -804,7 +854,6 @@
   :defer t)
 
 ;; Git Undo
-
 
 ;; Git-undo lets you select a region and revert changes in that region to
 ;; the most recent Git historical version.
@@ -854,6 +903,15 @@
    ("C-c C-d" . helpful-at-point)
    ("C-h C" . helpful-command)))
 
+;; Htmlize
+
+;; Htmlize converts buffer text and decorations to HTML:
+
+
+(use-package htmlize
+  :ensure t
+  :commands htmlize-buffer)
+
 ;; Image Editing
 
 ;; Blimp is a great wrapper for ImageMagick:
@@ -898,6 +956,7 @@
 
 (use-package ivy
   :ensure t
+  :diminish
   :config
   (ivy-mode 1)
 
@@ -935,6 +994,7 @@
    ("C-s" . swiper)
    ("<f7>" . counsel-imenu)
    ("M-y" . counsel-yank-pop)
+   ("C-x b"   . ivy-switch-buffer)
    :map ivy-minibuffer-map
    ("M-y" . ivy-next-line)))
 
@@ -942,6 +1002,20 @@
 ;; files) and C-c p p (switching projects).
 (require 'projectile)
 (setq projectile-completion-system 'ivy)
+
+
+
+;; Extend ivy with ivy-rich:
+
+
+(use-package ivy-rich
+  :ensure t
+  :after ivy
+  :config
+  (ivy-rich-mode 1)
+  (setq ivy-virtual-abbreviate 'full
+        ivy-rich-switch-buffer-align-virtual-buffer t
+        ivy-rich-path-style 'abbrev))
 
 ;; iOS Simulators
 
@@ -991,6 +1065,7 @@
 
 (use-package pdf-linter
   :load-path "~/.emacs.d/user-lisp/pdf-linter"
+  :defer t
   :config
   (setq pdf-linter-jar "$HOME/PDFBox/preflight-app-2.0.12.jar"))
 
@@ -1013,8 +1088,7 @@
   :ensure t
   :config
   (projectile-global-mode)
-  :bind (:map projectile-mode-map
-              ("C-c p" . projectile-command-map)))
+  :bind-keymap ("C-c p" . projectile-command-map))
 
 ;; Pandoc
 
@@ -1024,6 +1098,15 @@
 (use-package pandoc-mode
   :ensure t
   :defer t)
+
+;; Pass
+
+;; I use Pass as password manager. Integrate it with Ivy:
+
+
+(use-package ivy-pass
+  :ensure t
+  :commands ivy-pass)
 
 ;; REST
 
@@ -1044,6 +1127,14 @@
   :ensure t
   :bind ("<f5>" . deadgrep))
 
+;; Shell
+
+;; Easy management of shell buffers.
+
+
+(use-package shell-toggle
+  :ensure t)
+
 ;; Snippets and Abbreviations
 
 ;; I use yasnippet for managing text snippets.
@@ -1051,16 +1142,8 @@
 
 (use-package yasnippet
   :ensure t
-  :defer t
+  :diminish yas-minor-mode
   :init (yas-global-mode 1))
-
-
-
-;; Manage abbreviations with abbrev-mode.
-
-
-(use-package abbrev
-  :diminish abbrev-mode)
 
 ;; Syntax checking
 
@@ -1073,21 +1156,12 @@
 
 
 
-;; Don't check documentation by default (good thing for small throwaway scripts).
+;; For linting packages intended to be published on MELPA, use flycheck-package:
 
 
-(setq flycheck-checkers (--remove (eq it 'emacs-lisp-checkdoc) flycheck-checkers))
-
-
-
-;; Display Flymake error messages on the minibuffer:
-
-
-(use-package flymake-cursor
+(use-package flycheck-package
   :ensure t
-  :load-path "~/.emacs.d/user-lisp/emacs-flymake-cursor"
-  :config
-  (flymake-cursor-mode))
+  :after flycheck)
 
 ;; Undo
 
@@ -1110,7 +1184,8 @@
 ;; detailed information about a X.509 certificate.
 
 
-(use-package x509-certificate-mode)
+(use-package x509-certificate-mode
+  :defer t)
 
 ;; Xcode Projects
 
@@ -1118,7 +1193,8 @@
 
 
 (use-package pbxproj-mode
-  :load-path "~/.emacs.d/user-lisp/pbxproj-mode")
+  :load-path "~/.emacs.d/user-lisp/pbxproj-mode"
+  :defer t)
 
 
 
@@ -1127,5 +1203,4 @@
 
 (use-package flycheck-pbxproj
   :load-path "~/.emacs.d/user-lisp/flycheck-pbxproj"
-  :config
-  (flycheck-pbxproj-setup))
+  :defer t)

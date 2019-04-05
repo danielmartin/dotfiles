@@ -39,14 +39,14 @@ the previous section:
 
 ** Package Management
 
-I use ELPA packages, mainly from the MELPA repository:
+Load package.el:
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (require 'package)
   (setq package-archives
         '(("gnu" . "https://elpa.gnu.org/packages/")
           ("melpa" . "https://melpa.org/packages/")
-          ("org" . "http://orgmode.org/elpa/")))
+          ("org" . "http://orgmode.org/elpa")))
   (package-initialize)
 #+END_SRC
 
@@ -56,6 +56,11 @@ Bootstrap use-package:
   (unless (package-installed-p 'use-package)
     (package-refresh-contents)
     (package-install 'use-package))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+(eval-when-compile
+  (require 'use-package))
 #+END_SRC
 
 Add an environment variable required by the PDF Tools package:
@@ -194,19 +199,13 @@ I also highlight the current line, only for programming modes.
 
 *** Mode Line
 
-
-Doom-modeline:
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package doom-modeline
-        :ensure t
-        :hook (after-init . doom-modeline-mode))
-#+END_SRC
-
 Show in which function or method the point is.
 
+Disabled for now until this problem with swift-mode is fixed:
+https://github.com/swift-emacs/swift-mode/issues/157
+
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (which-function-mode 1)
+  (which-function-mode 0)
 #+END_SRC
 
 Show column numbers in the mode line.
@@ -219,35 +218,13 @@ Show the current time.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package time
+    :ensure t
     :config
     (progn
       (setf display-time-default-load-average nil
             display-time-use-mail-icon t
             display-time-24hr-format nil)
       (display-time-mode t)))
-#+END_SRC
-
-Moody is a package to improve the appearance of the mode line:
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package moody
-    :ensure t
-    :config
-    (setq x-underline-at-descent-line t)
-    (moody-replace-mode-line-buffer-identification)
-    (moody-replace-vc-mode))
-#+END_SRC
-
-Minions is a package to reduce clutter in the mode line by reducing
-the number of minor modes that are shown:
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-(use-package minions
-  :ensure t
-  :config
-  (minions-mode 1)
-  :custom
-  (minions-direct '(flymake-mode) "I always want flymake-mode visible because it shows counts of errors/warnings."))
 #+END_SRC
 
 *** Navigation Tree
@@ -390,7 +367,13 @@ For C languages, I use K&R style, with an indentation of 2 spaces.
     :config
     (add-hook 'c-mode-common-hook (lambda ()
                              (c-set-style "k&r")
-                             (setq c-basic-offset 2))))
+                             (setq c-basic-offset 2)))
+    ;; Enable LSP support.
+    :hook ((c-mode c++-mode objc-mode) .
+           (lambda () (require 'ccls) (lsp)))
+    ;; Format with clang-format.
+    :bind (:map c-mode-base-map
+                ("C-c u" . clang-format)))
 #+END_SRC
 
 As there's not a specific Emacs mode for this programming language,
@@ -404,29 +387,25 @@ Use LSP with company, and ccls as C++ client.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package lsp-mode
-    :ensure t
     :load-path "~/Projects/lsp-mode"
-    :bind
-    (:map c-mode-base-map
-          ("C-c C-d" . lsp-describe-thing-at-point))
-    :hook ((js2-mode swift-mode) .
-           (lambda () (lsp)))
+    :bind (:map lsp-mode-map
+                ("C-c C-d" . lsp-describe-thing-at-point))
     :commands lsp
     :config
     (setq lsp-prefer-flymake nil)
-    (require 'lsp-clients)
     (setq xref-prompt-for-identifier '(not xref-find-definitions
-                                         xref-find-definitions-other-window
-                                         xref-find-definitions-other-frame
-                                         xref-find-references)))
+                                           xref-find-definitions-other-window
+                                           xref-find-definitions-other-frame
+                                           xref-find-references)))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package lsp-sourcekit
+    :after lsp-mode
     :load-path "~/Projects/lsp-sourcekit"
     :config
-    (setenv "SOURCEKIT_TOOLCHAIN_PATH" "/Library/Developer/Toolchains/swift-DEVELOPMENT-SNAPSHOT-2018-12-07-a.xctoolchain")
-    (setq lsp-sourcekit-executable (expand-file-name "~/Projects/sourcekit-lsp/build-Xcode/SourceKitLSP/Build/Products/Debug/sourcekit-lsp")))
+    (setenv "SOURCEKIT_TOOLCHAIN_PATH" "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain")
+    (setq lsp-sourcekit-executable (expand-file-name "~/Projects/sourcekit-lsp/.build/release/sourcekit-lsp")))
 #+END_SRC
 
 LSP UI contains higher level UI modules for lsp-mode, like flycheck
@@ -435,6 +414,7 @@ support or code lenses.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
     (use-package lsp-ui
       :ensure t
+      :commands lsp-ui-mode
       :config
       (setq lsp-ui-sideline-enable nil))
 #+END_SRC
@@ -448,13 +428,11 @@ support or code lenses.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package ccls
     :ensure t
-    :hook ((c-mode c++-mode objc-mode) .
-           (lambda () (require 'ccls) (lsp)))
+    :diminish ccls-code-lens-mode
+    :after lsp-mode
     :config
-    (setq ccls-sem-highlight-method 'font-lock)
     (add-hook 'lsp-after-open-hook #'ccls-code-lens-mode)
-    ;;(ccls-use-default-rainbow-sem-highlight)
-    (setq ccls-executable (expand-file-name "~/Projects/ccls/release/ccls")))
+    (setq ccls-executable (expand-file-name "~/Projects/ccls/Release/ccls")))
 #+END_SRC
 
 *** Clojure
@@ -476,6 +454,16 @@ Djinni is a IDL by Dropbox that helps generating interface code in C++/Objective
     :load-path "~/Projects/djinni-mode")
 #+END_SRC
 
+*** Elixir
+
+Simple mode for working with Elixir files.
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package elixir-mode
+    :ensure t
+    :defer t)
+#+END_SRC
+
 *** Emacs Lisp
 
 Suggest.el is a nice package that helps you discover Elisp functions
@@ -491,7 +479,8 @@ Debug macros is easier with macrostep:
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package macrostep
-    :ensure t)
+    :ensure t
+    :commands macrostep-mode)
 #+END_SRC
 
 *** Haskell
@@ -506,19 +495,40 @@ For Haskell I use haskell-mode.
 
 *** JavaScript
 
-Use js2-mode for JavaScript.
+For JavaScript and other related web technologies, use web-mode:
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package js2-mode
+  (use-package web-mode
     :ensure t
-    :mode ("\\.js\\'" . js2-mode)
-    :config
-    (setq js2-mode-show-parse-errors nil
-          js2-mode-show-strict-warnings nil)
-    ;; Use ESLint instead of JSHint.
-    (add-to-list 'flycheck-disabled-checkers #'javascript-jshint)
-    (flycheck-add-mode 'javascript-eslint 'js2-mode)
-)
+    :mode
+    (("\\.js\\'" . web-mode)
+     ("\\.html?\\'" . web-mode)
+     ("\\.phtml?\\'" . web-mode)
+     ("\\.tpl\\.php\\'" . web-mode)
+     ("\\.[agj]sp\\'" . web-mode)
+     ("\\.as[cp]x\\'" . web-mode)
+     ("\\.erb\\'" . web-mode)
+     ("\\.mustache\\'" . web-mode)
+     ("\\.djhtml\\'" . web-mode)
+     ("\\.jsx$" . web-mode))
+    :commands web-mode
+    ;; Enable LSP support.
+    :hook ((web-mode) . (lambda ()
+                          ;; Set a local path to the Flow LSP binary.
+                          (require 'lsp-clients)
+                          (setq lsp-clients-flow-server (concat (projectile-project-root) "node_modules/.bin/flow"))
+                          (lsp)))
+    ;; Format code with Prettier.
+    :bind (:map web-mode-map
+                ("C-c u" . prettier)))
+#+END_SRC
+
+Also a minor mode for Flow:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package flow-minor-mode
+    :ensure t
+    :hook ('web-mode . flow-minor-enable-automatically))
 #+END_SRC
 
 *** Kotlin
@@ -528,7 +538,7 @@ Use kotlin-mode for Kotlin development.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package kotlin-mode
     :ensure t
-    :mode ("\\.kt\\'" . kotlin-mode))
+    :defer t)
 #+END_SRC
 
 *** LaTeX
@@ -549,9 +559,7 @@ I use markdown-mode to work on Markdown (.md) documents.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package markdown-mode
     :ensure t
-    :mode (("\\`README\\.md\\'" . gfm-mode)
-           ("\\.md\\'"          . markdown-mode)
-           ("\\.markdown\\'"    . markdown-mode))
+    :mode (("\\`README\\.md\\'" . gfm-mode))
     :init (setq markdown-command "multimarkdown"))
 #+END_SRC
 
@@ -568,26 +576,7 @@ php-mode from the package repository.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package php-mode
-    :ensure t
-    :mode ("\\.php\\'" . php-mode))
-#+END_SRC
-
-*** Proselint
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-(flycheck-define-checker proselint
-  "A linter for prose."
-  :command ("proselint" source-inplace)
-  :error-patterns
-  ((warning line-start (file-name) ":" line ":" column ": "
-            (id (one-or-more (not (any " "))))
-            (message) line-end))
-  :modes (gfm-mode
-          markdown-mode
-          org-mode
-          text-mode))
-
-(add-to-list 'flycheck-checkers 'proselint)
+    :ensure t)
 #+END_SRC
 
 *** Python
@@ -597,7 +586,6 @@ There are several packages for writing Python code. I use python.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package python
     :ensure t
-    :mode ("\\.py\\'" . python-mode)
     :interpreter ("python" . python-mode))
 #+END_SRC
 
@@ -640,11 +628,7 @@ For code completion and navigation use Racer (TODO: Move to lsp-mode):
 
 *** Shell
 
-For linting Shell scripts, I integrate Shellcheck with Flycheck.
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (add-hook 'sh-mode-hook 'flycheck-mode)
-#+END_SRC
+TODO: For linting Shell scripts, I integrate Shellcheck with Flycheck.
 
 *** Swift
 
@@ -653,10 +637,7 @@ I use swift-mode for Swift code.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package swift-mode
     :ensure t
-    :mode ("\\.swift\\'" . swift-mode)
-    :config
-    (advice-add 'magit-which-function :filter-return
-                (lambda (s) (car (last (split-string s "\\."))))))
+    :hook (swift-mode . (lambda () (lsp))))
 #+END_SRC
 
 *** TableGen
@@ -666,7 +647,8 @@ generate code automatically.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package tablegen-mode
-    :load-path "~/Projects/llvm-project/llvm/utils/emacs")
+    :load-path "~/Projects/llvm-project/llvm/utils/emacs"
+    :defer t)
 #+END_SRC
 
 ** General Productivity Packages
@@ -683,6 +665,7 @@ languages. I use company for that.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package company
     :ensure t
+    :diminish
     :hook (after-init . global-company-mode)
     :config
     (setq company-backends (delete 'company-semantic company-backends)))
@@ -723,12 +706,21 @@ indenters, specially for complex languages like C++. As yet, I use
 clang-format for C++ and related languages.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package clang-format
+  (use-package reformatter
     :ensure t
-    :bind
-    (:map c++-mode-map
-          ("C-c i" . clang-format-region)
-          ("C-c u" . clang-format-buffer)))
+    :after projectile
+    :config
+    ;; Clang-format (C/C++/Objective-C)
+    (defconst clang-format-command "clang-format")
+    (reformatter-define clang-format
+      :program clang-format-command
+      :lighter "Clang-format")
+
+    ;; Prettier (JavaScript)
+    (reformatter-define prettier
+      :program (concat (projectile-project-root) "node_modules/.bin/prettier")
+      :args (list "--stdin" "--stdin-filepath" buffer-file-name)
+      :lighter "Prettier"))
 #+END_SRC
 
 *** Code Navigation
@@ -756,17 +748,9 @@ particular symbol in a source file.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package highlight-symbol
     :ensure t
-    :config
-    (define-key prog-mode-map (kbd "M-n") 'highlight-symbol-next)
-    (define-key prog-mode-map (kbd "M-p") 'highlight-symbol-prev)
-    ;; Modes that inherit from c-mode aren't affected by prog-mode-map,
-    ;; so we have to set bindings again.
-    (define-key c-mode-map (kbd "M-n") 'highlight-symbol-next)
-    (define-key c-mode-map (kbd "M-p") 'highlight-symbol-prev)
-    (define-key c++-mode-map (kbd "M-n") 'highlight-symbol-next)
-    (define-key c++-mode-map (kbd "M-p") 'highlight-symbol-prev)
-    (define-key java-mode-map (kbd "M-n") 'highlight-symbol-next)
-    (define-key java-mode-map (kbd "M-p") 'highlight-symbol-prev))
+    :bind (:map prog-mode-map
+                ("M-n" . highlight-symbol-next)
+                ("M-p" . highlight-symbol-prev)))
 #+END_SRC
 
 *** Code Selection
@@ -778,8 +762,41 @@ Use expand-region to increase the selected region by semantic units.
     :ensure t
     :bind ("C-=" . er/expand-region))
 #+END_SRC
+
+*** Compiler Explorer
+
+Rmsbolt is an offline alternative for Compiler Explorer:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package rmsbolt
+    :load-path "~/Projects/rmsbolt")
+#+END_SRC
+
+*** Copy as Format
+
+I use a package to copy text from buffers in various formats:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package copy-as-format
+    :ensure t
+    :bind (("C-c w m" . copy-as-format-markdown)
+           ("C-c w g" . copy-as-format-slack)
+           ("C-c w o" . copy-as-format-org-mode)
+           ("C-c w r" . copy-as-format-rst)
+           ("C-c w s" . copy-as-format-github)
+           ("C-c w w" . copy-as-format))
     :init
-    (global-set-key (kbd "C-=") 'er/expand-region))
+    (setq copy-as-format-default "github"))
+#+END_SRC
+
+*** Cucumber
+
+Enable syntax highlighting and indentation for Cucumber test files:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package feature-mode
+    :ensure t
+    :mode (".feature$" . feature-mode))
 #+END_SRC
 
 *** Debugging
@@ -799,11 +816,32 @@ Microsoft, similar to LSP, to interact with debuggers:
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package dap-mode
-    :ensure t
-    :defer t
-    :init
+    :after lsp-mode
+    :load-path "~/Projects/dap-mode"
+    :config
     (dap-mode 1)
-    (dap-ui-mode 1))
+    (dap-ui-mode 1)
+    (require 'dap-lldb))
+#+END_SRC
+
+*** Diminish
+
+Use diminish.el to reduce the number of lighters to show in the mode line:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package diminish
+    :ensure t
+    :demand t)
+#+END_SRC
+
+*** Directory Diffing
+
+Use ztree for diffing two directories:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package ztree
+    :ensure t
+    :defer t)
 #+END_SRC
 
 *** Documentation
@@ -831,6 +869,16 @@ dash-at-point only works for C++ files.
     (add-to-list 'dash-at-point-mode-alist '(c++-mode . "cpp"))
     :bind
     ("C-c h" . dash-at-point))
+#+END_SRC
+
+*** Edit Indirect
+
+The edit-indirect package lets me edit source code in a separate buffer.
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package edit-indirect
+    :ensure t
+    :defer t)
 #+END_SRC
 
 *** Git
@@ -866,7 +914,6 @@ of a particular file from a Git repository.
 #+END_SRC
 
 **** Git Undo
-
 
 Git-undo lets you select a region and revert changes in that region to
 the most recent Git historical version.
@@ -921,6 +968,16 @@ Better help system.
      ("C-h C" . helpful-command)))
 #+END_SRC
 
+*** Htmlize
+
+Htmlize converts buffer text and decorations to HTML:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package htmlize
+    :ensure t
+    :commands htmlize-buffer)
+#+END_SRC
+
 *** Image Editing
 
 Blimp is a great wrapper for ImageMagick:
@@ -948,7 +1005,14 @@ Install counsel first:
     :ensure t
     :after counsel
     :init
-    (counsel-projectile-mode))
+    (counsel-projectile-mode)
+    :config
+    (setq counsel-find-file-ignore-regexp
+        (concat
+         ;; File names beginning with # or .
+         "\\(?:\\`[#.]\\)"
+         ;; File names ending with # or ~
+         "\\|\\(?:\\`.+?[#~]\\'\\)")))
 #+END_SRC
 
 Smex is an enhancement for M-x.
@@ -962,6 +1026,7 @@ Smex is an enhancement for M-x.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package ivy
     :ensure t
+    :diminish
     :config
     (ivy-mode 1)
 
@@ -999,6 +1064,7 @@ Smex is an enhancement for M-x.
      ("C-s" . swiper)
      ("<f7>" . counsel-imenu)
      ("M-y" . counsel-yank-pop)
+     ("C-x b"   . ivy-switch-buffer)
      :map ivy-minibuffer-map
      ("M-y" . ivy-next-line)))
 
@@ -1006,6 +1072,19 @@ Smex is an enhancement for M-x.
   ;; files) and C-c p p (switching projects).
   (require 'projectile)
   (setq projectile-completion-system 'ivy)
+#+END_SRC
+
+Extend ivy with ivy-rich:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+(use-package ivy-rich
+  :ensure t
+  :after ivy
+  :config
+  (ivy-rich-mode 1)
+  (setq ivy-virtual-abbreviate 'full
+        ivy-rich-switch-buffer-align-virtual-buffer t
+        ivy-rich-path-style 'abbrev))
 #+END_SRC
 
 *** iOS Simulators
@@ -1056,9 +1135,11 @@ Install with `brew install pdf-tools`.
 pdf-linter will "lint" a PDF document using PDFBox Preflight app.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (add-to-list 'load-path "~/.emacs.d/user-lisp/pdf-linter")
-  (require 'pdf-linter)
-  (setq pdf-linter-jar "$HOME/PDFBox/preflight-app-2.0.12.jar")
+  (use-package pdf-linter
+    :load-path "~/.emacs.d/user-lisp/pdf-linter"
+    :defer t
+    :config
+    (setq pdf-linter-jar "$HOME/PDFBox/preflight-app-2.0.12.jar"))
 #+END_SRC
 
 Interleave is a minor mode to interleave notes in PDF books/papers.
@@ -1068,6 +1149,7 @@ Interleave is a minor mode to interleave notes in PDF books/papers.
     :ensure t
     :after pdf-tools)
 #+END_SRC
+
 *** Project Management
 
 Programs are usually organized in projects, being a Git repo a natural
@@ -1078,8 +1160,7 @@ way to define one. I use Projectile to work on projects.
     :ensure t
     :config
     (projectile-global-mode)
-    :bind (:map projectile-mode-map
-                ("C-c p" . projectile-command-map)))
+    :bind-keymap ("C-c p" . projectile-command-map))
 #+END_SRC
 
 *** Pandoc
@@ -1090,6 +1171,16 @@ Pandoc is a tool to convert between almost every document format.
   (use-package pandoc-mode
     :ensure t
     :defer t)
+#+END_SRC
+
+*** Pass
+
+I use Pass as password manager. Integrate it with Ivy:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package ivy-pass
+    :ensure t
+    :commands ivy-pass)
 #+END_SRC
 
 *** REST
@@ -1113,6 +1204,15 @@ ripgrep. Very fast.
     :bind ("<f5>" . deadgrep))
 #+END_SRC
 
+*** Shell
+
+Easy management of shell buffers.
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package shell-toggle
+    :ensure t)
+#+END_SRC
+
 *** Snippets and Abbreviations
 
 I use yasnippet for managing text snippets.
@@ -1120,15 +1220,8 @@ I use yasnippet for managing text snippets.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package yasnippet
     :ensure t
-    :defer t
+    :diminish yas-minor-mode
     :init (yas-global-mode 1))
-#+END_SRC
-
-Manage abbreviations with abbrev-mode.
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package abbrev
-    :diminish abbrev-mode)
 #+END_SRC
 
 *** Syntax checking
@@ -1141,20 +1234,12 @@ I use flycheck for "on the fly" syntax checking.
     :defer t)
 #+END_SRC
 
-Don't check documentation by default (good thing for small throwaway scripts).
+For linting packages intended to be published on MELPA, use flycheck-package:
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (setq flycheck-checkers (--remove (eq it 'emacs-lisp-checkdoc) flycheck-checkers))
-#+END_SRC
-
-Display Flymake error messages on the minibuffer:
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package flymake-cursor
+  (use-package flycheck-package
     :ensure t
-    :load-path "~/.emacs.d/user-lisp/emacs-flymake-cursor"
-    :config
-    (flymake-cursor-mode))
+    :after flycheck)
 #+END_SRC
 
 *** Undo
@@ -1179,7 +1264,8 @@ I've created a simple major mode that toggles between showing raw and
 detailed information about a X.509 certificate.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package x509-certificate-mode)
+  (use-package x509-certificate-mode
+    :defer t)
 #+END_SRC
 
 *** Xcode Projects
@@ -1188,7 +1274,8 @@ I've created a package for working on Xcode projects.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package pbxproj-mode
-    :load-path "~/.emacs.d/user-lisp/pbxproj-mode")
+    :load-path "~/.emacs.d/user-lisp/pbxproj-mode"
+    :defer t)
 #+END_SRC
 
 I've also added on-the-fly syntax checking capabilities.
@@ -1196,6 +1283,5 @@ I've also added on-the-fly syntax checking capabilities.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package flycheck-pbxproj
     :load-path "~/.emacs.d/user-lisp/flycheck-pbxproj"
-    :config
-    (flycheck-pbxproj-setup))
+    :defer t)
 #+END_SRC
