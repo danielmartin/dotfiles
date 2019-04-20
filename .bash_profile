@@ -62,3 +62,6 @@ source $HOMEBREW_HOME/opt/asdf/asdf.sh
 # PSPDFKit changelog management.
 alias cla='bundle exec pspdfkit changelog add'
 alias clg='bundle exec pspdfkit changelog generate'
+
+export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="/usr/local/opt/texinfo/bin:$PATH"
