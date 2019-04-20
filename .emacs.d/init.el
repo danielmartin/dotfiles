@@ -547,7 +547,8 @@
 
 
 (use-package php-mode
-  :ensure t)
+  :ensure t
+  :defer t)
 
 ;; Python
 

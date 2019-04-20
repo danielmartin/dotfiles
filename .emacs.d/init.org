@@ -578,7 +578,8 @@ php-mode from the package repository.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package php-mode
-    :ensure t)
+    :ensure t
+    :defer t)
 #+END_SRC
 
 *** Python
