@@ -605,6 +605,25 @@
   :ensure t
   :hook (swift-mode . (lambda () (lsp))))
 
+
+
+;; I have created Swift documentation in the Info format, so add a custom
+;; path here:
+
+
+(add-to-list 'Info-directory-list "/Users/dmartin/Projects/swift-info/")
+
+
+
+;; Add support for info-lookup:
+
+
+(require 'info-look)
+(info-lookup-maybe-add-help
+ :mode 'swift-mode
+ :regexp "[#@_a-zA-Z][_a-zA-Z0-9]*"
+ :doc-spec '(("(swift)Index" nil "['`‘]" "['’]")))
+
 ;; TableGen
 
 ;; TableGen is an abstract IDL used by LLVM and related projects to

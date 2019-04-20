@@ -642,6 +642,23 @@ I use swift-mode for Swift code.
     :hook (swift-mode . (lambda () (lsp))))
 #+END_SRC
 
+I have created Swift documentation in the Info format, so add a custom
+path here:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (add-to-list 'Info-directory-list "~/Projects/swift-info/")
+#+END_SRC
+
+Add support for info-lookup:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (require 'info-look)
+  (info-lookup-maybe-add-help
+   :mode 'swift-mode
+   :regexp "[#@_a-zA-Z][_a-zA-Z0-9]*"
+   :doc-spec '(("(swift)Index" nil "['`‘]" "['’]")))
+#+END_SRC
+
 *** TableGen
 
 TableGen is an abstract IDL used by LLVM and related projects to
