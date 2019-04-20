@@ -394,12 +394,14 @@
 
 (use-package lsp-ui
   :ensure t
+  :after lsp-mode
   :commands lsp-ui-mode
   :config
   (setq lsp-ui-sideline-enable nil))
 
 (use-package company-lsp
   :ensure t
+  :after lsp-mode
   :commands company-lsp)
 
 (use-package ccls
@@ -767,10 +769,11 @@
 
 
 (use-package dap-mode
-  :after lsp-mode
   :load-path "~/Projects/dap-mode"
+  :commands dap-mode
   :config
   (dap-mode 1)
+  (require 'dap-ui)
   (dap-ui-mode 1)
   (require 'dap-lldb))
 

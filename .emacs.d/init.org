@@ -414,6 +414,7 @@ support or code lenses.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
     (use-package lsp-ui
       :ensure t
+      :after lsp-mode
       :commands lsp-ui-mode
       :config
       (setq lsp-ui-sideline-enable nil))
@@ -422,6 +423,7 @@ support or code lenses.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package company-lsp
     :ensure t
+    :after lsp-mode
     :commands company-lsp)
 #+END_SRC
 
@@ -816,10 +818,11 @@ Microsoft, similar to LSP, to interact with debuggers:
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package dap-mode
-    :after lsp-mode
     :load-path "~/Projects/dap-mode"
+    :commands dap-mode
     :config
     (dap-mode 1)
+    (require 'dap-ui)
     (dap-ui-mode 1)
     (require 'dap-lldb))
 #+END_SRC
