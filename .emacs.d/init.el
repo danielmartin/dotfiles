@@ -384,7 +384,7 @@
   :load-path "~/Projects/lsp-sourcekit"
   :config
   (setenv "SOURCEKIT_TOOLCHAIN_PATH" "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain")
-  (setq lsp-sourcekit-executable (expand-file-name "~/Projects/sourcekit-lsp/.build/release/sourcekit-lsp")))
+  (setq lsp-sourcekit-executable (expand-file-name "~/Projects/swift-source/sourcekit-lsp/.build/debug/sourcekit-lsp")))
 
 
 
