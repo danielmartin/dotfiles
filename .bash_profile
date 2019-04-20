@@ -21,7 +21,7 @@ export NDK_CCACHE="$HOMEBREW_HOME/bin/ccache"
 export LLVM_SOURCE_ROOT=~/Projects/llvm-project/llvm/
 
 # Swift source root
-export SWIFT_SOURCE_ROOT=~/Projects/swift-source/swift
+export SWIFT_SOURCE_ROOT=~/Projects/swift-source/
 
 # Default Swift build dir
 export SWIFT_BUILD_DIR=~/Projects/swift-source/build/Ninja-RelWithDebInfoAssert+swift-DebugAssert/swift-macosx-x86_64/
