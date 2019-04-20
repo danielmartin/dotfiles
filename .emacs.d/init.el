@@ -843,6 +843,24 @@
                           'magit-insert-unpulled-from-upstream)
   (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
 
+
+
+;; * Git Gutter
+
+
+(use-package git-gutter
+  :ensure t
+  :custom
+  (git-gutter:modified-sign "~")		; 
+  (git-gutter:added-sign    "+")		; 
+  (git-gutter:deleted-sign  "-")		; 
+  :custom-face
+  (git-gutter:modified ((t (:foreground "#f1fa8c" :background "#f1fa8c"))))
+  (git-gutter:added    ((t (:foreground "#50fa7b" :background "#50fa7b"))))
+  (git-gutter:deleted  ((t (:foreground "#ff79c6" :background "#ff79c6"))))
+  :config
+  (global-git-gutter-mode +1))
+
 ;; Git TimeMachine
 
 ;; git-timemachine is a package that intuitively shows previous versions
