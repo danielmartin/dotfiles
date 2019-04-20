@@ -866,9 +866,9 @@
                           'magit-insert-unpulled-from-upstream)
   (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
 
+;; Git Gutter
 
-
-;; * Git Gutter
+;; Git Gutter shows git changes in a buffer visually.
 
 
 (use-package git-gutter
