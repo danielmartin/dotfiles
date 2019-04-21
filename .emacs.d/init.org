@@ -387,6 +387,7 @@ Use LSP with company, and ccls as C++ client.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package lsp-mode
+    :ensure t
     :load-path "~/Projects/lsp-mode"
     :bind (:map lsp-mode-map
                 ("C-c C-d" . lsp-describe-thing-at-point))
@@ -401,6 +402,7 @@ Use LSP with company, and ccls as C++ client.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package lsp-sourcekit
+    :ensure t
     :after lsp-mode
     :load-path "~/Projects/lsp-sourcekit"
     :config
@@ -453,6 +455,7 @@ Djinni is a IDL by Dropbox that helps generating interface code in C++/Objective
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package djinni-mode
+    :ensure t
     :load-path "~/Projects/djinni-mode")
 #+END_SRC
 
@@ -700,6 +703,17 @@ Bazel is a build system created by Google:
     :defer t)
 #+END_SRC
 
+*** Certificate Handling
+
+I use a major mode for viewing certificates, CRLs, keys, ASN.1, etc.
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package x509-mode
+    :ensure t
+    :config
+    (setq x509-openssl-cmd "/usr/local/opt/openssl/bin/openssl"))
+#+END_SRC
+
 *** CMake
 
 CMake is a meta-build system that is commonly used in C++ projects.
@@ -788,6 +802,7 @@ Rmsbolt is an offline alternative for Compiler Explorer:
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package rmsbolt
+    :ensure t
     :load-path "~/Projects/rmsbolt")
 #+END_SRC
 
@@ -835,8 +850,8 @@ Microsoft, similar to LSP, to interact with debuggers:
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package dap-mode
+    :ensure t
     :load-path "~/Projects/dap-mode"
-    :commands dap-mode
     :config
     (dap-mode 1)
     (require 'dap-ui)
@@ -1295,16 +1310,6 @@ the default undo/redo system.
     :config
     (setq undo-tree-visualizer-timestamps t)
     (setq undo-tree-visualizer-diff t))
-#+END_SRC
-
-*** X.509
-
-I've created a simple major mode that toggles between showing raw and
-detailed information about a X.509 certificate.
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package x509-certificate-mode
-    :defer t)
 #+END_SRC
 
 *** Xcode Projects

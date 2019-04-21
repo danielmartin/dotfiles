@@ -368,6 +368,7 @@
 
 
 (use-package lsp-mode
+  :ensure t
   :load-path "~/Projects/lsp-mode"
   :bind (:map lsp-mode-map
               ("C-c C-d" . lsp-describe-thing-at-point))
@@ -380,6 +381,7 @@
                                          xref-find-references)))
 
 (use-package lsp-sourcekit
+  :ensure t
   :after lsp-mode
   :load-path "~/Projects/lsp-sourcekit"
   :config
@@ -427,6 +429,7 @@
 
 
 (use-package djinni-mode
+  :ensure t
   :load-path "~/Projects/djinni-mode")
 
 ;; Elixir
@@ -612,7 +615,7 @@
 ;; path here:
 
 
-(add-to-list 'Info-directory-list "/Users/dmartin/Projects/swift-info/")
+(add-to-list 'Info-directory-list "~/Projects/swift-info/")
 
 
 
@@ -655,6 +658,16 @@
 (use-package bazel-mode
   :ensure t
   :defer t)
+
+;; Certificate Handling
+
+;; I use a major mode for viewing certificates, CRLs, keys, ASN.1, etc.
+
+
+(use-package x509-mode
+  :ensure t
+  :config
+  (setq x509-openssl-cmd "/usr/local/opt/openssl/bin/openssl"))
 
 ;; CMake
 
@@ -743,6 +756,7 @@
 
 
 (use-package rmsbolt
+  :ensure t
   :load-path "~/Projects/rmsbolt")
 
 ;; Copy as Format
@@ -788,8 +802,8 @@
 
 
 (use-package dap-mode
+  :ensure t
   :load-path "~/Projects/dap-mode"
-  :commands dap-mode
   :config
   (dap-mode 1)
   (require 'dap-ui)
@@ -1217,15 +1231,6 @@
   :config
   (setq undo-tree-visualizer-timestamps t)
   (setq undo-tree-visualizer-diff t))
-
-;; X.509
-
-;; I've created a simple major mode that toggles between showing raw and
-;; detailed information about a X.509 certificate.
-
-
-(use-package x509-certificate-mode
-  :defer t)
 
 ;; Xcode Projects
 
