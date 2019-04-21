@@ -632,8 +632,7 @@
 
 
 (use-package tablegen-mode
-  :load-path "~/Projects/llvm-project/llvm/utils/emacs"
-  :defer t)
+  :load-path "~/Projects/llvm-project/llvm/utils/emacs")
 
 ;; Autocompletion
 
