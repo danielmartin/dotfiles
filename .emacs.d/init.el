@@ -148,6 +148,16 @@
 (setq vc-make-backup-files t)
 (setq auto-save-list-file-name-transforms '((".*", "~/.emacs.d/auto-save-list" t)))
 
+;; Fill Column Indicator
+
+;; Fill-column-indicator is a mode for showing where the `fill-column`
+;; lies visually. I only use it for Markdown and commit messages.
+
+
+(use-package fill-column-indicator
+  :ensure t
+  :hook ((markdown-mode git-commit-mode) . fci-mode))
+
 ;; Ido and Recentf
 
 ;; I use Ido ("Interactive Do") as a simple way to switch between open
