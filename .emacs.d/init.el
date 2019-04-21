@@ -430,7 +430,8 @@
 
 (use-package djinni-mode
   :ensure t
-  :load-path "~/Projects/djinni-mode")
+  :load-path "~/Projects/djinni-mode"
+  :mode ("\\.djinni\\'" . djinni-mode))
 
 ;; Elixir
 
@@ -607,6 +608,7 @@
 
 (use-package swift-mode
   :ensure t
+  :mode ("\\.swift\\'")
   :hook (swift-mode . (lambda () (lsp))))
 
 
@@ -635,7 +637,8 @@
 
 
 (use-package tablegen-mode
-  :load-path "~/Projects/llvm-project/llvm/utils/emacs")
+  :load-path "~/Projects/llvm-project/llvm/utils/emacs"
+  :mode ("\\.td\\'"))
 
 ;; Autocompletion
 
@@ -666,6 +669,7 @@
 
 (use-package x509-mode
   :ensure t
+  :defer
   :config
   (setq x509-openssl-cmd "/usr/local/opt/openssl/bin/openssl"))
 
@@ -757,6 +761,7 @@
 
 (use-package rmsbolt
   :ensure t
+  :defer t
   :load-path "~/Projects/rmsbolt")
 
 ;; Copy as Format
@@ -804,20 +809,12 @@
 (use-package dap-mode
   :ensure t
   :load-path "~/Projects/dap-mode"
+  :commands dap-mode
   :config
   (dap-mode 1)
   (require 'dap-ui)
   (dap-ui-mode 1)
   (require 'dap-lldb))
-
-;; Diminish
-
-;; Use diminish.el to reduce the number of lighters to show in the mode line:
-
-
-(use-package diminish
-  :ensure t
-  :demand t)
 
 ;; Directory Diffing
 
@@ -913,7 +910,9 @@
 ;; the most recent Git historical version.
 
 
-(add-to-list 'load-path "~/.emacs.d/user-lisp/git-undo")
+(use-package git-undo
+  :load-path "~/.emacs.d/user-lisp/git-undo"
+  :commands git-undo)
 
 ;; Browse at Remote
 

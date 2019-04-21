@@ -456,7 +456,8 @@ Djinni is a IDL by Dropbox that helps generating interface code in C++/Objective
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package djinni-mode
     :ensure t
-    :load-path "~/Projects/djinni-mode")
+    :load-path "~/Projects/djinni-mode"
+    :mode ("\\.djinni\\'" . djinni-mode))
 #+END_SRC
 
 *** Elixir
@@ -643,6 +644,7 @@ I use swift-mode for Swift code.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package swift-mode
     :ensure t
+    :mode ("\\.swift\\'")
     :hook (swift-mode . (lambda () (lsp))))
 #+END_SRC
 
@@ -670,7 +672,8 @@ generate code automatically.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package tablegen-mode
-    :load-path "~/Projects/llvm-project/llvm/utils/emacs")
+    :load-path "~/Projects/llvm-project/llvm/utils/emacs"
+    :mode ("\\.td\\'"))
 #+END_SRC
 
 ** General Productivity Packages
@@ -710,6 +713,7 @@ I use a major mode for viewing certificates, CRLs, keys, ASN.1, etc.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package x509-mode
     :ensure t
+    :defer
     :config
     (setq x509-openssl-cmd "/usr/local/opt/openssl/bin/openssl"))
 #+END_SRC
@@ -803,6 +807,7 @@ Rmsbolt is an offline alternative for Compiler Explorer:
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package rmsbolt
     :ensure t
+    :defer t
     :load-path "~/Projects/rmsbolt")
 #+END_SRC
 
@@ -852,21 +857,12 @@ Microsoft, similar to LSP, to interact with debuggers:
   (use-package dap-mode
     :ensure t
     :load-path "~/Projects/dap-mode"
+    :commands dap-mode
     :config
     (dap-mode 1)
     (require 'dap-ui)
     (dap-ui-mode 1)
     (require 'dap-lldb))
-#+END_SRC
-
-*** Diminish
-
-Use diminish.el to reduce the number of lighters to show in the mode line:
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package diminish
-    :ensure t
-    :demand t)
 #+END_SRC
 
 *** Directory Diffing
@@ -973,7 +969,9 @@ Git-undo lets you select a region and revert changes in that region to
 the most recent Git historical version.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (add-to-list 'load-path "~/.emacs.d/user-lisp/git-undo")
+  (use-package git-undo
+    :load-path "~/.emacs.d/user-lisp/git-undo"
+    :commands git-undo)
 #+END_SRC
 
 **** Browse at Remote
