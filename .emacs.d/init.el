@@ -893,6 +893,7 @@
 
 (use-package git-gutter
   :ensure t
+  :diminish git-gutter-mode
   :custom
   (git-gutter:modified-sign "~")		; 
   (git-gutter:added-sign    "+")		; 
