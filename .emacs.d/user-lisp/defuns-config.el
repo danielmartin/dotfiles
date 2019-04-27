@@ -126,5 +126,19 @@ expects some output that isn't there and triggers an error"
 
 (add-hook 'compilation-finish-functions #'dm/compile-finish)
 
+(defun dm/dired-sort ()
+  "Sort Dired listing in different ways (by date, size, or
+  name)."
+  (interactive)
+  (setq sort-by (ido-completing-read "Sort by: " '("date" "size" "name")))
+  (cond
+   ((equal sort-by "name") (setq ls-flags "-Al "))
+   ((equal sort-by "date") (setq ls-flags "-Al -t"))
+   ((equal sort-by "size") (setq ls-flags "-Al -S")))
+  (dired-sort-other ls-flags))
+
+(require 'dired)
+(define-key dired-mode-map (kbd "s") #'dm/dired-sort)
+
 (provide 'defuns-config)
 ;;; defuns-config.el ends here
