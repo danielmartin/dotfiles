@@ -356,9 +356,6 @@
   (add-hook 'c-mode-common-hook (lambda ()
                            (c-set-style "k&r")
                            (setq c-basic-offset 2)))
-  ;; Enable LSP support.
-  :hook ((c-mode c++-mode objc-mode) .
-         (lambda () (require 'ccls) (lsp)))
   ;; Format with clang-format.
   :bind (:map c-mode-base-map
               ("C-c u" . clang-format)))
@@ -382,6 +379,13 @@
   :bind (:map lsp-mode-map
               ("C-c C-d" . lsp-describe-thing-at-point))
   :commands lsp
+  :hook ((c-mode-common . (lambda () (require 'ccls) (lsp)))
+         (swift-mode . lsp)
+         (web-mode . (lambda ()
+                        ;; Set a local path to the Flow LSP binary.
+                        (require 'lsp-clients)
+                        (setq lsp-clients-flow-server (concat (projectile-project-root) "node_modules/.bin/flow"))
+                        (lsp))))
   :config
   (setq lsp-prefer-flymake nil)
   (setq xref-prompt-for-identifier '(not xref-find-definitions
@@ -498,12 +502,6 @@
    ("\\.djhtml\\'" . web-mode)
    ("\\.jsx$" . web-mode))
   :commands web-mode
-  ;; Enable LSP support.
-  :hook ((web-mode) . (lambda ()
-                        ;; Set a local path to the Flow LSP binary.
-                        (require 'lsp-clients)
-                        (setq lsp-clients-flow-server (concat (projectile-project-root) "node_modules/.bin/flow"))
-                        (lsp)))
   ;; Format code with Prettier.
   :bind (:map web-mode-map
               ("C-c u" . prettier)))
@@ -617,8 +615,7 @@
 
 (use-package swift-mode
   :ensure t
-  :mode ("\\.swift\\'")
-  :hook (swift-mode . (lambda () (lsp))))
+  :mode ("\\.swift\\'"))
 
 
 
@@ -1259,3 +1256,55 @@
 (use-package flycheck-pbxproj
   :load-path "~/.emacs.d/user-lisp/flycheck-pbxproj"
   :defer t)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(safe-local-variable-values
+   (quote
+    ((eval let*
+           ((x
+             (dir-locals-find-file default-directory))
+            (this-directory
+             (if
+                 (listp x)
+                 (car x)
+               (file-name-directory x))))
+           (unless
+               (or
+                (featurep
+                 (quote swift-project-settings))
+                (and
+                 (fboundp
+                  (quote tramp-tramp-file-p))
+                 (tramp-tramp-file-p this-directory)))
+             (add-to-list
+              (quote load-path)
+              (concat this-directory "utils")
+              :append)
+             (let
+                 ((swift-project-directory this-directory))
+               (require
+                (quote swift-project-settings))))
+           (set
+            (make-local-variable
+             (quote swift-project-directory))
+            this-directory))
+     (whitespace-style face lines indentation:space)
+     (eval add-hook
+           (quote prog-mode-hook)
+           (lambda nil
+             (whitespace-mode 1))
+           (not :APPEND)
+           :BUFFER-LOCAL)))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(Org-headline-done ((((class color) (min-colors 16) (background dark)) (:foreground "LightSalmon" :strike-through t))))
+ '(git-gutter:added ((t (:foreground "#50fa7b" :background "#50fa7b"))))
+ '(git-gutter:deleted ((t (:foreground "#ff79c6" :background "#ff79c6"))))
+ '(git-gutter:modified ((t (:foreground "#f1fa8c" :background "#f1fa8c"))))
+ '(org-done ((t (:foreground "PaleGreen" :weight normal :strike-through t)))))

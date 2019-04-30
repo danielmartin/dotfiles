@@ -378,9 +378,6 @@ For C languages, I use K&R style, with an indentation of 2 spaces.
     (add-hook 'c-mode-common-hook (lambda ()
                              (c-set-style "k&r")
                              (setq c-basic-offset 2)))
-    ;; Enable LSP support.
-    :hook ((c-mode c++-mode objc-mode) .
-           (lambda () (require 'ccls) (lsp)))
     ;; Format with clang-format.
     :bind (:map c-mode-base-map
                 ("C-c u" . clang-format)))
@@ -402,6 +399,13 @@ Use LSP with company, and ccls as C++ client.
     :bind (:map lsp-mode-map
                 ("C-c C-d" . lsp-describe-thing-at-point))
     :commands lsp
+    :hook ((c-mode-common . (lambda () (require 'ccls) (lsp)))
+           (swift-mode . lsp)
+           (web-mode . (lambda ()
+                          ;; Set a local path to the Flow LSP binary.
+                          (require 'lsp-clients)
+                          (setq lsp-clients-flow-server (concat (projectile-project-root) "node_modules/.bin/flow"))
+                          (lsp))))
     :config
     (setq lsp-prefer-flymake nil)
     (setq xref-prompt-for-identifier '(not xref-find-definitions
@@ -528,12 +532,6 @@ For JavaScript and other related web technologies, use web-mode:
      ("\\.djhtml\\'" . web-mode)
      ("\\.jsx$" . web-mode))
     :commands web-mode
-    ;; Enable LSP support.
-    :hook ((web-mode) . (lambda ()
-                          ;; Set a local path to the Flow LSP binary.
-                          (require 'lsp-clients)
-                          (setq lsp-clients-flow-server (concat (projectile-project-root) "node_modules/.bin/flow"))
-                          (lsp)))
     ;; Format code with Prettier.
     :bind (:map web-mode-map
                 ("C-c u" . prettier)))
@@ -654,8 +652,7 @@ I use swift-mode for Swift code.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package swift-mode
     :ensure t
-    :mode ("\\.swift\\'")
-    :hook (swift-mode . (lambda () (lsp))))
+    :mode ("\\.swift\\'"))
 #+END_SRC
 
 I have created Swift documentation in the Info format, so add a custom
