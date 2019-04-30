@@ -3,7 +3,7 @@
 ;;; Commentary:
 
 ;;; Code:
-(defun recenter-defun()
+(defun dm/recenter-defun()
   "Recenter the buffer to put the current defun at the top."
   (interactive)
   (beginning-of-defun)
@@ -12,7 +12,7 @@
 	      (truncate (/ (window-body-height) 4.0)))))
     (recenter this-scroll-margin)))
 
-(defun open-line-above (N)
+(defun dm/open-line-above (N)
     "Insert a new line above the current point position.
 With arg N, insert N newlines."
     (interactive "p")
@@ -20,7 +20,7 @@ With arg N, insert N newlines."
       (beginning-of-line)
       (newline N)))
 
-(defun beautify-json ()
+(defun dm/beautify-json ()
   "Pretty print a region containing a JSON structure."
   (interactive)
   (let ((b (if mark-active (min (point) (mark)) (point-min)))
@@ -28,7 +28,7 @@ With arg N, insert N newlines."
     (shell-command-on-region b e
      "python -mjson.tool" (current-buffer) t)))
 
-(defun beginning-of-line-dwim ()
+(defun dm/beginning-of-line-dwim ()
   "Toggle between moving the point to the start of the first non-whitespace character and the start of the line."
   (interactive)
   (let ((start-position (point)))
@@ -38,9 +38,9 @@ With arg N, insert N newlines."
     (when (= (point) start-position)
       (move-beginning-of-line nil))))
 
-(global-set-key (kbd "C-a") 'beginning-of-line-dwim)
+(global-set-key (kbd "C-a") 'dm/beginning-of-line-dwim)
 
-(defun dwim-goto-char ()
+(defun dm/dwim-goto-char ()
   "Goto-char using the offset at point, or fallback to standard
   goto-char if the word at point is not a number. Useful for
   navigating offsets inside raw PDF documents, for example."
@@ -52,7 +52,7 @@ With arg N, insert N newlines."
       (let ((char (read-from-minibuffer "Go to char: ")))
         (goto-char (string-to-number char))))))
 
-(global-set-key (kbd "M-g c") 'dwim-goto-char)
+(global-set-key (kbd "M-g c") 'dm/dwim-goto-char)
 
 (defvar ediff-do-hexl-diff t "Variable used to store trigger for doing diff in hexl-mode")
 (defadvice ediff-files-internal (around
@@ -95,7 +95,7 @@ expects some output that isn't there and triggers an error"
                 (y-or-n-p "The binary files differ, look at the differences in hexl-mode? ")))
      (error (error-message-string err)))))
 
-(defun copy-file-to-keyboard ()
+(defun dm/copy-file-to-keyboard ()
   "Copy the current buffer file name to the clipboard."
   (interactive)
   (let ((filename (if (equal major-mode 'dired-mode)
