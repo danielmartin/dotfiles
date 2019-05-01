@@ -26,8 +26,6 @@ export SWIFT_SOURCE_ROOT=~/Projects/swift-source/
 # Default Swift build dir
 export SWIFT_BUILD_DIR=~/Projects/swift-source/build/Ninja-RelWithDebInfoAssert+swift-DebugAssert/swift-macosx-x86_64/
 
-export SOURCEKIT_TOOLCHAIN_PATH=/Library/Developer/Toolchains/swift-DEVELOPMENT-SNAPSHOT-2018-12-07-a.xctoolchain
-
 # We want LLVM, Homebrew and the Android SDK in path.
 PATH="$SOURCEKIT_TOOLCHAIN_PATH/usr/bin:${PATH}:/usr/local/bin:$HOME/homebrew/sbin:$HOME/homebrew/bin:$ANDROID_SDK_ROOT/tools:$HOME/.cargo/bin"
 export PATH
