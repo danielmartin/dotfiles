@@ -199,11 +199,12 @@
   (custom-set-faces
    '(which-func ((t (:foreground "Black" :slant italic :weight bold))))))
 
-;; Disabled for now until this problem with swift-mode is fixed:
-;; https://github.com/swift-emacs/swift-mode/issues/157
 
 
-(which-function-mode 0)
+;; Show in which function or method the point is.
+
+
+(which-function-mode 1)
 
 
 

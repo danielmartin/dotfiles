@@ -221,8 +221,10 @@ Use smart-mode-line to customize the mode line.
      '(which-func ((t (:foreground "Black" :slant italic :weight bold))))))
 #+END_SRC
 
+Show in which function or method the point is.
+
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (which-function-mode 0)
+  (which-function-mode 1)
 #+END_SRC
 
 Show column numbers in the mode line.
