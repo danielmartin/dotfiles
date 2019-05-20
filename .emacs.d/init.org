@@ -209,10 +209,17 @@ I also highlight the current line, only for programming modes.
 
 *** Mode Line
 
-Show in which function or method the point is.
+Use smart-mode-line to customize the mode line.
 
-Disabled for now until this problem with swift-mode is fixed:
-https://github.com/swift-emacs/swift-mode/issues/157
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package smart-mode-line
+    :ensure t
+    :config
+    (setq sml/theme 'light)
+    (sml/setup)
+    (custom-set-faces
+     '(which-func ((t (:foreground "Black" :slant italic :weight bold))))))
+#+END_SRC
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (which-function-mode 0)

@@ -188,7 +188,16 @@
 
 ;; Mode Line
 
-;; Show in which function or method the point is.
+;; Use smart-mode-line to customize the mode line.
+
+
+(use-package smart-mode-line
+  :ensure t
+  :config
+  (setq sml/theme 'light)
+  (sml/setup)
+  (custom-set-faces
+   '(which-func ((t (:foreground "Black" :slant italic :weight bold))))))
 
 ;; Disabled for now until this problem with swift-mode is fixed:
 ;; https://github.com/swift-emacs/swift-mode/issues/157
