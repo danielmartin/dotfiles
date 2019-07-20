@@ -195,19 +195,6 @@
 
 ;; Mode Line
 
-;; Use smart-mode-line to customize the mode line.
-
-
-(use-package smart-mode-line
-  :ensure t
-  :config
-  (setq sml/theme 'light)
-  (sml/setup)
-  (custom-set-faces
-   '(which-func ((t (:foreground "Black" :slant italic :weight bold))))))
-
-
-
 ;; Show in which function or method the point is.
 
 
@@ -233,6 +220,29 @@
           display-time-use-mail-icon t
           display-time-24hr-format nil)
     (display-time-mode t)))
+
+
+
+;; Use smart-mode-line to customize the mode line.
+
+
+(use-package smart-mode-line
+  :ensure t
+  :init
+  (let ((which-func '(which-function-mode
+		      (which-func-mode
+		       ("" which-func-format " ")))))
+    (setq-default mode-line-format (remove which-func mode-line-format))
+    (setq-default mode-line-misc-info (remove which-func mode-line-misc-info))
+    (setq cell (last mode-line-format 8))
+    (setcdr cell
+	     (cons which-func
+		  (cdr cell))))
+  :config
+  (custom-set-faces
+   '(which-func ((t (:foreground "Black" :slant italic :weight bold)))))
+  (setq sml/theme 'light)
+  :hook (after-init . sml/setup))
 
 ;; Navigation Tree
 
