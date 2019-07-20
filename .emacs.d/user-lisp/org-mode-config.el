@@ -47,9 +47,12 @@
 
 ;; Org-Babel
 
-;; Swift
-(use-package ob-swift
-  :ensure t)
+;; Swift and Objective C.
+(use-package ns-playgrounds
+  :load-path "~/Projects/ns-playgrounds"
+  :config
+  (setq ob-swift-prompt-if-no-toolchain t)
+  (setq ob-swift-debug-compiler-path "~/Projects/swift-source/build/Ninja-RelWithDebInfoAssert+swift-DebugAssert/swift-macosx-x86_64/bin/swift"))
 
 ;; Rust
 (use-package ob-rust
