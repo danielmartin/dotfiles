@@ -52,6 +52,13 @@
 
 ;; General Customizations
 
+;; Increase a bit garbage collection threshold:
+
+
+(setq gc-cons-threshold 1600000)
+
+
+
 ;; Make sure we can debug init errors more easily:
 
 

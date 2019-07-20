@@ -70,6 +70,12 @@ Add an environment variable required by the PDF Tools package:
 
 ** General Customizations
 
+Increase a bit garbage collection threshold:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+(setq gc-cons-threshold 1600000)
+#+END_SRC
+
 Make sure we can debug init errors more easily:
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
