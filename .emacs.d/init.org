@@ -319,6 +319,14 @@ Integrate Treemacs with Projectile:
     :after treemacs projectile)
 #+END_SRC
 
+Integrate Treemacs with LSP:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package lsp-treemacs
+    :ensure t
+    :after treemacs lsp-mode)
+#+END_SRC
+
 *** Pairs
 
 To ease working with pairs, I use the smartparens package.

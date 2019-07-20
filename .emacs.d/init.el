@@ -300,6 +300,15 @@
   :ensure t
   :after treemacs projectile)
 
+
+
+;; Integrate Treemacs with LSP:
+
+
+(use-package lsp-treemacs
+  :ensure t
+  :after treemacs lsp-mode)
+
 ;; Pairs
 
 ;; To ease working with pairs, I use the smartparens package.
