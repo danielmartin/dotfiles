@@ -1186,6 +1186,14 @@
   :ensure t
   :commands ivy-pass)
 
+;; Regular Expressions
+
+;; Use the xr package to convert Elisp regexps to more readable rx forms:
+
+
+(use-package xr
+  :ensure t)
+
 ;; REST
 
 ;; For making REST calls from Emacs, I use the convenient restclient package.

@@ -1259,6 +1259,15 @@ I use Pass as password manager. Integrate it with Ivy:
     :commands ivy-pass)
 #+END_SRC
 
+*** Regular Expressions
+
+Use the xr package to convert Elisp regexps to more readable rx forms:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package xr
+    :ensure t)
+#+END_SRC
+
 *** REST
 
 For making REST calls from Emacs, I use the convenient restclient package.
