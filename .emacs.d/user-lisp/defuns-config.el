@@ -140,5 +140,18 @@ expects some output that isn't there and triggers an error"
 (require 'dired)
 (define-key dired-mode-map (kbd "s") #'dm/dired-sort)
 
+(defun dm/copy-as-rtf ()
+  "Export region to RTF and copy it to the clipboard."
+  (interactive)
+  (save-window-excursion
+    (let* ((buf (org-export-to-buffer 'html "*Formatted Copy*" nil nil t t))
+           (html (with-current-buffer buf (buffer-string))))
+      (with-current-buffer buf
+        (shell-command-on-region
+         (point-min)
+         (point-max)
+         "textutil -stdin -format html -convert rtf -stdout | pbcopy"))
+      (kill-buffer buf))))
+
 (provide 'defuns-config)
 ;;; defuns-config.el ends here
