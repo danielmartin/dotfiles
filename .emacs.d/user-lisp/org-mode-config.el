@@ -70,5 +70,10 @@
 (setq org-latex-listings t)
 (add-to-list 'org-latex-packages-alist '("" "listings"))
 
+;; Keep an up-to-date table of contents:
+(use-package toc-org
+  :ensure t
+  :hook (org-mode-hook . 'toc-org-mode))
+
 (provide 'org-mode-config)
 ;;; org-mode-config.el ends here
