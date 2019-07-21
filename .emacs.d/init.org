@@ -1283,6 +1283,16 @@ I use Pass as password manager. Integrate it with Ivy:
     :commands ivy-pass)
 #+END_SRC
 
+*** PSPDFKit Changelog
+
+I have created a specialized mode for adding entries to the PSPDFKit changelog:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package pspdf-changelog
+    :after forge
+    :load-path "~/Projects/PSPDFKit/tools")
+#+END_SRC
+
 *** Regular Expressions
 
 Use the xr package to convert Elisp regexps to more readable rx forms:

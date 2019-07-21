@@ -1208,6 +1208,15 @@
   :ensure t
   :commands ivy-pass)
 
+;; PSPDFKit Changelog
+
+;; I have created a specialized mode for adding entries to the PSPDFKit changelog:
+
+
+(use-package pspdf-changelog
+  :after forge
+  :load-path "~/Projects/PSPDFKit/tools")
+
 ;; Regular Expressions
 
 ;; Use the xr package to convert Elisp regexps to more readable rx forms:
