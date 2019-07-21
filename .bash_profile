@@ -27,8 +27,9 @@ export SWIFT_SOURCE_ROOT=~/Projects/swift-source/
 export SWIFT_BUILD_DIR=~/Projects/swift-source/build/Ninja-RelWithDebInfoAssert+swift-DebugAssert/swift-macosx-x86_64/
 
 # We want LLVM, Homebrew and the Android SDK in path.
-PATH="$SOURCEKIT_TOOLCHAIN_PATH/usr/bin:${PATH}:/usr/local/bin:$HOME/homebrew/sbin:$HOME/homebrew/bin:$ANDROID_SDK_ROOT/tools:$HOME/.cargo/bin"
-export PATH
+# PATH="$SOURCEKIT_TOOLCHAIN_PATH/usr/bin:/usr/local/bin:${PATH}:$HOME/homebrew/sbin:$HOME/homebrew/bin:$ANDROID_SDK_ROOT/tools:$HOME/.cargo/bin"
+# export PATH
+export PATH="/usr/local/bin:/usr/local/sbin:~/bin:/usr/local/opt/texinfo/bin:$PATH"
 
 # We want to install Casks without root privileges.
 export HOMEBREW_CASK_OPTS="--appdir=~/Applications"
@@ -62,4 +63,3 @@ alias cla='bundle exec pspdfkit changelog add'
 alias clg='bundle exec pspdfkit changelog generate'
 
 export PATH="$HOME/.cargo/bin:$PATH"
-export PATH="/usr/local/opt/texinfo/bin:$PATH"
