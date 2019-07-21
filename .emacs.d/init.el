@@ -506,7 +506,7 @@
 
 
 
-;; Debug macros is easier with macrostep:
+;; Debugging macros is easier with macrostep:
 
 
 (use-package macrostep

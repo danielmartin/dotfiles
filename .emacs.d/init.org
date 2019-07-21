@@ -534,7 +534,7 @@ that do what you want.
     :defer t)
 #+END_SRC
 
-Debug macros is easier with macrostep:
+Debugging macros is easier with macrostep:
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package macrostep
