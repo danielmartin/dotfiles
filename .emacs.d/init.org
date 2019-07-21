@@ -26,6 +26,12 @@ the previous section:
 
 * Contents
 
+We need to workaround an Emacs bug, at least in 26.2:
+
+ #+BEGIN_SRC emacs-lisp :tangle yes :comments org
+   (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+ #+END_SRC
+
 ** General Folder Structure
 
  The load path is the list of directories that Emacs searches for
