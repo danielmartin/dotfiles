@@ -215,7 +215,6 @@ I also highlight the current line, only for programming modes.
 
 *** Mode Line
 
-
 Show in which function or method the point is.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
