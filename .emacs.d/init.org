@@ -159,7 +159,7 @@ Appearances and themes are loaded from their own file.
 
 *** Ediff
 
-I like Ediff's control panel to show in a separate frame, even on
+I like Ediff's control panel to show in the same frame, even on
 graphical environments.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org

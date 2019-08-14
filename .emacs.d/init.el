@@ -143,7 +143,7 @@
 
 ;; Ediff
 
-;; I like Ediff's control panel to show in a separate frame, even on
+;; I like Ediff's control panel to show in the same frame, even on
 ;; graphical environments.
 
 
