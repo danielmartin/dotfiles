@@ -1309,6 +1309,13 @@ Use the xr package to convert Elisp regexps to more readable rx forms:
     :ensure t)
 #+END_SRC
 
+Use relint to detect regular expression errors in Emacs Lisp files:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package relint
+    :ensure t)
+#+END_SRC
+
 *** REST
 
 For making REST calls from Emacs, I use the convenient restclient package.

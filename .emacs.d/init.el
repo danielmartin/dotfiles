@@ -1233,6 +1233,14 @@
 (use-package xr
   :ensure t)
 
+
+
+;; Use relint to detect regular expression errors in Emacs Lisp files:
+
+
+(use-package relint
+  :ensure t)
+
 ;; REST
 
 ;; For making REST calls from Emacs, I use the convenient restclient package.
