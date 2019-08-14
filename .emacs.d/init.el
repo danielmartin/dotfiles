@@ -684,6 +684,17 @@
  :doc-spec '(("(swift)Index" nil "['`‘]" "['’]")
              ("(swift-reference)Index" nil "['`‘]" "['’]")))
 
+
+
+;; Swift-helpful is a mode that provides a self-documenting experience for writing Swift code:
+
+
+(use-package swift-helpful
+  :after swift-mode
+  :load-path "~/Projects/swift-helpful"
+  :config
+  (setq swift-helpful-stdlib-path "~/Projects/swift-source/swift/stdlib/public/"))
+
 ;; TableGen
 
 ;; TableGen is an abstract IDL used by LLVM and related projects to

@@ -719,6 +719,15 @@ Add support for info-lookup:
                ("(swift-reference)Index" nil "['`‘]" "['’]")))
 #+END_SRC
 
+Swift-helpful is a mode that provides a self-documenting experience for writing Swift code:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package swift-helpful
+    :after swift-mode
+    :load-path "~/Projects/swift-helpful"
+    :config
+    (setq swift-helpful-stdlib-path "~/Projects/swift-source/swift/stdlib/public/"))
+#+END_SRC
 *** TableGen
 
 TableGen is an abstract IDL used by LLVM and related projects to
