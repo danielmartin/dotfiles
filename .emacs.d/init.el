@@ -420,6 +420,10 @@
 (add-to-list 'auto-mode-alist '("\\.mm$" . objc-mode))
 
 
+
+;; Use LSP with company, and ccls as C++ client.
+
+
 (use-package lsp-mode
   :ensure t
   :bind (:map lsp-mode-map
