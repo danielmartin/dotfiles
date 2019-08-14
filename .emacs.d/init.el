@@ -251,6 +251,14 @@
   (setq sml/theme 'light)
   :hook (after-init . sml/setup))
 
+
+
+;; Use diminish to control which modes to show in the mode line.
+
+
+(use-package diminish
+  :ensure t)
+
 ;; Navigation Tree
 
 ;; Treemacs is a tree layout file explorer for Emacs:

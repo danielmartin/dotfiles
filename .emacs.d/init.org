@@ -268,6 +268,13 @@ Use smart-mode-line to customize the mode line.
     :hook (after-init . sml/setup))
 #+END_SRC
 
+Use diminish to control which modes to show in the mode line.
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package diminish
+    :ensure t)
+#+END_SRC
+
 *** Navigation Tree
 
 Treemacs is a tree layout file explorer for Emacs:
