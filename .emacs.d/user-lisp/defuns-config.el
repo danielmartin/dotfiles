@@ -121,8 +121,12 @@ expects some output that isn't there and triggers an error"
 (defun dm/compile-finish (buf status)
   (with-current-buffer buf
     (if (string-match "^finished\\b" status)
-        (ns-do-applescript "display notification \"Compilation successful\"")
-      (ns-do-applescript "display notification \"Compilation failed\""))))
+        (ns-do-applescript (format
+                            "display notification \"Compilation successful\" with title \"%s\""
+                            (projectile-project-name)))
+      (ns-do-applescript (format
+                          "display notification \"Compilation failed\" with title \"%s\""
+                          (projectile-project-name))))))
 
 (add-hook 'compilation-finish-functions #'dm/compile-finish)
 
