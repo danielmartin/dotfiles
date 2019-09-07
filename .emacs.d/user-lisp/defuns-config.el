@@ -157,5 +157,51 @@ expects some output that isn't there and triggers an error"
          "textutil -stdin -format html -convert rtf -stdout | pbcopy"))
       (kill-buffer buf))))
 
+(defun dm/calculate-compile-time (start-time end-time)
+  "Compute the compile/grep time between START-TIME and END-TIME.
+Time is formatted in hours, minutes, and seconds."
+  (format-seconds
+   "%H %M, %z%S"
+   (time-to-seconds
+    (time-subtract
+     (apply #'encode-time (parse-time-string (format-time-string
+                                              (concat
+                                               start-time
+                                               " %Y"))))
+     (apply #'encode-time (parse-time-string (format-time-string
+                                              (concat
+                                               end-time
+                                               " %Y"))))))))
+
+(defun dm/print-compile-time ()
+  "Print the compile/grep time of a `compilation-mode' buffer that finished successfully.
+Time is formatted in hours, minutes, and seconds."
+  (interactive)
+  (when (eq major-mode 'compilation-mode)
+    (let ((start (save-excursion
+                   (goto-char (point-min))
+                   (and
+                    (re-search-forward
+                     (format
+                      "^%s started at \\(.*\\)"
+                      mode-name) nil t)
+                    (match-string 1))))
+          (end (save-excursion
+                 (goto-char (point-min))
+                 (and
+                  (re-search-forward
+                   (format
+                    "^%s finished at \\(.*\\)"
+                    mode-name) nil t)
+                  (match-string 1)))))
+      (unless (and start end)
+        (user-error "Cannot calculate compile time. Did the compilation finished successfully?"))
+      (message
+       (format "%s took %s"
+               mode-name
+               (dm/calculate-compile-time end start))))))
+
+(define-key compilation-mode-map (kbd "c") #'dm/print-compile-time)
+
 (provide 'defuns-config)
 ;;; defuns-config.el ends here
