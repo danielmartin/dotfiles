@@ -177,7 +177,7 @@ Time is formatted in hours, minutes, and seconds."
   "Print the compile/grep time of a `compilation-mode' buffer that finished successfully.
 Time is formatted in hours, minutes, and seconds."
   (interactive)
-  (when (eq major-mode 'compilation-mode)
+  (when (derived-mode-p 'compilation-mode)
     (let ((start (save-excursion
                    (goto-char (point-min))
                    (and
