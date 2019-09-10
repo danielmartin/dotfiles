@@ -201,6 +201,7 @@ Time is formatted in hours, minutes, and seconds."
                mode-name
                (dm/calculate-compile-time end start))))))
 
+(require 'compile)
 (define-key compilation-mode-map (kbd "c") #'dm/print-compile-time)
 
 (provide 'defuns-config)
