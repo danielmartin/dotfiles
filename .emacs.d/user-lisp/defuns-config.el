@@ -95,7 +95,7 @@ expects some output that isn't there and triggers an error"
                 (y-or-n-p "The binary files differ, look at the differences in hexl-mode? ")))
      (error (error-message-string err)))))
 
-(defun dm/copy-file-to-keyboard ()
+(defun dm/copy-file-to-clipboard ()
   "Copy the current buffer file name to the clipboard."
   (interactive)
   (let ((filename (if (equal major-mode 'dired-mode)
@@ -107,7 +107,7 @@ expects some output that isn't there and triggers an error"
           (message "Copied buffer file name '%s' to the clipboard." filename))
       (user-error "Buffer does not visit a file, so no filename to copy."))))
 
-(global-set-key (kbd "C-c w") 'copy-file-to-keyboard)
+(global-set-key (kbd "C-c w") 'copy-file-to-clipboard)
 
 (defun dm/git-history-of-defun ()
   "Ask source control about the history of the function under
