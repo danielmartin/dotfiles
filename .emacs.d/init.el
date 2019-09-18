@@ -983,6 +983,18 @@
   :load-path "~/.emacs.d/user-lisp/git-undo"
   :commands git-undo)
 
+;; GitHub Review
+
+;; Perform code reviews from the comfort of Emacs:
+
+
+(use-package github-review
+  :ensure t
+  :after forge
+  :config
+  (transient-insert-suffix 'forge-dispatch "c p"
+    '("c r" "github-review" github-review-forge-pr-at-point)))
+
 ;; Magit
 
 ;; Magit is the best Git porcelain I've ever used.
