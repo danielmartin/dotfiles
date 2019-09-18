@@ -98,6 +98,23 @@
 
 (require 'keybindings)
 
+;; Appearance and Themes
+
+;; Appearances and themes are loaded from their own file.
+
+
+(require 'appearance)
+
+;; Cross References
+
+;; Use ivy-xref to select cross references:
+
+
+(use-package ivy-xref
+  :ensure t
+  :after ivy
+  :init (setq xref-show-xrefs-function #'ivy-xref-show-xrefs))
+
 ;; Custom Keymaps
 
 ;; Define my custom prefix keys:
@@ -108,38 +125,6 @@
             (define-prefix-command (cdr entry))
             (bind-key (car entry) (cdr entry)))
         '(("C-c w" . my-ctrl-c-w-map))))
-
-;; Mac
-
-;; On a Mac, I use the Command key as Meta.
-
-
-(setq mac-option-modifier 'none)
-(setq mac-command-modifier 'meta)
-(setq ns-function-modifier 'hyper)
-
-
-
-;; GUI apps on macOS do not inherit $PATH from shell. This package solves
-;; that.
-
-
-(use-package exec-path-from-shell
-  :ensure t
-  :if (memq window-system '(mac ns))
-  :config
-  (progn
-    (setq exec-path-from-shell-arguments '("-l"))
-    (setq exec-path-from-shell-variables
-          (append exec-path-from-shell-variables '("JAVA_HOME")))
-    (exec-path-from-shell-initialize)))
-
-;; Appearance and Themes
-
-;; Appearances and themes are loaded from their own file.
-
-
-(require 'appearance)
 
 ;; Ediff
 
@@ -199,6 +184,31 @@
 
 
 (add-hook 'prog-mode-hook 'hl-line-mode)
+
+;; Mac
+
+;; On a Mac, I use the Command key as Meta.
+
+
+(setq mac-option-modifier 'none)
+(setq mac-command-modifier 'meta)
+(setq ns-function-modifier 'hyper)
+
+
+
+;; GUI apps on macOS do not inherit $PATH from shell. This package solves
+;; that.
+
+
+(use-package exec-path-from-shell
+  :ensure t
+  :if (memq window-system '(mac ns))
+  :config
+  (progn
+    (setq exec-path-from-shell-arguments '("-l"))
+    (setq exec-path-from-shell-variables
+          (append exec-path-from-shell-variables '("JAVA_HOME")))
+    (exec-path-from-shell-initialize)))
 
 ;; Mode Line
 
@@ -377,16 +387,6 @@
 
 
 (winner-mode 1)
-
-;; Cross References
-
-;; Use ivy-xref to select cross references:
-
-
-(use-package ivy-xref
-  :ensure t
-  :after ivy
-  :init (setq xref-show-xrefs-function #'ivy-xref-show-xrefs))
 
 ;; Programming Language Customizations
 
@@ -670,32 +670,11 @@
 
 
 
-;; I have created Swift documentation in the Info format, so add a custom
-;; path here:
-
-
-(add-to-list 'Info-directory-list "~/Projects/swift-info/")
-
-
-
-;; Add support for info-lookup:
-
-
-(require 'info-look)
-(info-lookup-maybe-add-help
- :mode 'swift-mode
- :regexp "[#@_a-zA-Z][_a-zA-Z0-9\\?!]*"
- :doc-spec '(("(swift)Index" nil "['`‘]" "['’]")
-             ("(swift-reference)Index" nil "['`‘]" "['’]")))
-
-
-
 ;; Swift-helpful is a mode that provides a self-documenting experience for writing Swift code:
 
 
 (use-package swift-helpful
   :after swift-mode
-  :load-path "~/Projects/swift-helpful"
   :config
   (setq swift-helpful-stdlib-path "~/Projects/swift-source/swift/stdlib/public/"))
 
@@ -930,20 +909,40 @@
   :ensure t
   :defer t)
 
-;; Magit
+;; Feeds
 
-;; Magit is the best Git porcelain I've ever used.
+;; For browsing feeds, I use Elfeed:
 
 
-(use-package magit
+(use-package elfeed
+  :ensure t
+  :defer t
+  :bind
+  ("C-x w" . elfeed)
+  :config
+  (setq elfeed-feeds
+        '("http://nullprogram.com/feed/"
+          "http://planet.emacsen.org/atom.xml"
+          "https://nvd.nist.gov/feeds/xml/cve/misc/nvd-rss-analyzed.xml")))
+
+;; Browse at Remote
+
+;; This package browses target pages at GitHub/Bitbucket.
+
+
+(use-package browse-at-remote
   :ensure t
   :bind
-  ("C-x g" . magit-status)
-  :config
-  (magit-add-section-hook 'magit-status-sections-hook
-                          'magit-insert-modules-overview
-                          'magit-insert-unpulled-from-upstream)
-  (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
+  ("C-c g g" . browse-at-remote))
+
+;; Forge
+
+;; Forge is a package similar to Magithub:
+
+
+(use-package forge
+  :ensure t
+  :after magit)
 
 ;; Git Gutter
 
@@ -984,24 +983,20 @@
   :load-path "~/.emacs.d/user-lisp/git-undo"
   :commands git-undo)
 
-;; Browse at Remote
+;; Magit
 
-;; This package browses target pages at GitHub/Bitbucket.
+;; Magit is the best Git porcelain I've ever used.
 
 
-(use-package browse-at-remote
+(use-package magit
   :ensure t
   :bind
-  ("C-c g g" . browse-at-remote))
-
-;; Forge
-
-;; Forge is a package similar to Magithub:
-
-
-(use-package forge
-  :ensure t
-  :after magit)
+  ("C-x g" . magit-status)
+  :config
+  (magit-add-section-hook 'magit-status-sections-hook
+                          'magit-insert-modules-overview
+                          'magit-insert-unpulled-from-upstream)
+  (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
 
 ;; Google Test
 

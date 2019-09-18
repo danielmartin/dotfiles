@@ -112,6 +112,25 @@ And some general keybinding modifications.
   (require 'keybindings)
 #+END_SRC
 
+*** Appearance and Themes
+
+Appearances and themes are loaded from their own file.
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (require 'appearance)
+#+END_SRC
+
+*** Cross References
+
+Use ivy-xref to select cross references:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package ivy-xref
+    :ensure t
+    :after ivy
+    :init (setq xref-show-xrefs-function #'ivy-xref-show-xrefs))
+#+END_SRC
+
 *** Custom Keymaps
 
 Define my custom prefix keys:
@@ -122,39 +141,6 @@ Define my custom prefix keys:
             (define-prefix-command (cdr entry))
             (bind-key (car entry) (cdr entry)))
         '(("C-c w" . my-ctrl-c-w-map))))
-#+END_SRC
-
-*** Mac
-
-On a Mac, I use the Command key as Meta.
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (setq mac-option-modifier 'none)
-  (setq mac-command-modifier 'meta)
-  (setq ns-function-modifier 'hyper)
-#+END_SRC
-
-GUI apps on macOS do not inherit $PATH from shell. This package solves
-that.
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package exec-path-from-shell
-    :ensure t
-    :if (memq window-system '(mac ns))
-    :config
-    (progn
-      (setq exec-path-from-shell-arguments '("-l"))
-      (setq exec-path-from-shell-variables
-            (append exec-path-from-shell-variables '("JAVA_HOME")))
-      (exec-path-from-shell-initialize)))
-#+END_SRC
-
-*** Appearance and Themes
-
-Appearances and themes are loaded from their own file.
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (require 'appearance)
 #+END_SRC
 
 *** Ediff
@@ -217,6 +203,31 @@ I also highlight the current line, only for programming modes.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (add-hook 'prog-mode-hook 'hl-line-mode)
+#+END_SRC
+
+*** Mac
+
+On a Mac, I use the Command key as Meta.
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (setq mac-option-modifier 'none)
+  (setq mac-command-modifier 'meta)
+  (setq ns-function-modifier 'hyper)
+#+END_SRC
+
+GUI apps on macOS do not inherit $PATH from shell. This package solves
+that.
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package exec-path-from-shell
+    :ensure t
+    :if (memq window-system '(mac ns))
+    :config
+    (progn
+      (setq exec-path-from-shell-arguments '("-l"))
+      (setq exec-path-from-shell-variables
+            (append exec-path-from-shell-variables '("JAVA_HOME")))
+      (exec-path-from-shell-initialize)))
 #+END_SRC
 
 *** Mode Line
@@ -391,17 +402,6 @@ I use winner-mode to manage my windows with convenient undo/redo functions.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (winner-mode 1)
-#+END_SRC
-
-*** Cross References
-
-Use ivy-xref to select cross references:
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package ivy-xref
-    :ensure t
-    :after ivy
-    :init (setq xref-show-xrefs-function #'ivy-xref-show-xrefs))
 #+END_SRC
 
 ** Programming Language Customizations
@@ -701,33 +701,15 @@ I use swift-mode for Swift code.
     :mode ("\\.swift\\'"))
 #+END_SRC
 
-I have created Swift documentation in the Info format, so add a custom
-path here:
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (add-to-list 'Info-directory-list "~/Projects/swift-info/")
-#+END_SRC
-
-Add support for info-lookup:
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (require 'info-look)
-  (info-lookup-maybe-add-help
-   :mode 'swift-mode
-   :regexp "[#@_a-zA-Z][_a-zA-Z0-9\\?!]*"
-   :doc-spec '(("(swift)Index" nil "['`‘]" "['’]")
-               ("(swift-reference)Index" nil "['`‘]" "['’]")))
-#+END_SRC
-
 Swift-helpful is a mode that provides a self-documenting experience for writing Swift code:
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package swift-helpful
     :after swift-mode
-    :load-path "~/Projects/swift-helpful"
     :config
     (setq swift-helpful-stdlib-path "~/Projects/swift-source/swift/stdlib/public/"))
 #+END_SRC
+
 *** TableGen
 
 TableGen is an abstract IDL used by LLVM and related projects to
@@ -975,25 +957,47 @@ The edit-indirect package lets me edit source code in a separate buffer.
     :defer t)
 #+END_SRC
 
+*** Feeds
+
+For browsing feeds, I use Elfeed:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package elfeed
+    :ensure t
+    :defer t
+    :bind
+    ("C-x w" . elfeed)
+    :config
+    (setq elfeed-feeds
+          '("http://nullprogram.com/feed/"
+            "http://planet.emacsen.org/atom.xml"
+            "https://nvd.nist.gov/feeds/xml/cve/misc/nvd-rss-analyzed.xml")))
+#+END_SRC
+
 *** Git
 
 For working on Git repositories and associated services (currently
 GitHub only) I use several packages.
 
-**** Magit
+**** Browse at Remote
 
-Magit is the best Git porcelain I've ever used.
+This package browses target pages at GitHub/Bitbucket.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package magit
+  (use-package browse-at-remote
     :ensure t
     :bind
-    ("C-x g" . magit-status)
-    :config
-    (magit-add-section-hook 'magit-status-sections-hook
-                            'magit-insert-modules-overview
-                            'magit-insert-unpulled-from-upstream)
-    (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
+    ("C-c g g" . browse-at-remote))
+#+END_SRC
+
+**** Forge
+
+Forge is a package similar to Magithub:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package forge
+    :ensure t
+    :after magit)
 #+END_SRC
 
 **** Git Gutter
@@ -1038,25 +1042,20 @@ the most recent Git historical version.
     :commands git-undo)
 #+END_SRC
 
-**** Browse at Remote
+**** Magit
 
-This package browses target pages at GitHub/Bitbucket.
+Magit is the best Git porcelain I've ever used.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package browse-at-remote
+  (use-package magit
     :ensure t
     :bind
-    ("C-c g g" . browse-at-remote))
-#+END_SRC
-
-**** Forge
-
-Forge is a package similar to Magithub:
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package forge
-    :ensure t
-    :after magit)
+    ("C-x g" . magit-status)
+    :config
+    (magit-add-section-hook 'magit-status-sections-hook
+                            'magit-insert-modules-overview
+                            'magit-insert-unpulled-from-upstream)
+    (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
 #+END_SRC
 
 *** Google Test
