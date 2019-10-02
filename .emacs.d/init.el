@@ -674,6 +674,7 @@
 
 
 (use-package swift-helpful
+  :ensure t
   :after swift-mode
   :config
   (setq swift-helpful-stdlib-path "~/Projects/swift-source/swift/stdlib/public/"))

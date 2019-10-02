@@ -705,6 +705,7 @@ Swift-helpful is a mode that provides a self-documenting experience for writing 
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package swift-helpful
+    :ensure t
     :after swift-mode
     :config
     (setq swift-helpful-stdlib-path "~/Projects/swift-source/swift/stdlib/public/"))
