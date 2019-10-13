@@ -474,7 +474,6 @@
   :diminish ccls-code-lens-mode
   :after lsp-mode
   :config
-  (add-hook 'lsp-after-open-hook #'ccls-code-lens-mode)
   (setq ccls-executable (expand-file-name "~/Projects/ccls/Release/ccls")))
 
 ;; Clojure
