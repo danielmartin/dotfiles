@@ -1011,6 +1011,10 @@
 
 ;; Magit is the best Git porcelain I've ever used.
 
+;; Protect uncommitted changes before saving files in WIP branches:
+
+
+(add-hook 'before-save-hook 'magit-wip-commit-initial-backup)
 
 (use-package magit
   :ensure t
@@ -1020,7 +1024,25 @@
   (magit-add-section-hook 'magit-status-sections-hook
                           'magit-insert-modules-overview
                           'magit-insert-unpulled-from-upstream)
-  (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
+  (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
+  (setq magit-wip-merge-branch t)
+  (transient-append-suffix
+    'magit-log "a" '("i" "Index wipref" magit-wip-log-index))
+  (transient-append-suffix
+    'magit-log "i" '("w" "Worktree wipref" magit-wip-log-worktree)))
+
+
+
+;; Magit has some minor modes to commit to WIP branches before a
+;; destructive operation:
+
+
+(use-package magit-wip
+  :after magit
+  :config
+  (magit-wip-before-change-mode)
+  (magit-wip-after-apply-mode)
+  (magit-wip-after-save-mode))
 
 ;; Google Test
 
