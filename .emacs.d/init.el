@@ -688,6 +688,18 @@
   :load-path "~/Projects/llvm-project/llvm/utils/emacs"
   :mode ("\\.td\\'"))
 
+;; Tree-sitter
+
+;; Tree-sitter is a generic parser of programming languages that can complement
+;; Emacs's specific programming modes and Language Server Protocol.
+
+
+(use-package tree-sitter
+  :load-path "~/Projects/emacs-tree-sitter"
+  :config
+  (add-to-list 'tree-sitter-major-mode-language-alist '(swift-mode . swift))
+  (add-hook 'swift-mode-hook #'tree-sitter-mode))
+
 ;; Autocompletion
 
 ;; Autocompletion is very important for programming languages and natural
