@@ -134,6 +134,21 @@
 
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 
+;; Fast Scroll
+
+;; To ensure scrolling is fast in Emacs, I use a package that disables
+;; non-essential things while the window is being scrolled:
+
+
+(use-package fast-scroll
+  :ensure t
+  :demand t
+  :config
+  (add-hook 'fast-scroll-start-hook (lambda () (flycheck-mode -1)))
+  (add-hook 'fast-scroll-end-hook (lambda () (flycheck-mode 1)))
+  (fast-scroll-config)
+  (fast-scroll-mode 1))
+
 ;; File Backup Management
 
 ;; Store Emacs backup files in their own directory, so as not to pollute
