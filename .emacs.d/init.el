@@ -1024,6 +1024,9 @@
   (magit-add-section-hook 'magit-status-sections-hook
                           'magit-insert-modules-overview
                           'magit-insert-unpulled-from-upstream)
+  (magit-add-section-hook 'magit-status-sections-hook
+                          #'forge-insert-assigned-pullreqs
+                          nil t)
   (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
   (setq magit-wip-merge-branch t)
   (transient-append-suffix
