@@ -181,17 +181,6 @@ the current directory.
   (setq auto-save-list-file-name-transforms '((".*", "~/.emacs.d/auto-save-list" t)))
 #+END_SRC
 
-*** Fill Column Indicator
-
-Fill-column-indicator is a mode for showing where the `fill-column`
-lies visually. I only use it for Markdown and commit messages.
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package fill-column-indicator
-    :ensure t
-    :hook ((markdown-mode git-commit-mode) . fci-mode))
-#+END_SRC
-
 *** Ido and Recentf
 
 I use Ido ("Interactive Do") as a simple way to switch between open
