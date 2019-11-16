@@ -105,6 +105,15 @@
 
 (require 'appearance)
 
+;; Compilation Mode
+
+;; Some customizations to Emacs compilation mode:
+
+
+(use-package compile
+  :config
+  (setq compilation-scroll-output t))
+
 ;; Cross References
 
 ;; Use ivy-xref to select cross references:

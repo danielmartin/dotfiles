@@ -120,6 +120,16 @@ Appearances and themes are loaded from their own file.
   (require 'appearance)
 #+END_SRC
 
+*** Compilation Mode
+
+Some customizations to Emacs compilation mode:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package compile
+    :config
+    (setq compilation-scroll-output t))
+#+END_SRC
+
 *** Cross References
 
 Use ivy-xref to select cross references:
