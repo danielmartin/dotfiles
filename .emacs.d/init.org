@@ -1034,6 +1034,17 @@ This package browses target pages at GitHub/Bitbucket.
     ("C-c g g" . browse-at-remote))
 #+END_SRC
 
+**** Diff-hl
+
+Diff-hl highlight uncommitted changes.
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package diff-hl
+    :ensure t
+    :init
+    (global-diff-hl-mode))
+#+END_SRC
+
 **** Forge
 
 Forge is a package similar to Magithub:
@@ -1042,26 +1053,6 @@ Forge is a package similar to Magithub:
   (use-package forge
     :ensure t
     :after magit)
-#+END_SRC
-
-**** Git Gutter
-
-Git Gutter shows git changes in a buffer visually.
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package git-gutter
-    :ensure t
-    :diminish git-gutter-mode
-    :custom
-    (git-gutter:modified-sign "~")		; 
-    (git-gutter:added-sign    "+")		; 
-    (git-gutter:deleted-sign  "-")		; 
-    :custom-face
-    (git-gutter:modified ((t (:foreground "#f1fa8c" :background "#f1fa8c"))))
-    (git-gutter:added    ((t (:foreground "#50fa7b" :background "#50fa7b"))))
-    (git-gutter:deleted  ((t (:foreground "#ff79c6" :background "#ff79c6"))))
-    :config
-    (global-git-gutter-mode +1))
 #+END_SRC
 
 **** Git TimeMachine

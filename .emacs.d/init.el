@@ -978,6 +978,16 @@
   :bind
   ("C-c g g" . browse-at-remote))
 
+;; Diff-hl
+
+;; Diff-hl highlight uncommitted changes.
+
+
+(use-package diff-hl
+  :ensure t
+  :init
+  (global-diff-hl-mode))
+
 ;; Forge
 
 ;; Forge is a package similar to Magithub:
@@ -986,25 +996,6 @@
 (use-package forge
   :ensure t
   :after magit)
-
-;; Git Gutter
-
-;; Git Gutter shows git changes in a buffer visually.
-
-
-(use-package git-gutter
-  :ensure t
-  :diminish git-gutter-mode
-  :custom
-  (git-gutter:modified-sign "~")		; 
-  (git-gutter:added-sign    "+")		; 
-  (git-gutter:deleted-sign  "-")		; 
-  :custom-face
-  (git-gutter:modified ((t (:foreground "#f1fa8c" :background "#f1fa8c"))))
-  (git-gutter:added    ((t (:foreground "#50fa7b" :background "#50fa7b"))))
-  (git-gutter:deleted  ((t (:foreground "#ff79c6" :background "#ff79c6"))))
-  :config
-  (global-git-gutter-mode +1))
 
 ;; Git TimeMachine
 
