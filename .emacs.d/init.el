@@ -490,6 +490,23 @@
   :config
   (setq ccls-executable (expand-file-name "~/Projects/ccls/Release/ccls")))
 
+
+
+;; Clang-tidy integration
+
+
+(use-package flycheck-clang-tidy
+  :ensure t
+  :after lsp-ui-flycheck
+  :hook
+  (flycheck-mode . flycheck-clang-tidy-setup)
+  :config
+  (setq flycheck-clang-tidy-executable "~/Projects/llvm-project/build-Release/bin/clang-tidy")
+  ;; .clang-tidy and compile_commands.json should always be in the
+  ;; same folder.
+  (setq flycheck-clang-tidy-build-path ".")
+  (flycheck-add-next-checker 'lsp-ui '(warning . c/c++-clang-tidy)))
+
 ;; Clojure
 
 ;; Cider is the "de facto" package for working on Clojure projects.
