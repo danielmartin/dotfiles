@@ -976,7 +976,19 @@
 (use-package browse-at-remote
   :ensure t
   :bind
-  ("C-c g g" . browse-at-remote))
+  ("C-c g g" . dm/browse-at-remote)
+  :config
+  (defun dm/browse-at-remote (arg)
+    "Call `browse-at-remote' with `browse-at-remote-prefer-symbolic' set to nil.
+With a prefix argument, call regular `browse-at-remote'. The
+difference `browse-at-remote-prefer-symbolic' does is that, when
+set to nil, the URL will reference a commit hash instead of a
+particular branch, so it will be completely stable over time."
+    (interactive "P")
+    (if arg
+        (browse-at-remote)
+      (let ((browse-at-remote-prefer-symbolic nil))
+        (browse-at-remote)))))
 
 ;; Diff-hl
 
