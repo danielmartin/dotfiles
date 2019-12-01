@@ -436,9 +436,10 @@ For C languages, I use K&R style, with an indentation of 2 spaces.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package cc-mode
     :config
-    (add-hook 'c-mode-common-hook (lambda ()
+    :hook ((c-mode-common . (lambda ()
                              (c-set-style "k&r")
                              (setq c-basic-offset 2)))
+           (c++-mode . gtest-mode))
     ;; Format with clang-format.
     :bind (:map c-mode-base-map
                 ("C-c u" . clang-format)))
@@ -1131,10 +1132,11 @@ Integrate Magit with git-imerge:
 *** Google Test
 
 For running Google Tests from a given buffer, I have created a simple
-minor mode (must be enabled manually):
+minor mode:
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (require 'gtest-mode)
+  (use-package gtest-mode
+    :defer t)
 #+END_SRC
 
 *** Helpful

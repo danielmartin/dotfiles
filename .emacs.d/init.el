@@ -418,9 +418,10 @@
 
 (use-package cc-mode
   :config
-  (add-hook 'c-mode-common-hook (lambda ()
+  :hook ((c-mode-common . (lambda ()
                            (c-set-style "k&r")
                            (setq c-basic-offset 2)))
+         (c++-mode . gtest-mode))
   ;; Format with clang-format.
   :bind (:map c-mode-base-map
               ("C-c u" . clang-format)))
@@ -1070,10 +1071,11 @@ particular branch, so it will be completely stable over time."
 ;; Google Test
 
 ;; For running Google Tests from a given buffer, I have created a simple
-;; minor mode (must be enabled manually):
+;; minor mode:
 
 
-(require 'gtest-mode)
+(use-package gtest-mode
+  :defer t)
 
 ;; Helpful
 
