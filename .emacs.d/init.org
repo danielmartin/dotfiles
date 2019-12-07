@@ -1136,7 +1136,7 @@ minor mode:
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package gtest-mode
-    :defer t)
+    :after cc-mode)
 #+END_SRC
 
 *** Helpful

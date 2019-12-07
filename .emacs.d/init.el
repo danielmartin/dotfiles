@@ -1075,7 +1075,7 @@ particular branch, so it will be completely stable over time."
 
 
 (use-package gtest-mode
-  :defer t)
+  :after cc-mode)
 
 ;; Helpful
 
