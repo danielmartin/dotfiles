@@ -29,7 +29,8 @@ With arg N, insert N newlines."
      "python -mjson.tool" (current-buffer) t)))
 
 (defun dm/beginning-of-line-dwim ()
-  "Toggle between moving the point to the start of the first non-whitespace character and the start of the line."
+  "Toggle between moving the point to the start of the first
+non-whitespace character and the start of the line."
   (interactive)
   (let ((start-position (point)))
     ;; Move to the first non-whitespace character.
@@ -47,14 +48,17 @@ With arg N, insert N newlines."
   (interactive)
   (let ((string-at-point (thing-at-point 'word)))
     (push-mark)
-    (if (and (stringp string-at-point) (string-match "\\`[0-9]*[1-9][0-9]*\\'" string-at-point))
+    (if (and (stringp string-at-point)
+             (string-match "\\`[0-9]*[1-9][0-9]*\\'" string-at-point))
         (goto-char (string-to-number string-at-point))
       (let ((char (read-from-minibuffer "Go to char: ")))
         (goto-char (string-to-number char))))))
 
 (global-set-key (kbd "M-g c") 'dm/dwim-goto-char)
 
-(defvar ediff-do-hexl-diff t "Variable used to store trigger for doing diff in hexl-mode")
+(defvar ediff-do-hexl-diff t
+  "Variable used to store trigger for doing diff in hexl-mode")
+
 (defadvice ediff-files-internal (around
 ediff-files-internal-for-binary-files activate)
   "Catch the condition when the binary files differ the reason
@@ -131,8 +135,7 @@ expects some output that isn't there and triggers an error"
 (add-hook 'compilation-finish-functions #'dm/compile-finish)
 
 (defun dm/dired-sort ()
-  "Sort Dired listing in different ways (by date, size, or
-  name)."
+  "Sort Dired listing in different ways (by date, size, or name)."
   (interactive)
   (setq sort-by (ido-completing-read "Sort by: " '("date" "size" "name")))
   (cond
@@ -174,7 +177,7 @@ Time is formatted in hours, minutes, and seconds."
                                                " %Y"))))))))
 
 (defun dm/print-compile-time ()
-  "Print the compile/grep time of a `compilation-mode' buffer that finished successfully.
+  "Print the time of a `compilation-mode' buffer that finished successfully.
 Time is formatted in hours, minutes, and seconds."
   (interactive)
   (when (derived-mode-p 'compilation-mode)
