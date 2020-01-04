@@ -234,5 +234,13 @@ Time is formatted in hours, minutes, and seconds."
           (princ (format "%2d %20s %s\n" count key
                          (make-string count ?+))))))))
 
+(defun dm/stringified-mode-line ()
+  "Display the mode line in a help buffer so you can inspect its text properties."
+  (interactive)
+  (with-help-window "*Stringified Mode Line*"
+    (with-current-buffer "*Stringified Mode Line*"
+      (font-lock-mode -1)
+      (insert (format-mode-line mode-line-format)))))
+
 (provide 'defuns-config)
 ;;; defuns-config.el ends here
