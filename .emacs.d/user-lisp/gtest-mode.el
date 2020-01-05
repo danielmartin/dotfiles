@@ -23,7 +23,7 @@
 
 ;;; Commentary:
 
-;; Minor mode to manage Google Tests. Among the supported features are:
+;; Minor mode to manage Google Tests.  Among the supported features are:
 ;;
 ;; - Run individual test cases when the point is inside one of them.
 ;;
@@ -61,7 +61,7 @@ A Google Test name has the format CLASS.TEST-NAME."
   (compile (concat target " --gtest_filter=" test-filter)))
 
 (defun gtest-mode--repeat-test-filter (test-filter target times)
-  "Runs a Google Test filter TEST-FILTER on TARGET TIMES times."
+  "Run a Google Test filter TEST-FILTER on TARGET TIMES times."
   (message "Repeating %s %s times" test-filter times)
   (compile (concat target " --gtest_filter=" test-filter
                    " --gtest_repeat=" (number-to-string times))))
@@ -76,7 +76,7 @@ With prefix argument, repeat the test ARG times."
     (gtest-mode--run-test-filter (gtest-mode--extract-test-name) gtest-mode-target)))
 
 (defun gtest-mode--test-list (test-output)
-  "Return a list of Google Test tests from TEST-OUTPUT.
+  "Return a list of test cases from TEST-OUTPUT.
 TEST-OUTPUT has the following format:
 TestClass.
   FirstTest
@@ -114,7 +114,7 @@ AnotherTestClass.
   (completing-read "Test to run: " collection))
 
 (defun gtest-mode-run ()
-  "Show a list of Google Tests contained in `gtest-mode-target' and run any of them."
+  "Show a list of test cases contained in `gtest-mode-target' and run any of them."
   (interactive)
   (let ((target gtest-mode-target))
     (with-temp-buffer
