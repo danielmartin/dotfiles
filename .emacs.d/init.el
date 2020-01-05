@@ -1145,7 +1145,7 @@ particular branch, so it will be completely stable over time."
    ("C-x C-f" . counsel-find-file)
    ("<f1> f" . counsel-describe-function)
    ("<f1> v" . counsel-describe-variable)
-   ("C-s" . swiper)
+   ("C-s" . swiper-isearch)
    ("<f7>" . counsel-imenu)
    ("M-y" . counsel-yank-pop)
    ("C-x b"   . ivy-switch-buffer)
