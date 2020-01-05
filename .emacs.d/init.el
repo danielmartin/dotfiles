@@ -408,13 +408,14 @@
   :bind (:map lsp-mode-map
               ("C-c C-d" . lsp-describe-thing-at-point))
   :commands lsp
-  :hook ((c-mode-common . (lambda () (require 'ccls) (lsp)))
-         (swift-mode . lsp)
+  :hook ((c-mode-common . (lambda () (require 'ccls) (lsp-deferred)))
+         (swift-mode . lsp-deferred)
          (web-mode . (lambda ()
                         ;; Set a local path to the Flow LSP binary.
                         (require 'lsp-clients)
                         (setq lsp-clients-flow-server (concat (projectile-project-root) "node_modules/.bin/flow"))
-                        (lsp))))
+                        (lsp-deferred)))
+         (sh-mode . lsp-deferred))
   :config
   (setq lsp-prefer-flymake nil)
   (setq xref-prompt-for-identifier '(not xref-find-definitions
