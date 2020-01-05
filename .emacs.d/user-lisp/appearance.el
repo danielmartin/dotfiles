@@ -80,7 +80,6 @@
 
 (when window-system
   (setq frame-title-format '(buffer-file-name "%f" ("%b")))
-  (blink-cursor-mode -1)
   (tool-bar-mode -1))
 
 ;; Ditch scrollbars
