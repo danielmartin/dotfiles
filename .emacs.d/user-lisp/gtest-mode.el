@@ -95,19 +95,15 @@ AnotherTestClass.
                ;; case. This lets users run all tests from a test
                ;; class.
                (setq current-test-class (match-string 1))
-               (add-to-list 'test-commands
-                            (concat current-test-class ".*")
-                            t))
+               (push (concat current-test-class ".*")
+                     test-commands))
               ((looking-at "  \\(\\w+\\(/[0-9]+\\)?\\)")        ;This is a test case
-               (add-to-list 'test-commands
-                            (concat current-test-class
-                                    "."
-                                    (match-string 1))
-                            t))
+               (push (concat current-test-class "." (match-string 1))
+                     test-commands))
               (t (user-error "The test output does not have the expected format %s"
                              (thing-at-point 'line t))))
         (forward-line 1))
-      test-commands)))
+      (nreverse test-commands))))
 
 (defun gtest-mode--completing-read (collection)
   "Call `completing-read' with COLLECTION."
