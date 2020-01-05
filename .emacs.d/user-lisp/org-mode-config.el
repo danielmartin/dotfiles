@@ -3,7 +3,7 @@
 ;;; Commentary:
 
 ;;; Code:
-(setq org-directory "~/Documents/Org-Mode")
+(setq org-directory "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/")
 (setq org-fontify-done-headline t)
 (setq org-src-fontify-natively t)
 (custom-set-faces
