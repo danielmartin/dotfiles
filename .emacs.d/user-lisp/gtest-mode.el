@@ -135,7 +135,6 @@ AnotherTestClass.
 
 (define-minor-mode gtest-mode
   "Minor mode to run Google Tests."
-  :lighter " Google Test"
   :keymap (let ((gtest-mode-map (make-sparse-keymap)))
 	    (define-key gtest-mode-map (kbd "C-c l") 'gtest-mode-run-at-point)
             (define-key gtest-mode-map (kbd "C-c r") 'gtest-mode-run)
