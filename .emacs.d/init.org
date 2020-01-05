@@ -20,6 +20,15 @@ Save customizations in a separate file:
   (load custom-file)
 #+END_SRC
 
+* Measuring Startup Time
+
+Declare a constant so that we can measure how long it takes to load the
+initialization files:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (defconst emacs-start-time (current-time))
+#+END_SRC
+
 * Generating This Document
 
 Here's a convenience function that generates the files mentioned in
@@ -1491,3 +1500,21 @@ I've also added on-the-fly syntax checking capabilities.
     :load-path "~/.emacs.d/user-lisp/flycheck-pbxproj"
     :defer t)
 #+END_SRC
+
+** Initialization Time
+
+Inform in the echo area how long it took to load this file:
+
+ #+BEGIN_SRC emacs-lisp :tangle yes :comments org
+   (let ((elapsed (float-time (time-subtract (current-time)
+                                             emacs-start-time))))
+     (message "Loading %s...done (%.3fs)" load-file-name elapsed))
+
+   (add-hook 'after-init-hook
+             `(lambda ()
+                (let ((elapsed
+                       (float-time
+                        (time-subtract (current-time) emacs-start-time))))
+                  (message "Loading %s...done (%.3fs) [after-init]"
+                           ,load-file-name elapsed))) t)
+ #+END_SRC

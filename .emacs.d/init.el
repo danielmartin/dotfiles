@@ -6,6 +6,14 @@
 (setq custom-file "~/.emacs.d/settings.el")
 (load custom-file)
 
+;; Measuring Startup Time
+
+;; Declare a constant so that we can measure how long it takes to load the
+;; initialization files:
+
+
+(defconst emacs-start-time (current-time))
+
 ;; Generating This Document
 
 ;; Here's a convenience function that generates the files mentioned in
@@ -1412,3 +1420,20 @@ particular branch, so it will be completely stable over time."
 (use-package flycheck-pbxproj
   :load-path "~/.emacs.d/user-lisp/flycheck-pbxproj"
   :defer t)
+
+;; Initialization Time
+
+;; Inform in the echo area how long it took to load this file:
+
+
+(let ((elapsed (float-time (time-subtract (current-time)
+                                          emacs-start-time))))
+  (message "Loading %s...done (%.3fs)" load-file-name elapsed))
+
+(add-hook 'after-init-hook
+          `(lambda ()
+             (let ((elapsed
+                    (float-time
+                     (time-subtract (current-time) emacs-start-time))))
+               (message "Loading %s...done (%.3fs) [after-init]"
+                        ,load-file-name elapsed))) t)
