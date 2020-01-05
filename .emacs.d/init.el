@@ -20,11 +20,6 @@
 
 ;; Contents
 
-;; We need to workaround an Emacs bug, at least in 26.2:
-
-
-(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
-
 ;; General Folder Structure
 
 ;;  The load path is the list of directories that Emacs searches for
