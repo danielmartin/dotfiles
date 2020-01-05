@@ -26,8 +26,6 @@
   (call-interactively #'org-babel-tangle)
   (call-interactively #'org-html-export-as-html))
 
-;; Contents
-
 ;; General Folder Structure
 
 ;;  The load path is the list of directories that Emacs searches for
@@ -203,13 +201,6 @@
 
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 
-
-
-;; I also highlight the current line, only for programming modes.
-
-
-(add-hook 'prog-mode-hook 'hl-line-mode)
-
 ;; Mac
 
 ;; On a Mac, I use the Command key as Meta.
@@ -244,13 +235,6 @@
 
 
 
-;; Show column numbers in the mode line.
-
-
-(column-number-mode 1)
-
-
-
 ;; Show the current time.
 
 
@@ -262,37 +246,6 @@
           display-time-use-mail-icon t
           display-time-24hr-format nil)
     (display-time-mode t)))
-
-
-
-;; Use smart-mode-line to customize the mode line.
-
-
-(use-package smart-mode-line
-  :ensure t
-  :init
-  (let ((which-func '(which-function-mode
-		      (which-func-mode
-		       ("" which-func-format " ")))))
-    (setq-default mode-line-format (remove which-func mode-line-format))
-    (setq-default mode-line-misc-info (remove which-func mode-line-misc-info))
-    (setq cell (last mode-line-format 8))
-    (setcdr cell
-	     (cons which-func
-		  (cdr cell))))
-  :config
-  (custom-set-faces
-   '(which-func ((t (:foreground "Black" :slant italic :weight bold)))))
-  (setq sml/theme 'light)
-  :hook (after-init . sml/setup))
-
-
-
-;; Use diminish to control which modes to show in the mode line.
-
-
-(use-package diminish
-  :ensure t)
 
 ;; Navigation Tree
 

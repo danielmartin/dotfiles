@@ -51,9 +51,9 @@ the previous section:
 
  I store the Emacs Lisp code that I write inside the user-lisp folder.
 
- #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-   (add-to-list 'load-path "~/.emacs.d/user-lisp")
- #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (add-to-list 'load-path "~/.emacs.d/user-lisp")
+#+END_SRC
 
 ** Package Management
 
@@ -226,12 +226,6 @@ I use display-line-numbers, but only for programming modes.
   (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 #+END_SRC
 
-I also highlight the current line, only for programming modes.
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (add-hook 'prog-mode-hook 'hl-line-mode)
-#+END_SRC
-
 *** Mac
 
 On a Mac, I use the Command key as Meta.
@@ -265,12 +259,6 @@ Show in which function or method the point is.
   (which-function-mode 1)
 #+END_SRC
 
-Show column numbers in the mode line.
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (column-number-mode 1)
-#+END_SRC
-
 Show the current time.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
@@ -282,35 +270,6 @@ Show the current time.
             display-time-use-mail-icon t
             display-time-24hr-format nil)
       (display-time-mode t)))
-#+END_SRC
-
-Use smart-mode-line to customize the mode line.
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package smart-mode-line
-    :ensure t
-    :init
-    (let ((which-func '(which-function-mode
-			(which-func-mode
-			 ("" which-func-format " ")))))
-      (setq-default mode-line-format (remove which-func mode-line-format))
-      (setq-default mode-line-misc-info (remove which-func mode-line-misc-info))
-      (setq cell (last mode-line-format 8))
-      (setcdr cell
-	       (cons which-func
-		    (cdr cell))))
-    :config
-    (custom-set-faces
-     '(which-func ((t (:foreground "Black" :slant italic :weight bold)))))
-    (setq sml/theme 'light)
-    :hook (after-init . sml/setup))
-#+END_SRC
-
-Use diminish to control which modes to show in the mode line.
-
-#+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package diminish
-    :ensure t)
 #+END_SRC
 
 *** Navigation Tree
