@@ -11,6 +11,15 @@ Org-babel. You can generate an Emacs Lisp (.el) file for configuring
 Emacs, and an HTML (.htm) file you can display in your favorite
 browser.
 
+* Customization File
+
+Save customizations in a separate file:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (setq custom-file "~/.emacs.d/settings.el")
+  (load custom-file)
+#+END_SRC
+
 * Generating This Document
 
 Here's a convenience function that generates the files mentioned in

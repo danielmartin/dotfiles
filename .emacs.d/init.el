@@ -1,3 +1,11 @@
+;; Customization File
+
+;; Save customizations in a separate file:
+
+
+(setq custom-file "~/.emacs.d/settings.el")
+(load custom-file)
+
 ;; Generating This Document
 
 ;; Here's a convenience function that generates the files mentioned in
