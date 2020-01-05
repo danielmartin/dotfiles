@@ -332,7 +332,7 @@ Integrate Treemacs with LSP:
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package lsp-treemacs
-    :ensure t
+    :load-path "~/Projects/lsp-treemacs"
     :after treemacs lsp-mode)
 #+END_SRC
 
@@ -461,12 +461,12 @@ LSP UI contains higher level UI modules for lsp-mode, like flycheck
 support or code lenses.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-    (use-package lsp-ui
-      :ensure t
-      :after lsp-mode
-      :commands lsp-ui-mode
-      :config
-      (setq lsp-ui-sideline-enable nil))
+  (use-package lsp-ui
+    :load-path "~/Projects/lsp-ui"
+    :after lsp-mode
+    :commands lsp-ui-mode
+    :config
+    (setq lsp-ui-sideline-enable nil))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
@@ -478,7 +478,7 @@ support or code lenses.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package ccls
-    :ensure t
+    :load-path "~/Projects/emacs-ccls"
     :diminish ccls-code-lens-mode
     :after lsp-mode
     :config
@@ -708,7 +708,7 @@ Swift-helpful is a mode that provides a self-documenting experience for writing 
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package swift-helpful
-    :ensure t
+    :load-path "~/Projects/swift-helpful"
     :after swift-mode
     :config
     (setq swift-helpful-stdlib-path "~/Projects/swift-source/swift/stdlib/public/"))

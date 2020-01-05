@@ -309,7 +309,7 @@
 
 
 (use-package lsp-treemacs
-  :ensure t
+  :load-path "~/Projects/lsp-treemacs"
   :after treemacs lsp-mode)
 
 ;; Pairs
@@ -438,7 +438,7 @@
 
 
 (use-package lsp-ui
-  :ensure t
+  :load-path "~/Projects/lsp-ui"
   :after lsp-mode
   :commands lsp-ui-mode
   :config
@@ -450,7 +450,7 @@
   :commands company-lsp)
 
 (use-package ccls
-  :ensure t
+  :load-path "~/Projects/emacs-ccls"
   :diminish ccls-code-lens-mode
   :after lsp-mode
   :config
@@ -670,7 +670,7 @@
 
 
 (use-package swift-helpful
-  :ensure t
+  :load-path "~/Projects/swift-helpful"
   :after swift-mode
   :config
   (setq swift-helpful-stdlib-path "~/Projects/swift-source/swift/stdlib/public/"))
