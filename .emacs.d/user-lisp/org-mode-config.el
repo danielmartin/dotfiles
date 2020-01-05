@@ -6,14 +6,6 @@
 (setq org-directory "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org/")
 (setq org-fontify-done-headline t)
 (setq org-src-fontify-natively t)
-(custom-set-faces
- '(org-done ((t (:foreground "PaleGreen"
-                             :weight normal
-                             :strike-through t))))
- '(Org-headline-done
-   ((((class color) (min-colors 16) (background dark))
-     (:foreground "LightSalmon" :strike-through t)))))
-
 (setq org-log-done 'time)
 
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
