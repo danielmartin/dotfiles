@@ -45,6 +45,21 @@
 ;; Org-Mode Todo Keywords
 (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
 
+(defun org-get-safari-link ()
+  (let ((subject (substring (do-applescript
+                             (string-to-multibyte "tell application \"Safari\"
+        name of document of front window
+end tell")) 1 -1))
+        (url (substring (do-applescript
+                         (string-to-multibyte "tell application \"Safari\"
+        URL of document of front window
+end tell")) 1 -1)))
+    (org-make-link-string url subject)))
+
+(defun org-insert-url-link ()
+  (interactive)
+  (insert (org-get-safari-link)))
+
 ;; Org-Babel
 
 ;; Swift and Objective C.
