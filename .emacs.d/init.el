@@ -417,11 +417,14 @@
                         (lsp-deferred)))
          (sh-mode . lsp-deferred))
   :config
+  ;; Prefer Flycheck to Flymake.
   (setq lsp-prefer-flymake nil)
+  ;; Do not prompt for identifier when querying definitions/references.
   (setq xref-prompt-for-identifier '(not xref-find-definitions
                                          xref-find-definitions-other-window
                                          xref-find-definitions-other-frame
-                                         xref-find-references)))
+                                         xref-find-references))
+  (setq lsp-enable-links nil))
 
 (use-package lsp-sourcekit
   :ensure t

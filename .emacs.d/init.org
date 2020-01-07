@@ -440,11 +440,14 @@ Use LSP with company, and ccls as C++ client.
                           (lsp-deferred)))
            (sh-mode . lsp-deferred))
     :config
+    ;; Prefer Flycheck to Flymake.
     (setq lsp-prefer-flymake nil)
+    ;; Do not prompt for identifier when querying definitions/references.
     (setq xref-prompt-for-identifier '(not xref-find-definitions
                                            xref-find-definitions-other-window
                                            xref-find-definitions-other-frame
-                                           xref-find-references)))
+                                           xref-find-references))
+    (setq lsp-enable-links nil))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
