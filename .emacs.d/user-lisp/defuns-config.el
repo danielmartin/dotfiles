@@ -245,5 +245,45 @@ Time is formatted in hours, minutes, and seconds."
       (font-lock-mode -1)
       (insert (format-mode-line mode-line-format)))))
 
+(defun dm/prepend-pspdfkit-assets-folder (file)
+  "Prepend the PSPDFKit assets folder to FILE, assuming it's a relative path."
+  (concat "~/Projects/PSPDFKit/assets/" file))
+
+(defun dm/open-pdf-at-point ()
+  "Open a PDF at point in Emacs, Adobe Acrobat, or PSPDFInspector."
+  (interactive)
+  (let ((file (thing-at-point 'filename t)))
+    (unless (equalp "pdf" (file-name-extension file))
+      (error "There is not a PDF file at point"))
+    (cond ((file-name-absolute-p file) (dm/open-pdf-at-point--internal file))
+          (t (dm/open-pdf-at-point--internal (dm/prepend-pspdfkit-assets-folder file))))))
+
+(defun dm/open-in-emacs (file)
+  "Open FILE in another window."
+  (find-file-other-window file))
+
+(defun dm/open-in-adobe-acrobat (file)
+  "Open FILE in Adobe Acrobat."
+  (shell-command (format "open -b com.adobe.acrobat.Pro %s" file)))
+
+(defun dm/open-in-pspdfinspector (file)
+  "Open FILE in PSPDFInspector."
+  (shell-command (format "open -a PSPDFInspector %s" file)))
+
+(defun dm/open-pdf-at-point--internal (file)
+  "Prompt which program should open the PDF FILE."
+  (let ((programs '(("Emacs" . dm/open-in-emacs)
+                    ("Adobe Acrobat" . dm/open-in-adobe-acrobat)
+                    ("PSPDFInspector" . dm/open-in-pspdfinspector))))
+    (unless (file-exists-p file)
+      (error "The file %s does not exist" file))
+    (funcall
+     (cdr (assoc (completing-read (format "Select a program to open '%s': " file)
+                                  programs)
+                 programs))
+     file)))
+
+(global-set-key (kbd "C-c o") 'dm/open-pdf-at-point)
+
 (provide 'defuns-config)
 ;;; defuns-config.el ends here
