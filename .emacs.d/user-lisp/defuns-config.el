@@ -285,7 +285,7 @@ Time is formatted in hours, minutes, and seconds."
                  programs))
      file)))
 
-(global-set-key (kbd "C-c o") 'dm/open-pdf-at-point)
+(global-set-key (kbd "C-c o") #'dm/open-pdf-at-point)
 
 (provide 'defuns-config)
 ;;; defuns-config.el ends here
