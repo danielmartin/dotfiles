@@ -277,7 +277,7 @@ Time is formatted in hours, minutes, and seconds."
   (let ((programs '(("Emacs" . dm/open-in-emacs)
                     ("Adobe Acrobat" . dm/open-in-adobe-acrobat)
                     ("PSPDFInspector" . dm/open-in-pspdfinspector))))
-    (unless (file-exists-p file)
+    (unless (file-readable-p file)
       (error "The file %s does not exist" file))
     (funcall
      (cdr (assoc (completing-read (format "Select a program to open '%s': " file)
