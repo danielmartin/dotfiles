@@ -264,10 +264,12 @@ Time is formatted in hours, minutes, and seconds."
 
 (defun dm/open-in-adobe-acrobat (file)
   "Open FILE in Adobe Acrobat."
+  ;; This function assumes that in running on macOS.
   (shell-command (format "open -b com.adobe.acrobat.Pro %s" file)))
 
 (defun dm/open-in-pspdfinspector (file)
   "Open FILE in PSPDFInspector."
+  ;; This function assumes that in running on macOS.
   (shell-command (format "open -a PSPDFInspector %s" file)))
 
 (defun dm/open-pdf-at-point--internal (file)
