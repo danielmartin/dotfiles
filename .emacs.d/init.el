@@ -1360,6 +1360,16 @@ particular branch, so it will be completely stable over time."
   (setq undo-tree-visualizer-timestamps t)
   (setq undo-tree-visualizer-diff t))
 
+;; Wgrep
+
+;; Wgrep (writable grep) is a package to make grep buffers editable. It's
+;; also used by ivy-occur buffers.
+
+
+(use-package wgrep
+  :ensure t
+  :defer t)
+
 ;; Xcode Projects
 
 ;; I've created a package for working on Xcode projects.

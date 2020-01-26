@@ -1446,6 +1446,17 @@ the default undo/redo system.
     (setq undo-tree-visualizer-diff t))
 #+END_SRC
 
+*** Wgrep
+
+Wgrep (writable grep) is a package to make grep buffers editable. It's
+also used by ivy-occur buffers.
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package wgrep
+    :ensure t
+    :defer t)
+#+END_SRC
+
 *** Xcode Projects
 
 I've created a package for working on Xcode projects.
