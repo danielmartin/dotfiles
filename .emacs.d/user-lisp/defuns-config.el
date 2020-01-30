@@ -264,12 +264,12 @@ Time is formatted in hours, minutes, and seconds."
 
 (defun dm/open-in-adobe-acrobat (file)
   "Open FILE in Adobe Acrobat."
-  ;; This function assumes that in running on macOS.
+  ;; This function assumes that it's running on macOS.
   (call-process "open" nil nil nil "-b" "com.adobe.acrobat.Pro" (expand-file-name file)))
 
 (defun dm/open-in-pspdfinspector (file)
   "Open FILE in PSPDFInspector."
-  ;; This function assumes that in running on macOS.
+  ;; This function assumes that it's running on macOS.
   (call-process "open" nil nil nil "-a" "PSPDFInspector" (expand-file-name file)))
 
 (defun dm/open-pdf-at-point--internal (file)
