@@ -741,6 +741,15 @@ Emacs's specific programming modes and Language Server Protocol.
     (add-hook 'swift-mode-hook #'tree-sitter-mode))
 #+END_SRC
 
+*** TypeScript
+
+Add support for editing TypeScript files with `typescript-mode`:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package typescript-mode
+    :ensure t)
+#+END_SRC
+
 ** General Productivity Packages
 
 This is the list of the packages I use for productivity when

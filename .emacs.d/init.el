@@ -700,6 +700,14 @@
   (add-to-list 'tree-sitter-major-mode-language-alist '(swift-mode . swift))
   (add-hook 'swift-mode-hook #'tree-sitter-mode))
 
+;; TypeScript
+
+;; Add support for editing TypeScript files with `typescript-mode`:
+
+
+(use-package typescript-mode
+  :ensure t)
+
 ;; Autocompletion
 
 ;; Autocompletion is very important for programming languages and natural
