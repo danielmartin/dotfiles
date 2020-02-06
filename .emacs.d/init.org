@@ -423,7 +423,7 @@ for Objective-C++ files, use Objective-C mode.
   (add-to-list 'auto-mode-alist '("\\.mm$" . objc-mode))
 #+END_SRC
 
-Use LSP with company, and ccls as C++ client.
+Use LSP with company, and clangd as C++ client.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package lsp-mode
@@ -431,7 +431,7 @@ Use LSP with company, and ccls as C++ client.
     :bind (:map lsp-mode-map
                 ("C-c C-d" . lsp-describe-thing-at-point))
     :commands lsp
-    :hook ((c-mode-common . (lambda () (require 'ccls) (lsp-deferred)))
+    :hook ((c-mode-common . (lambda () (lsp-deferred)))
            (swift-mode . lsp-deferred)
            (web-mode . (lambda ()
                           ;; Set a local path to the Flow LSP binary.
@@ -442,6 +442,8 @@ Use LSP with company, and ccls as C++ client.
     :config
     ;; Prefer Flycheck to Flymake.
     (setq lsp-prefer-flymake nil)
+    ;; Configure clangd custom path.
+    (setq lsp-clients-clangd-executable "~/Projects/llvm-project/build-Release/bin/clangd")
     ;; Do not prompt for identifier when querying definitions/references.
     (setq xref-prompt-for-identifier '(not xref-find-definitions
                                            xref-find-definitions-other-window
@@ -479,8 +481,11 @@ support or code lenses.
     :commands company-lsp)
 #+END_SRC
 
+Disable ccls for now as I'm evaluating clangd.
+
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package ccls
+    :disabled t
     :load-path "~/Projects/emacs-ccls"
     :diminish ccls-code-lens-mode
     :after lsp-mode

@@ -400,7 +400,7 @@
 
 
 
-;; Use LSP with company, and ccls as C++ client.
+;; Use LSP with company, and clangd as C++ client.
 
 
 (use-package lsp-mode
@@ -408,7 +408,7 @@
   :bind (:map lsp-mode-map
               ("C-c C-d" . lsp-describe-thing-at-point))
   :commands lsp
-  :hook ((c-mode-common . (lambda () (require 'ccls) (lsp-deferred)))
+  :hook ((c-mode-common . (lambda () (lsp-deferred)))
          (swift-mode . lsp-deferred)
          (web-mode . (lambda ()
                         ;; Set a local path to the Flow LSP binary.
@@ -419,6 +419,8 @@
   :config
   ;; Prefer Flycheck to Flymake.
   (setq lsp-prefer-flymake nil)
+  ;; Configure clangd custom path.
+  (setq lsp-clients-clangd-executable "~/Projects/llvm-project/build-Release/bin/clangd")
   ;; Do not prompt for identifier when querying definitions/references.
   (setq xref-prompt-for-identifier '(not xref-find-definitions
                                          xref-find-definitions-other-window
@@ -452,7 +454,13 @@
   :after lsp-mode
   :commands company-lsp)
 
+
+
+;; Disable ccls for now as I'm evaluating clangd.
+
+
 (use-package ccls
+  :disabled t
   :load-path "~/Projects/emacs-ccls"
   :diminish ccls-code-lens-mode
   :after lsp-mode
