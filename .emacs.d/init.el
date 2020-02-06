@@ -447,7 +447,12 @@
   :after lsp-mode
   :commands lsp-ui-mode
   :config
-  (setq lsp-ui-sideline-enable nil))
+  (setq lsp-ui-sideline-enable nil)
+  ;; I'll work on a better way to show documentation, disable
+  ;; `lsp-ui-doc-mode' for now.
+  (setq lsp-ui-doc-enable nil)
+  :bind (:map lsp-mode-map
+              ("C-c C-b" . lsp-ui-doc-glance)))
 
 (use-package company-lsp
   :ensure t
