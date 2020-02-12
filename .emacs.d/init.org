@@ -703,10 +703,6 @@ For code completion and navigation use Racer (TODO: Move to lsp-mode):
     (setq company-tooltip-align-annotations t))
 #+END_SRC
 
-*** Shell
-
-TODO: For linting Shell scripts, I integrate Shellcheck with Flycheck.
-
 *** Swift
 
 I use swift-mode for Swift code.
