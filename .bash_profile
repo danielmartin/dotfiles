@@ -65,5 +65,6 @@ source $HOMEBREW_HOME/opt/asdf/asdf.sh
 alias cla='bundle exec pspdfkit changelog add'
 alias clg='bundle exec pspdfkit changelog generate'
 
+# Add Cargo (Rust) and Yarn (JS) packages to PATH
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.config/yarn/global/node_modules/.bin:$PATH"
