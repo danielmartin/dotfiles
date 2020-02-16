@@ -11,6 +11,15 @@ Org-babel. You can generate an Emacs Lisp (.el) file for configuring
 Emacs, and an HTML (.htm) file you can display in your favorite
 browser.
 
+* Default Shell
+
+macOS Catalina has changed the default SHELL environment variable to
+zsh, but let's still use Bash as the default shell in Emacs:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+(setq shell-file-name "/bin/bash")
+#+END_SRC
+
 * Customization File
 
 Save customizations in a separate file:

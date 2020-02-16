@@ -1,3 +1,11 @@
+;; Default Shell
+
+;; macOS Catalina has changed the default SHELL environment variable to
+;; zsh, but let's still use Bash as the default shell in Emacs:
+
+
+(setq shell-file-name "/bin/bash")
+
 ;; Customization File
 
 ;; Save customizations in a separate file:
