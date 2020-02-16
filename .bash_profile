@@ -1,3 +1,6 @@
+# Don't suggest moving to zsh in macOS Catalina
+export BASH_SILENCE_DEPRECATION_WARNING=1
+
 # Custom Homebrew directory
 export HOMEBREW_HOME="/usr/local"
 
