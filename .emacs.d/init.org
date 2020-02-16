@@ -427,7 +427,7 @@ Use LSP with company, and clangd as C++ client.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package lsp-mode
-    :ensure t
+    :load-path "~/Projects/lsp-mode"
     :bind (:map lsp-mode-map
                 ("C-c C-d" . lsp-describe-thing-at-point))
     :commands lsp

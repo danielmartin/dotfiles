@@ -404,7 +404,7 @@
 
 
 (use-package lsp-mode
-  :ensure t
+  :load-path "~/Projects/lsp-mode"
   :bind (:map lsp-mode-map
               ("C-c C-d" . lsp-describe-thing-at-point))
   :commands lsp
