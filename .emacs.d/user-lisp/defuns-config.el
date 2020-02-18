@@ -252,8 +252,11 @@ Time is formatted in hours, minutes, and seconds."
 (defun dm/open-pdf-at-point ()
   "Open a PDF at point in Emacs, Adobe Acrobat, or PSPDFInspector."
   (interactive)
-  (let ((file (thing-at-point 'filename t)))
-    (unless (string= "pdf" (downcase (file-name-extension file)))
+  (let* ((file (thing-at-point 'filename t))
+         (extension (file-name-extension file)))
+    (unless extension
+      (error "There is not a file at point"))
+    (unless (string= "pdf" (downcase extension))
       (error "There is not a PDF file at point"))
     (cond ((file-name-absolute-p file) (dm/open-pdf-at-point--internal file))
           (t (dm/open-pdf-at-point--internal (dm/prepend-pspdfkit-assets-folder file))))))
