@@ -388,7 +388,13 @@ parentheses, brackets or braces according to their depth
 Remove trailing whitespace before saving a file.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+  (add-hook 'before-save-hook
+            (lambda ()
+              ;; Don't delete trailing whitespace in PDFs to avoid
+              ;; corrupting them.
+              (let ((extension (file-name-extension buffer-file-name)))
+                (unless (and extension (string= "pdf" (downcase extension)))
+                  (delete-trailing-whitespace)))))
 #+END_SRC
 
 *** Window Management

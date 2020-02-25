@@ -365,7 +365,13 @@
 ;; Remove trailing whitespace before saving a file.
 
 
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
+(add-hook 'before-save-hook
+          (lambda ()
+            ;; Don't delete trailing whitespace in PDFs to avoid
+            ;; corrupting them.
+            (let ((extension (file-name-extension buffer-file-name)))
+              (unless (and extension (string= "pdf" (downcase extension)))
+                (delete-trailing-whitespace)))))
 
 ;; Window Management
 
