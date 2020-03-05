@@ -290,5 +290,14 @@ Time is formatted in hours, minutes, and seconds."
 
 (global-set-key (kbd "C-c o") #'dm/open-pdf-at-point)
 
+(defun dm/toggle-invisible-characters ()
+  "Toggle the display of characters that are not visible but are
+important, like trailing whitespace."
+  (interactive)
+  (if (bound-and-true-p whitespace-mode)
+      (whitespace-mode -1)
+    (whitespace-mode)))
+
+(global-set-key (kbd "<f6>") #'dm/toggle-invisible-characters)
 (provide 'defuns-config)
 ;;; defuns-config.el ends here
