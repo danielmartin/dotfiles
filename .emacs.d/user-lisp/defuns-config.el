@@ -13,12 +13,12 @@
     (recenter this-scroll-margin)))
 
 (defun dm/open-line-above (N)
-    "Insert a new line above the current point position.
+  "Insert a new line above the current point position.
 With arg N, insert N newlines."
-    (interactive "p")
-    (save-excursion
-      (beginning-of-line)
-      (newline N)))
+  (interactive "p")
+  (save-excursion
+    (beginning-of-line)
+    (newline N)))
 
 (defun dm/beautify-json ()
   "Pretty print a region containing a JSON structure."
@@ -26,7 +26,7 @@ With arg N, insert N newlines."
   (let ((b (if mark-active (min (point) (mark)) (point-min)))
         (e (if mark-active (max (point) (mark)) (point-max))))
     (shell-command-on-region b e
-     "python -mjson.tool" (current-buffer) t)))
+                             "python -mjson.tool" (current-buffer) t)))
 
 (defun dm/beginning-of-line-dwim ()
   "Toggle between moving the point to the start of the first
@@ -60,7 +60,7 @@ non-whitespace character and the start of the line."
   "Variable used to store trigger for doing diff in hexl-mode")
 
 (defadvice ediff-files-internal (around
-ediff-files-internal-for-binary-files activate)
+                                 ediff-files-internal-for-binary-files activate)
   "Catch the condition when the binary files differ the reason
 for catching the error out here (when re-thrown from the inner
 advice) is to let the stack continue to unwind before we start
@@ -227,7 +227,7 @@ Time is formatted in hours, minutes, and seconds."
     (setq totals (sort totals (lambda (x y) (> (cadr x) (cadr y)))))
     (with-output-to-temp-buffer "Buffer mode histogram"
       (princ (format "%d buffers open, in %d distinct modes\n\n"
-                      total-buffers (length totals)))
+                     total-buffers (length totals)))
       (dolist (item totals)
         (let
             ((key (car item))
