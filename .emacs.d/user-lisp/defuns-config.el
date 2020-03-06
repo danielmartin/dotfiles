@@ -299,5 +299,17 @@ important, like trailing whitespace."
     (whitespace-mode)))
 
 (global-set-key (kbd "<f6>") #'dm/toggle-invisible-characters)
+
+(defun dm/describe-face (pos)
+    "Print the name of face or faces at point in the echo area.
+
+This is a lightweight alternative to `what-cursor-position' and
+its prefixed variant when you are only interested in debugging
+faces."
+    (interactive "d")
+    (let ((face (or (get-char-property pos 'face)
+                    (get-char-property pos 'read-cf-name))))
+      (message "%s" (or face
+                        "No face at point"))))
 (provide 'defuns-config)
 ;;; defuns-config.el ends here
