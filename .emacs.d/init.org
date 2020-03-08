@@ -1512,16 +1512,16 @@ I've also added on-the-fly syntax checking capabilities.
 
 Inform in the echo area how long it took to load this file:
 
- #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-   (let ((elapsed (float-time (time-subtract (current-time)
-                                             emacs-start-time))))
-     (message "Loading %s...done (%.3fs)" load-file-name elapsed))
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (let ((elapsed (float-time (time-subtract (current-time)
+                                            emacs-start-time))))
+    (message "Loading %s...done (%.3fs)" load-file-name elapsed))
 
-   (add-hook 'after-init-hook
-             `(lambda ()
-                (let ((elapsed
-                       (float-time
-                        (time-subtract (current-time) emacs-start-time))))
-                  (message "Loading %s...done (%.3fs) [after-init]"
-                           ,load-file-name elapsed))) t)
- #+END_SRC
+  (add-hook 'after-init-hook
+            `(lambda ()
+               (let ((elapsed
+                      (float-time
+                       (time-subtract (current-time) emacs-start-time))))
+                 (message "Loading %s...done (%.3fs) [after-init]"
+                          ,load-file-name elapsed))) t)
+#+END_SRC
