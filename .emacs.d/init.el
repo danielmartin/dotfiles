@@ -1055,6 +1055,9 @@ particular branch, so it will be completely stable over time."
   :bind
   ("C-x g" . magit-status)
   :config
+  ;; I want to highlight whitespace errors in both added and removed
+  ;; lines.
+  (setq magit-diff-paint-whitespace-lines 'both)
   (magit-add-section-hook 'magit-status-sections-hook
                           'magit-insert-modules-overview
                           'magit-insert-unpulled-from-upstream)
