@@ -3,8 +3,9 @@
 ;;; Commentary:
 
 ;;; Code:
-(defun dm/recenter-defun()
-  "Recenter the buffer to put the current defun at the top."
+(defun dm/recenter-defun ()
+  "Recenter the buffer to put the current defun at the top.
+This is somewhat similar to built-in `reposition-window'."
   (interactive)
   (beginning-of-defun)
   (let ((this-scroll-margin
