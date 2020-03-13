@@ -111,7 +111,7 @@ expects some output that isn't there and triggers an error"
           (message "Copied buffer file name '%s' to the clipboard." filename))
       (user-error "Buffer does not visit a file, so no filename to copy."))))
 
-(global-set-key (kbd "C-c w") 'copy-file-to-clipboard)
+(global-set-key (kbd "C-c w") #'copy-file-to-clipboard)
 
 (defun dm/git-history-of-defun ()
   "Ask source control about the history of the function under
@@ -120,7 +120,7 @@ expects some output that isn't there and triggers an error"
   (mark-defun)
   (magit-log-buffer-file nil (line-number-at-pos (region-beginning)) (line-number-at-pos (region-end))))
 
-(global-set-key (kbd "C-c v") 'dm/git-history-of-defun)
+(global-set-key (kbd "C-c v") #'dm/git-history-of-defun)
 
 (defun dm/compile-finish (buf status)
   (with-current-buffer buf
