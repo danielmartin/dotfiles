@@ -1303,6 +1303,14 @@ particular branch, so it will be completely stable over time."
   :ensure t
   :commands ivy-pass)
 
+;; PDF Debugger
+
+;; I have created a specialized mode for debugging PDFs:
+
+
+(use-package pdf-debugger
+  :load-path "~/Projects/PSPDFKit/tools/pdf-debugger")
+
 ;; PSPDFKit Changelog
 
 ;; I have created a specialized mode for adding entries to the PSPDFKit changelog:
