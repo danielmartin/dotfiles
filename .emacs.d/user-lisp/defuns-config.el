@@ -199,7 +199,7 @@ Time is formatted in hours, minutes, and seconds."
                     mode-name) nil t)
                   (match-string 1)))))
       (unless (and start end)
-        (user-error "Cannot calculate compile time. Did the compilation finished successfully?"))
+        (user-error "Cannot calculate compile time. Did the compilation finish successfully?"))
       (message
        (format "%s took %s"
                mode-name
