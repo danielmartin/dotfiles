@@ -210,7 +210,7 @@ Time is formatted in hours, minutes, and seconds."
 
 ;;; http://blogs.fluidinfo.com/terry/2011/11/10/emacs-buffer-mode-histogram/
 (defun dm/buffer-mode-histogram ()
-  "Display a histogram of emacs buffer modes."
+  "Display a histogram of Emacs buffer modes."
   (interactive)
   (let* ((totals ())
          (buffers (buffer-list()))
