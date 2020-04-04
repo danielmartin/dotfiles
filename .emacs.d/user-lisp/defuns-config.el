@@ -253,7 +253,11 @@ Time is formatted in hours, minutes, and seconds."
 (defun dm/open-pdf-at-point ()
   "Open a PDF at point in Emacs, Adobe Acrobat, or PSPDFInspector."
   (interactive)
-  (let* ((file (thing-at-point 'filename t))
+  ;; Note that some PDF names may have a space in their name. Extend
+  ;; `thing-at-point-file-name-chars' so that `thing-at-point'
+  ;; correctly extracts those file names.
+  (let* ((thing-at-point-file-name-chars (concat thing-at-point-file-name-chars " "))
+         (file (thing-at-point 'filename t))
          (extension (file-name-extension file)))
     (unless extension
       (error "There is not a file at point"))
