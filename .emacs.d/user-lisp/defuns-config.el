@@ -115,11 +115,15 @@ expects some output that isn't there and triggers an error"
 (global-set-key (kbd "C-c w") #'copy-file-to-clipboard)
 
 (defun dm/git-history-of-defun ()
-  "Ask source control about the history of the function under
-  point."
+  "Ask source control about the history of the function under point."
   (interactive)
-  (mark-defun)
-  (magit-log-buffer-file nil (line-number-at-pos (region-beginning)) (line-number-at-pos (region-end))))
+  (let ((start (save-excursion
+                 (beginning-of-defun)
+                 (line-number-at-pos (point))))
+        (end (save-excursion
+               (end-of-defun)
+               (line-number-at-pos (point)))))
+    (magit-log-buffer-file nil start end)))
 
 (global-set-key (kbd "C-c v") #'dm/git-history-of-defun)
 
