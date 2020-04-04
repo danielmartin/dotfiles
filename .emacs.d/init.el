@@ -692,7 +692,16 @@
 
 (use-package swift-mode
   :ensure t
-  :mode ("\\.swift\\'"))
+  :defer t
+  :config
+  ;; `magit-which-function' may display a method as
+  ;; "Class.method". That won't work for
+  ;; `magit-log-trace-definition'. Customize
+  ;; `magit-log-trace-definition-function' to keep only the last part
+  ;; after ".".
+  (setq-local magit-log-trace-definition-function
+              (lambda ()
+                (cadr (split-string (magit-which-function) "\\.")))))
 
 
 
