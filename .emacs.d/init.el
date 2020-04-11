@@ -1011,7 +1011,8 @@ particular branch, so it will be completely stable over time."
 (use-package diff-hl
   :ensure t
   :init
-  (global-diff-hl-mode))
+  (global-diff-hl-mode)
+  :hook (magit-post-refresh . diff-hl-magit-post-refresh))
 
 ;; Forge
 
