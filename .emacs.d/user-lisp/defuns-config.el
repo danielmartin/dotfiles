@@ -310,7 +310,7 @@ important, like trailing whitespace."
 (global-set-key (kbd "<f6>") #'dm/toggle-invisible-characters)
 
 (defun dm/describe-face (pos)
-    "Print the name of face or faces at point in the echo area.
+    "Print the name of face or faces at POS in the echo area.
 
 This is a lightweight alternative to `what-cursor-position' and
 its prefixed variant when you are only interested in debugging
