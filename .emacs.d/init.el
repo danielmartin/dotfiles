@@ -921,8 +921,8 @@
 
 (use-package dap-mode
   :ensure t
-  :load-path "~/Projects/dap-mode"
   :commands dap-mode
+  :hook (dap-stopped . (lambda (arg) (call-interactively #'dap-hydra)))
   :config
   (dap-mode 1)
   (require 'dap-ui)
