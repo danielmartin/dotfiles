@@ -320,5 +320,45 @@ faces."
                     (get-char-property pos 'read-cf-name))))
       (message "%s" (or face
                         "No face at point"))))
+
+(defun dm/ocr-prepare-image--default (file page)
+  "Render an image from FILE at PAGE using a default procedure that works well in most cases."
+  ;; convert -density 300 Guide.pdf[6] ~/Downloads/Image.tif
+  (let ((output (make-temp-file (file-name-base file) nil ".tif")))
+    (call-process "convert"
+                  nil nil nil
+                  "-density" "300" (format "%s[%s]" file page) "-background" "white" "-alpha" "remove" output)
+    output))
+
+(defvar dm/ocr-prepare-image #'dm/ocr-prepare-image--default
+  "Function that prepares an image to perform OCR on it.")
+
+(defun dm/ocr-perform-ocr--default (file image)
+  "Perform OCR on a given IMAGE using a default procedure that works well in most cases."
+  ;; tesseract -l eng Guide.tif Guide
+  (let ((output (make-temp-file (file-name-base file))))
+    (call-process "tesseract"
+                  nil nil nil
+                  "-l" "eng" image output)
+    output))
+
+(defvar dm/ocr-perform-ocr #'dm/ocr-perform-ocr--default
+  "Function that performs OCR on a given image.")
+
+(defun dm/ocr-current-page ()
+  "Perform OCR on the current PDF page using Tesseract."
+  (interactive)
+  (unless buffer-file-name
+    (error "The buffer is not visiting a file"))
+  (unless (eq major-mode 'pdf-view-mode)
+    (error "The buffer is not in `pdf-view-mode'"))
+  (let* ((page (number-to-string (1- (pdf-view-current-page))))
+         ;; PDF -> TIFF
+         (image (funcall dm/ocr-prepare-image buffer-file-name page))
+         ;; TIFF -> TXT (OCR)
+         (ocr (funcall dm/ocr-perform-ocr buffer-file-name image)))
+    ;; Note that Tesseract automatically adds a .txt extension to the
+    ;; output file.
+    (find-file-other-window (concat ocr ".txt"))))
 (provide 'defuns-config)
 ;;; defuns-config.el ends here
