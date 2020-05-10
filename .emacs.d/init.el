@@ -740,6 +740,7 @@
 
 
 (use-package tree-sitter
+  :disabled t
   :load-path "~/Projects/emacs-tree-sitter"
   :config
   (add-to-list 'tree-sitter-major-mode-language-alist '(swift-mode . swift))
