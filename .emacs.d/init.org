@@ -527,6 +527,16 @@ Clang-tidy integration is disabled for now, as clangd already includes it.
     (flycheck-add-next-checker 'lsp-ui '(warning . c/c++-clang-tidy)))
 #+END_SRC
 
+Search for workspace symbols using ivy:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package lsp-ivy
+    :ensure t
+    :after lsp-mode
+    :bind (:map lsp-mode-map
+                ("C-c w s" . lsp-ivy-workspace-symbol)))
+#+END_SRC
+
 *** Clojure
 
 Cider is the "de facto" package for working on Clojure projects.

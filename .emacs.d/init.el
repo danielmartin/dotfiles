@@ -501,6 +501,17 @@
   (setq flycheck-clang-tidy-build-path ".")
   (flycheck-add-next-checker 'lsp-ui '(warning . c/c++-clang-tidy)))
 
+
+
+;; Search for workspace symbols using ivy:
+
+
+(use-package lsp-ivy
+  :ensure t
+  :after lsp-mode
+  :bind (:map lsp-mode-map
+              ("C-c w s" . lsp-ivy-workspace-symbol)))
+
 ;; Clojure
 
 ;; Cider is the "de facto" package for working on Clojure projects.
