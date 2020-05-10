@@ -486,11 +486,11 @@
 
 
 
-;; Clang-tidy integration
+;; Clang-tidy integration is disabled for now, as clangd already includes it.
 
 
 (use-package flycheck-clang-tidy
-  :ensure t
+  :disabled t
   :after lsp-ui-flycheck
   :hook
   (flycheck-mode . flycheck-clang-tidy-setup)

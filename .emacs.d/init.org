@@ -511,11 +511,11 @@ Disable ccls for now as I'm evaluating clangd.
     (setq ccls-executable (expand-file-name "~/Projects/ccls/Release/ccls")))
 #+END_SRC
 
-Clang-tidy integration
+Clang-tidy integration is disabled for now, as clangd already includes it.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package flycheck-clang-tidy
-    :ensure t
+    :disabled t
     :after lsp-ui-flycheck
     :hook
     (flycheck-mode . flycheck-clang-tidy-setup)
