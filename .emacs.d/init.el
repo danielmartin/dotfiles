@@ -754,6 +754,15 @@
 (use-package typescript-mode
   :ensure t)
 
+;; YAML
+
+;; Add support for editing YAML files with `yaml-mode`:
+
+
+(use-package yaml-mode
+  :ensure t
+  :defer t)
+
 ;; Autocompletion
 
 ;; Autocompletion is very important for programming languages and natural

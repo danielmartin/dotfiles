@@ -787,6 +787,15 @@ Add support for editing TypeScript files with `typescript-mode`:
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package typescript-mode
     :ensure t)
+
+*** YAML
+
+Add support for editing YAML files with `yaml-mode`:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package yaml-mode
+    :ensure t
+    :defer t)
 #+END_SRC
 
 ** General Productivity Packages
