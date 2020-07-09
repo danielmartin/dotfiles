@@ -147,6 +147,7 @@ Some customizations to Emacs compilation mode:
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package compile
+    :defer t
     :config
     (setq compilation-scroll-output t))
 #+END_SRC

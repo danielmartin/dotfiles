@@ -128,6 +128,7 @@
 
 
 (use-package compile
+  :defer t
   :config
   (setq compilation-scroll-output t))
 
