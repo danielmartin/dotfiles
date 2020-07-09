@@ -68,3 +68,6 @@ alias clg='bundle exec pspdfkit changelog generate'
 # Add Cargo (Rust) and Yarn (JS) packages to PATH
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+# Add Arcanist to PATH
+export PATH="$HOME/Projects/arcanist/bin:$PATH"
