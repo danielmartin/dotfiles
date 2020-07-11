@@ -77,7 +77,7 @@
 :ID:       %(shell-command-to-string \"uuidgen\"):CREATED:  %U
 :URL:      %c
 :END:")))
-  (defun org-get-safari-link ()
+  (defun dm/org-get-safari-link ()
     (let ((subject (substring (do-applescript
                                (string-to-multibyte "tell application \"Safari\"
         name of document of front window
@@ -88,9 +88,9 @@ end tell")) 1 -1))
 end tell")) 1 -1)))
       (org-make-link-string url subject)))
 
-  (defun org-insert-url-link ()
+  (defun dm/org-insert-url-link ()
     (interactive)
-    (insert (org-get-safari-link))))
+    (insert (dm/org-get-safari-link)))
 
 (use-package emacs
   :config
