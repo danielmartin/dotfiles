@@ -92,6 +92,15 @@ end tell")) 1 -1)))
     (interactive)
     (insert (dm/org-get-safari-link)))
 
+  (defun dm/org-wrap-region-for-init ()
+    "Wrap a region of initialization code as an Org block."
+    (interactive)
+    (save-excursion
+      (goto-char (region-end))
+      (insert "\n#+END_SRC\n")
+      (goto-char (region-beginning))
+      (insert "#+BEGIN_SRC emacs-lisp :tangle yes :comments org\n"))))
+
 (use-package emacs
   :config
   (defun dm/load-org-babel-languages ()
