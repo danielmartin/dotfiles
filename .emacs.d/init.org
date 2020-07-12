@@ -443,17 +443,17 @@ Use LSP with company, and clangd as C++ client.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package lsp-mode
-    :load-path "~/Projects/lsp-mode"
+    :ensure t
     :bind (:map lsp-mode-map
                 ("C-c C-d" . lsp-describe-thing-at-point))
     :commands lsp
     :hook ((c-mode-common . (lambda () (lsp-deferred)))
            (swift-mode . lsp-deferred)
-           (web-mode . (lambda ()
-                          ;; Set a local path to the Flow LSP binary.
-                          (require 'lsp-clients)
-                          (setq lsp-clients-flow-server (concat (projectile-project-root) "node_modules/.bin/flow"))
-                          (lsp-deferred)))
+           (js2-mode . (lambda ()
+                         ;; Set a local path to the Flow LSP binary.
+                         (require 'lsp-clients)
+                         (setq lsp-clients-flow-server (concat (projectile-project-root) "node_modules/.bin/flow"))
+                         (lsp-deferred)))
            (sh-mode . lsp-deferred))
     :config
     ;; Prefer Flycheck to Flymake.
@@ -600,25 +600,20 @@ For Haskell I use haskell-mode.
 
 *** JavaScript
 
-For JavaScript and other related web technologies, use web-mode:
+For JavaScript, use js2-mode:
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package web-mode
+  (use-package js2-mode
     :ensure t
     :mode
-    (("\\.js\\'" . web-mode)
-     ("\\.html?\\'" . web-mode)
-     ("\\.phtml?\\'" . web-mode)
-     ("\\.tpl\\.php\\'" . web-mode)
-     ("\\.[agj]sp\\'" . web-mode)
-     ("\\.as[cp]x\\'" . web-mode)
-     ("\\.erb\\'" . web-mode)
-     ("\\.mustache\\'" . web-mode)
-     ("\\.djhtml\\'" . web-mode)
-     ("\\.jsx$" . web-mode))
-    :commands web-mode
-    ;; Format code with Prettier.
-    :bind (:map web-mode-map
+    (("\\.js\\'" . js2-mode))
+    :init
+    ;; Parsing problems and warnings are handled by the JS language
+    ;; server.
+    (setq js2-mode-show-parse-errors nil)
+    (setq js2-mode-show-strict-warnings nil)
+    ;; Format with Prettier.
+    :bind (:map js2-mode-map
                 ("C-c u" . prettier)))
 #+END_SRC
 
@@ -627,7 +622,7 @@ Also a minor mode for Flow:
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package flow-minor-mode
     :ensure t
-    :hook ('web-mode . flow-minor-enable-automatically))
+    :hook ('js2-mode . flow-minor-enable-automatically))
 #+END_SRC
 
 *** Kotlin
