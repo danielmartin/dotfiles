@@ -993,9 +993,11 @@
   ("C-x w" . elfeed)
   :config
   (setq elfeed-feeds
-        '("http://nullprogram.com/feed/"
-          "http://planet.emacsen.org/atom.xml"
-          "https://nvd.nist.gov/feeds/xml/cve/misc/nvd-rss-analyzed.xml")))
+        '(("http://nullprogram.com/feed/" programming)
+          ("http://planet.emacsen.org/atom.xml" emacs)
+          ("https://nvd.nist.gov/feeds/xml/cve/misc/nvd-rss-analyzed.xml" security)
+          ("https://steipete.wtf/feed.xml" ios)
+          ("https://github.blog/feed/atom" git))))
 
 ;; Browse at Remote
 
