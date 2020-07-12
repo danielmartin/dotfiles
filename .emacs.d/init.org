@@ -468,6 +468,52 @@ Use LSP with company, and clangd as C++ client.
     (setq lsp-enable-links nil))
 #+END_SRC
 
+Some additional lsp-clients configuration
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package lsp-clients
+    :config
+    ;; Custom signature extraction logic to use with Clangd.
+    (cl-defmethod lsp-clients-extract-signature-on-hover (contents (_server-id (eql clangd)))
+      "Extract a representative line from clangd's CONTENTS, to show in the echo area.
+  This function tries to extract the type signature from CONTENTS,
+  or the first line if it cannot do so. A single line is always
+  returned to avoid that the echo area grows uncomfortably."
+      (with-temp-buffer
+        (-let [value (lsp:markup-content-value contents)]
+          (insert value)
+          (goto-char (point-min))
+          (if (re-search-forward (rx (seq "```cpp\n"
+                                          (opt (group "//"
+                                                      (zero-or-more nonl)
+                                                      "\n"))
+                                          (group
+                                           (one-or-more
+                                            (not (any "`")))
+                                           "\n")
+                                          "```")) nil t nil)
+              (progn (narrow-to-region (match-beginning 2) (match-end 2))
+                     (let ((foo (lsp-join-region (point-min) (point-max))))
+                       (widen)
+                       (goto-char (point-min))
+                       (if (re-search-forward (rx (seq "Passed"
+                                                       (group (zero-or-more nonl))
+                                                       " as "
+                                                       (group (zero-or-more nonl)))) nil t nil)
+                           (progn (let ((param-pass
+                                         (pcase (buffer-substring (match-beginning 1) (match-end 1))
+                                           (" by const reference" (match-string 0))
+                                           (" by reference" (propertize
+                                                             (match-string 0)
+                                                             'face '(:foreground "red")))
+                                           (_ (propertize
+                                               (match-string 0)
+                                               'face '(:foreground "blue"))))))
+                                    (concat (lsp--render-element foo) " (" (string-trim param-pass) ")")))
+                         (lsp--render-element foo))))
+            (car (s-lines (lsp--render-element contents))))))))
+#+END_SRC
+
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package lsp-sourcekit
     :ensure t
