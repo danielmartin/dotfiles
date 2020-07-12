@@ -787,7 +787,9 @@ Add support for editing TypeScript files with `typescript-mode`:
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package typescript-mode
-    :ensure t)
+    :ensure t
+    :defer t)
+#+END_SRC
 
 *** YAML
 
@@ -1413,6 +1415,7 @@ I have created a specialized mode for debugging PDFs:
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package pdf-debugger
+    :defer t
     :load-path "~/Projects/PSPDFKit/tools/pdf-debugger")
 #+END_SRC
 
@@ -1433,14 +1436,16 @@ Use the xr package to convert Elisp regexps to more readable rx forms:
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package xr
-    :ensure t)
+    :ensure t
+    :defer t)
 #+END_SRC
 
 Use relint to detect regular expression errors in Emacs Lisp files:
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package relint
-    :ensure t)
+    :ensure t
+    :defer t)
 #+END_SRC
 
 *** REST
@@ -1470,7 +1475,8 @@ Easy management of shell buffers.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package shell-toggle
-    :ensure t)
+    :ensure t
+    :defer t)
 #+END_SRC
 
 *** Snippets and Abbreviations

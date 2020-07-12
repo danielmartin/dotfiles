@@ -753,7 +753,8 @@
 
 
 (use-package typescript-mode
-  :ensure t)
+  :ensure t
+  :defer t)
 
 ;; YAML
 
@@ -1339,6 +1340,7 @@ particular branch, so it will be completely stable over time."
 
 
 (use-package pdf-debugger
+  :defer t
   :load-path "~/Projects/PSPDFKit/tools/pdf-debugger")
 
 ;; PSPDFKit Changelog
@@ -1356,7 +1358,8 @@ particular branch, so it will be completely stable over time."
 
 
 (use-package xr
-  :ensure t)
+  :ensure t
+  :defer t)
 
 
 
@@ -1364,7 +1367,8 @@ particular branch, so it will be completely stable over time."
 
 
 (use-package relint
-  :ensure t)
+  :ensure t
+  :defer t)
 
 ;; REST
 
@@ -1391,7 +1395,8 @@ particular branch, so it will be completely stable over time."
 
 
 (use-package shell-toggle
-  :ensure t)
+  :ensure t
+  :defer t)
 
 ;; Snippets and Abbreviations
 
