@@ -1139,7 +1139,20 @@ particular branch, so it will be completely stable over time."
                           'magit-insert-unpulled-from-upstream)
   (magit-add-section-hook 'magit-status-sections-hook
                           #'forge-insert-assigned-pullreqs
-                          nil t))
+                          nil t)
+  ;; I sometimes work on a few branches simultaneously and switching
+  ;; between them when they are shown in alphabetic order is not very
+  ;; convenient, I may forget the exact name of those branches. Create
+  ;; a custom Transient command to checkout a branch with the list
+  ;; sorted by creation date.
+  (defun dm/magit-checkout ()
+    "Like `magit-checkout', but shows refs sorted by creation date."
+    (interactive)
+    (let ((magit-list-refs-sortby "-creatordate"))
+      (call-interactively 'magit-checkout)))
+
+  (transient-insert-suffix 'magit-branch "b"
+    '("B" "branch (sorted by date)" dm/magit-checkout)))
 
 
 
