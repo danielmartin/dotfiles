@@ -1041,6 +1041,7 @@ returned to avoid that the echo area grows uncomfortably."
   :config
   (setq elfeed-feeds
         '(("http://nullprogram.com/feed/" programming)
+          ("https://flak.tedunangst.com/rss" programming)
           ("http://planet.emacsen.org/atom.xml" emacs)
           ("https://nvd.nist.gov/feeds/xml/cve/misc/nvd-rss-analyzed.xml" security)
           ("https://steipete.wtf/feed.xml" ios)
