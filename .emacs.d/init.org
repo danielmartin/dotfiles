@@ -425,7 +425,8 @@ For C languages, I use K&R style, with an indentation of 2 spaces.
     :config
     :hook ((c-mode-common . (lambda ()
                              (c-set-style "k&r")
-                             (setq c-basic-offset 2)))
+                             (setq c-basic-offset 2)
+                             (subword-mode 1)))
            (c++-mode . gtest-mode))
     ;; Format with clang-format.
     :bind (:map c-mode-base-map
@@ -1475,7 +1476,6 @@ I have created a specialized mode for debugging PDFs:
     :defer t
     :load-path "~/Projects/PSPDFKit/tools/pdf-debugger")
 #+END_SRC
-
 
 *** PSPDFKit Changelog
 

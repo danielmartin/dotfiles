@@ -399,7 +399,8 @@
   :config
   :hook ((c-mode-common . (lambda ()
                            (c-set-style "k&r")
-                           (setq c-basic-offset 2)))
+                           (setq c-basic-offset 2)
+                           (subword-mode 1)))
          (c++-mode . gtest-mode))
   ;; Format with clang-format.
   :bind (:map c-mode-base-map
