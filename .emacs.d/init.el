@@ -1457,6 +1457,15 @@ particular branch, so it will be completely stable over time."
   :ensure t
   :defer t)
 
+
+
+;; Configure shellcheck as a linter for `sh-mode` buffers. For that, we
+;; need to enable Flycheck in `sh-mode` buffers:
+
+
+(use-package flycheck-mode
+  :hook sh-mode)
+
 ;; Snippets and Abbreviations
 
 ;; I use yasnippet for managing text snippets.

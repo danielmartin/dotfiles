@@ -1536,6 +1536,14 @@ Easy management of shell buffers.
     :defer t)
 #+END_SRC
 
+Configure shellcheck as a linter for `sh-mode` buffers. For that, we
+need to enable Flycheck in `sh-mode` buffers:
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package flycheck-mode
+    :hook sh-mode)
+#+END_SRC
+
 *** Snippets and Abbreviations
 
 I use yasnippet for managing text snippets.
