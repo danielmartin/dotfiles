@@ -697,9 +697,7 @@ returned to avoid that the echo area grows uncomfortably."
 ;; There are several packages for writing Python code. I use python.
 
 
-(use-package python
-  :ensure t
-  :interpreter ("python" . python-mode))
+(use-package python)
 
 
 
