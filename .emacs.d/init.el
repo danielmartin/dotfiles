@@ -131,6 +131,7 @@
 (use-package compile
   :defer t
   :config
+  ;; Scroll the compilation buffer as new output appears.
   (setq compilation-scroll-output t))
 
 ;; Cross References
