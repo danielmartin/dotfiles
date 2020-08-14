@@ -376,6 +376,15 @@
               (unless (and extension (string= "pdf" (downcase extension)))
                 (delete-trailing-whitespace)))))
 
+;; Cursor position
+
+;; Make `what-cursor-position` show the Unicode name of the character
+;; under point:
+
+
+(unless (< emacs-major-version 27)
+  (setq what-cursor-show-names t))
+
 ;; Window Management
 
 ;; I use winner-mode to manage my windows with convenient undo/redo functions.
