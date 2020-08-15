@@ -275,7 +275,6 @@ Show the current time.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package time
-    :ensure t
     :config
     (progn
       (setf display-time-default-load-average nil

@@ -250,7 +250,6 @@
 
 
 (use-package time
-  :ensure t
   :config
   (progn
     (setf display-time-default-load-average nil
