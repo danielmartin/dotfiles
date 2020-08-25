@@ -643,7 +643,10 @@ returned to avoid that the echo area grows uncomfortably."
   (setq js2-mode-show-strict-warnings nil)
   ;; Format with Prettier.
   :bind (:map js2-mode-map
-              ("C-c u" . prettier)))
+              ("C-c u" . prettier)
+              ;; `js2-mode' provides its own "find definition" function,
+              ;; but I prefer what the language server provides.
+              ("M-." . xref-find-definitions)))
 
 
 
