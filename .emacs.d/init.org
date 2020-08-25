@@ -463,7 +463,7 @@ Use LSP with company, and clangd as C++ client.
            (swift-mode . lsp-deferred)
            (js2-mode . (lambda ()
                          ;; Set a local path to the Flow LSP binary.
-                         (require 'lsp-clients)
+                         (require 'lsp-javascript)
                          (setq lsp-clients-flow-server (concat (projectile-project-root) "node_modules/.bin/flow"))
                          (lsp-deferred)))
            (sh-mode . lsp-deferred))
@@ -480,10 +480,10 @@ Use LSP with company, and clangd as C++ client.
     (setq lsp-enable-links nil))
 #+END_SRC
 
-Some additional lsp-clients configuration
+Some additional Clangd client configuration:
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package lsp-clients
+  (use-package lsp-clangd
     :config
     ;; Custom signature extraction logic to use with Clangd.
     (cl-defmethod lsp-clients-extract-signature-on-hover (contents (_server-id (eql clangd)))
@@ -505,7 +505,7 @@ Some additional lsp-clients configuration
                                            "\n")
                                           "```")) nil t nil)
               (progn (narrow-to-region (match-beginning 2) (match-end 2))
-                     (let ((foo (lsp-join-region (point-min) (point-max))))
+                     (let ((foo (lsp-clangd-join-region (point-min) (point-max))))
                        (widen)
                        (goto-char (point-min))
                        (if (re-search-forward (rx (seq "Passed"
