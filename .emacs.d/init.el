@@ -1052,12 +1052,15 @@ returned to avoid that the echo area grows uncomfortably."
   ("C-x w" . elfeed)
   :config
   (setq elfeed-feeds
-        '(("http://nullprogram.com/feed/" programming)
-          ("https://flak.tedunangst.com/rss" programming)
-          ("http://planet.emacsen.org/atom.xml" emacs)
+        '(("http://nullprogram.com/feed/" programming blog)
+          ("https://flak.tedunangst.com/rss" programming blog)
+          ("http://planet.emacsen.org/atom.xml" emacs blog)
           ("https://nvd.nist.gov/feeds/xml/cve/misc/nvd-rss-analyzed.xml" security)
-          ("https://steipete.wtf/feed.xml" ios)
-          ("https://github.blog/feed/atom" git))))
+          ("https://steipete.wtf/feed.xml" programming ios blog)
+          ("https://github.blog/feed/atom" git blog)
+          ("https://lemire.me/blog/feed/" programming blog)
+          ("https://dendibakh.github.io/feed.xml" programming blog)
+          ("https://drewdevault.com/feed.xml" programming blog))))
 
 ;; Browse at Remote
 
