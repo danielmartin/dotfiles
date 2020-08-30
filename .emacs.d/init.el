@@ -1061,7 +1061,8 @@ returned to avoid that the echo area grows uncomfortably."
           ("https://lemire.me/blog/feed/" programming blog)
           ("https://dendibakh.github.io/feed.xml" programming blog)
           ("https://drewdevault.com/feed.xml" programming blog)
-          ("https://with-emacs.com/rss.xml" emacs blog))))
+          ("https://with-emacs.com/rss.xml" emacs blog)
+          ("https://utcc.utoronto.ca/~cks/space/blog/?atom" programming blog))))
 
 ;; Browse at Remote
 
