@@ -7,6 +7,7 @@
    "Recenter the buffer to put the current defun at the top.
  This is somewhat similar to built-in `reposition-window'."
    (interactive)
+   (push-mark)
    (beginning-of-defun)
    (let ((this-scroll-margin
  	 (min (max 0 scroll-margin)
