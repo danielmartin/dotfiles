@@ -28,6 +28,28 @@
   (setq org-refile-targets '((org-agenda-files :todo . "PROJECT")))
 
   (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
+
+  (defun dm/org-todo-age-time (&optional pos)
+    (let ((stamp (org-entry-get (or pos (point)) "CREATED" t)))
+      (when stamp
+        (time-subtract (current-time)
+                       (org-time-string-to-time
+                        (org-entry-get (or pos (point)) "CREATED" t))))))
+
+  (defun dm/org-todo-age (&optional pos)
+    (let ((days (time-to-number-of-days (dm/org-todo-age-time pos))))
+      (cond
+       ((< days 1)   "today")
+       ((< days 7)   (format "%dd" days))
+       ((< days 30)  (format "%.1fw" (/ days 7.0)))
+       ((< days 358) (format "%.1fM" (/ days 30.0)))
+       (t            (format "%.1fY" (/ days 365.0))))))
+
+  (setq org-agenda-prefix-format
+        '((agenda . "  %-13c%?-12t% s")
+          (timeline . "  % s")
+          (todo . "  %-13c%5(dm/org-todo-age) ")
+          (tags . "  %-13c")))
   ;;
   ;; Org-Mode capture configuration.
   ;;
@@ -77,6 +99,46 @@
 :ID:       %(shell-command-to-string \"uuidgen\"):CREATED:  %U
 :URL:      %c
 :END:")))
+  ;;
+  ;; Org-Agenda custom commands.
+  ;;
+  (defun dm/org-current-is-todo ()
+    (member (org-get-todo-state) '("TODO" "EPIC" "STORY" "STARTED")))
+
+  (defun dm/org-agenda-should-skip-p ()
+    "Skip all but the first non-done entry."
+    (let (should-skip-entry)
+      (unless (dm/org-current-is-todo)
+        (setq should-skip-entry t))
+      (when (or (org-get-scheduled-time (point))
+                (org-get-deadline-time (point)))
+        (setq should-skip-entry t))
+      (when (/= (point)
+                (save-excursion
+                  (org-goto-first-child)
+                  (point)))
+        (setq should-skip-entry t))
+      (save-excursion
+        (while (and (not should-skip-entry) (org-goto-sibling t))
+          (when (and (dm/org-current-is-todo)
+                     (not (org-get-scheduled-time (point)))
+                     (not (org-get-deadline-time (point))))
+            (setq should-skip-entry t))))
+      should-skip-entry))
+
+  (defun dm/org-agenda-skip-all-siblings-but-first ()
+    "Skip all but the first non-done entry."
+    (when (dm/org-agenda-should-skip-p)
+      (or (outline-next-heading)
+          (goto-char (point-max)))))
+
+  (setq org-agenda-custom-commands
+        '(("n" "Project Next Actions" alltodo ""
+           ((org-agenda-overriding-header "Project Next Actions")
+            (org-agenda-skip-function
+             #'dm/org-agenda-skip-all-siblings-but-first)))))
+
+  ;; Custom functions
   (defun dm/org-get-safari-link ()
     (let ((subject (substring (do-applescript
                                (string-to-multibyte "tell application \"Safari\"
