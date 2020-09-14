@@ -417,4 +417,6 @@ If the file is under version control, act like `vc-rename-file'."
 (defun dm/find-non-ascii-chars-in-buffer ()
   (interactive)
   (occur "[^[:ascii:]]"))
+
+(provide 'defuns-config)
  ;;; defuns-config.el ends here
