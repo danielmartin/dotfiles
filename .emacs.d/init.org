@@ -1113,7 +1113,10 @@ For browsing feeds, I use Elfeed:
             ("https://dendibakh.github.io/feed.xml" programming blog)
             ("https://drewdevault.com/feed.xml" programming blog)
             ("https://with-emacs.com/rss.xml" emacs blog)
-            ("https://utcc.utoronto.ca/~cks/space/blog/?atom" programming blog))))
+            ("https://utcc.utoronto.ca/~cks/space/blog/?atom" programming blog)
+            ("https://feeds.feedburner.com/abseilio" programming blog)))
+    ;; I like to read articles with 80 columns, like a newspaper.
+    (add-hook 'elfeed-show-mode-hook (lambda () (setq-local shr-width 80))))
 #+END_SRC
 
 *** Git
