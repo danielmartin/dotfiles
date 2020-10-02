@@ -1456,6 +1456,16 @@ particular branch, so it will be completely stable over time."
   :ensure t
   :defer t)
 
+;; RFC
+
+;; For reading RFC documents inside Emacs, I use the convenient rfc-mode,
+;; which I've extended with some navigation capabilities.
+
+
+(use-package rfc-mode
+  :ensure t
+  :defer t)
+
 ;; Search
 
 ;; For searching things, I use deadgrep, a nice interface over

@@ -1534,6 +1534,17 @@ For making REST calls from Emacs, I use the convenient restclient package.
     :defer t)
 #+END_SRC
 
+*** RFC
+
+For reading RFC documents inside Emacs, I use the convenient rfc-mode,
+which I've extended with some navigation capabilities.
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package rfc-mode
+    :ensure t
+    :defer t)
+#+END_SRC
+
 *** Search
 
 For searching things, I use deadgrep, a nice interface over
