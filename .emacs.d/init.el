@@ -1063,7 +1063,8 @@ returned to avoid that the echo area grows uncomfortably."
           ("https://drewdevault.com/feed.xml" programming blog)
           ("https://with-emacs.com/rss.xml" emacs blog)
           ("https://utcc.utoronto.ca/~cks/space/blog/?atom" programming blog)
-          ("https://feeds.feedburner.com/abseilio" programming blog)))
+          ("https://feeds.feedburner.com/abseilio" programming blog)
+          ("https://eclecticlight.co/category/macs/feed/" mac blog)))
   ;; I like to read articles with 80 columns, like a newspaper.
   (add-hook 'elfeed-show-mode-hook (lambda () (setq-local shr-width 80))))
 
