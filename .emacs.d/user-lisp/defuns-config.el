@@ -415,6 +415,7 @@ If the file is under version control, act like `vc-rename-file'."
 (global-set-key (kbd "C-c r") 'dm/rename-file)
 
 (defun dm/find-non-ascii-chars-in-buffer ()
+  "Use Occur to find non-ASCII characters in the current buffer."
   (interactive)
   (occur "[^[:ascii:]]"))
 
