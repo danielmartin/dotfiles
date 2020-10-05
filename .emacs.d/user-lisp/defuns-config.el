@@ -419,5 +419,19 @@ If the file is under version control, act like `vc-rename-file'."
   (interactive)
   (occur "[^[:ascii:]]"))
 
+(defun dm/lookup-password (host user port)
+  "Search for HOST USER PORT credentials using `auth-source'."
+  (require 'auth-source)
+  (require 'auth-source-pass)
+  (let ((auth (auth-source-search :host host :user user :port port)))
+    (if auth
+        (let ((secretf (plist-get (car auth) :secret)))
+          (if secretf
+              (funcall secretf)
+            (error "Auth entry for %s@%s:%s has no secret!"
+                   user host port)))
+      (error "No auth entry found for %s@%s:%s" user host port))))
+
 (provide 'defuns-config)
- ;;; defuns-config.el ends here
+
+;;; defuns-config.el ends here
