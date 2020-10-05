@@ -19,6 +19,9 @@
 (global-set-key (kbd "C-x <down>") #'enlarge-window)
 (global-set-key (kbd "C-x <left>") #'shrink-window-horizontally)
 (global-set-key (kbd "C-x <right>") #'enlarge-window-horizontally)
+;; Scroll windows
+(global-set-key (kbd "C-z") (lambda () (interactive) (scroll-up 1)))
+(global-set-key (kbd "M-z") (lambda () (interactive) (scroll-down 1)))
 
 (provide 'keybindings)
 ;;; keybindings.el ends here
