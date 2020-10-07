@@ -1151,6 +1151,9 @@ particular branch, so it will be completely stable over time."
   :ensure t
   :bind
   ("C-x g" . magit-status)
+  :hook
+  ;; Spell-check my commits by default.
+  (git-commit-setup . git-commit-turn-on-flyspell)
   :config
   ;; I want to highlight whitespace errors in both added and removed
   ;; lines.
