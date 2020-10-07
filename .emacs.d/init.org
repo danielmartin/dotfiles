@@ -1582,8 +1582,12 @@ I use yasnippet for managing text snippets.
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package yasnippet
     :ensure t
-    :diminish yas-minor-mode
     :init (yas-global-mode 1))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package yasnippet-snippets
+    :ensure t)
 #+END_SRC
 
 *** Syntax checking
