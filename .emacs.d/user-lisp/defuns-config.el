@@ -101,7 +101,7 @@
                 (y-or-n-p "The binary files differ, look at the differences in hexl-mode? ")))
      (error (error-message-string err)))))
 
-(defun dm/copy-file-to-clipboard ()
+(defun dm/copy-file-name-to-clipboard ()
   "Copy the current buffer file name to the clipboard."
   (interactive)
   (let ((filename (if (equal major-mode 'dired-mode)
