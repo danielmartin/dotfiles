@@ -111,7 +111,7 @@
         (progn
           (kill-new filename)
           (message "Copied buffer file name '%s' to the clipboard." filename))
-      (user-error "Buffer does not visit a file, so no filename to copy."))))
+      (user-error "Buffer does not visit a file, so no filename to copy"))))
 
 (global-set-key (kbd "C-c w") #'dm/copy-file-to-clipboard)
 
@@ -204,7 +204,7 @@
                     mode-name) nil t)
                   (match-string 1)))))
       (unless (and start end)
-        (user-error "Cannot calculate compile time. Did the compilation finish successfully?"))
+        (user-error "Cannot calculate compile time.  Did the compilation finish successfully?"))
       (message
        (format "%s took %s"
                mode-name
