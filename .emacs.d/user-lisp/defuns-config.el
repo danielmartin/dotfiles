@@ -168,7 +168,7 @@
 
 (defun dm/calculate-compile-time (start-time end-time)
   "Compute the compile/grep time between START-TIME and END-TIME.
- Time is formatted in hours, minutes, and seconds."
+Time is formatted in hours, minutes, and seconds."
   (format-seconds
    "%H %M, %z%S"
    (time-to-seconds
@@ -184,7 +184,7 @@
 
 (defun dm/print-compile-time ()
   "Print the time of a `compilation-mode' buffer that finished successfully.
- Time is formatted in hours, minutes, and seconds."
+Time is formatted in hours, minutes, and seconds."
   (interactive)
   (when (derived-mode-p 'compilation-mode)
     (let ((start (save-excursion
