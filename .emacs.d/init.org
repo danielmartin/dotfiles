@@ -1091,6 +1091,19 @@ The edit-indirect package lets me edit source code in a separate buffer.
     :defer t)
 #+END_SRC
 
+*** Eradio
+
+eradio is a simple Internet radio player for Emacs.
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package eradio
+    :ensure t
+    :defer t
+    :config
+    (setq eradio-player '("mpv" "--no-video" "--no-terminal"))
+    (setq eradio-channels '(("Los 40 Principales" . "https://20863.live.streamtheworld.com/LOS40AAC.aac"))))
+#+END_SRC
+
 *** Feeds
 
 For browsing feeds, I use Elfeed:

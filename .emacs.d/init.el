@@ -1040,6 +1040,18 @@ returned to avoid that the echo area grows uncomfortably."
   :ensure t
   :defer t)
 
+;; Eradio
+
+;; eradio is a simple Internet radio player for Emacs.
+
+
+(use-package eradio
+  :ensure t
+  :defer t
+  :config
+  (setq eradio-player '("mpv" "--no-video" "--no-terminal"))
+  (setq eradio-channels '(("Los 40 Principales" . "https://20863.live.streamtheworld.com/LOS40AAC.aac"))))
+
 ;; Feeds
 
 ;; For browsing feeds, I use Elfeed:
