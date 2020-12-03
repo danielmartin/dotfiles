@@ -432,6 +432,27 @@ If the file is under version control, act like `vc-rename-file'."
                    user host port)))
       (error "No auth entry found for %s@%s:%s" user host port))))
 
+(defun dm/cpp-print-enclosing-namespace ()
+  "Show the name of the C++ namespace that encloses the point."
+  (interactive)
+  (unless (eq major-mode 'c++-mode)
+    (user-error "This function is only intended to work in `c++-mode'"))
+  (save-match-data
+    (save-excursion
+      (condition-case nil
+          (progn
+            (while (not (looking-at "\\(namespace[ ]*.*\\)"))
+              (backward-up-list)
+              (beginning-of-line))
+            (cond ((string-empty-p (match-string 1))
+                   (message "Anonymous namespace"))
+                  (t
+                   (message (match-string 1)))))
+        (scan-error
+         (message "No namespace"))))))
+
+(define-key c++-mode-map (kbd "C-c n") #'dm/cpp-print-enclosing-namespace)
+
 (provide 'defuns-config)
 
 ;;; defuns-config.el ends here
