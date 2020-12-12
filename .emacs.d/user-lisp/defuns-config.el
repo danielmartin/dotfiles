@@ -441,13 +441,10 @@ If the file is under version control, act like `vc-rename-file'."
     (save-excursion
       (condition-case nil
           (progn
-            (while (not (looking-at "\\(namespace[ ]*.*\\)"))
+            (while (not (looking-at "\\(namespace.*\\)"))
               (backward-up-list)
               (beginning-of-line))
-            (cond ((string-empty-p (match-string 1))
-                   (message "Anonymous namespace"))
-                  (t
-                   (message (match-string 1)))))
+            (message (match-string 1)))
         (scan-error
          (message "No namespace"))))))
 
