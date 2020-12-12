@@ -5,7 +5,7 @@
  ;;; Code:
 (defun dm/recenter-defun ()
   "Recenter the buffer to put the current defun at the top.
- This is somewhat similar to built-in `reposition-window'."
+This is somewhat similar to built-in `reposition-window'."
   (interactive)
   (push-mark)
   (beginning-of-defun)
@@ -361,23 +361,6 @@ Time is formatted in hours, minutes, and seconds."
     ;; Note that Tesseract automatically adds a .txt extension to the
     ;; output file.
     (find-file-other-window (concat ocr ".txt"))))
-
-(defun dm/after-compilation-finished (buf status)
-  "Function that will be invoked when a compilation has finished."
-  (let ((template (cdr (assoc "Debug PSPDFKit Core Tests" dap-debug-template-configurations))))
-    (plist-put template :args core-tests-argument-list)
-    (print status)
-    (remove-hook 'compilation-finish-functions #'dm/after-compilation-finished)
-    ;; Launch the target under a debugger.
-    (dap-debug template)))
-
-(defun dm/debug-pspdfkit-core-tests (args)
-  "Debug PSPDFKit Core tests, passing ARGS, optionally."
-  (interactive "sTest arguments: ")
-  (setq core-tests-argument-list (list args))
-  ;; Compile the target to make sure it's up to date.
-  (add-hook 'compilation-finish-functions #'dm/after-compilation-finished)
-  (compile projectile-project-compilation-cmd))
 
 (defun dm/rename-file (new)
   "Rename file OLD to NEW, renaming the buffer as well.
