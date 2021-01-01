@@ -246,10 +246,11 @@ Time is formatted in hours, minutes, and seconds."
 (defun dm/stringified-mode-line ()
   "Display the mode line in a help buffer so you can inspect its text properties."
   (interactive)
-  (with-help-window "*Stringified Mode Line*"
-    (with-current-buffer "*Stringified Mode Line*"
-      (font-lock-mode -1)
-      (insert (format-mode-line mode-line-format)))))
+  (let ((buffer-name "*Stringified Mode Line*"))
+    (with-help-window buffer-name
+      (with-current-buffer buffer-name
+        (font-lock-mode -1)
+        (insert (format-mode-line mode-line-format))))))
 
 (defun dm/prepend-pspdfkit-assets-folder (file)
   "Prepend the PSPDFKit assets folder to FILE, assuming it's a relative path."
