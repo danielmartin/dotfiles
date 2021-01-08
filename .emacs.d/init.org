@@ -161,6 +161,7 @@ Use ivy-xref to select cross references:
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
   (use-package ivy-xref
     :ensure t
+    :disabled t
     :after ivy
     :init (setq xref-show-xrefs-function #'ivy-xref-show-xrefs))
 #+END_SRC
