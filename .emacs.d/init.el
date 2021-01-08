@@ -1349,11 +1349,11 @@ particular branch, so it will be completely stable over time."
 ;; For checking spelling and grammar, I use an external Java tool: Language-tool.
 
 
-(use-package langtool
+(use-package languagetool
   :ensure t
-  :commands langtool-check-buffer
+  :commands languagetool-check
   :config
-  (setq langtool-language-tool-jar "/usr/local/Cellar/languagetool/4.3/libexec/languagetool-commandline.jar"))
+  (setq languagetool-language-tool-jar "/usr/local/Cellar/languagetool/5.0/libexec/languagetool-commandline.jar"))
 
 ;; Org-Mode
 

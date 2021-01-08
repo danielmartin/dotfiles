@@ -1421,11 +1421,11 @@ For accessing iOS simulator folders, I've created a simple minor mode:
 For checking spelling and grammar, I use an external Java tool: Language-tool.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-    (use-package langtool
-      :ensure t
-      :commands langtool-check-buffer
-      :config
-      (setq langtool-language-tool-jar "/usr/local/Cellar/languagetool/4.3/libexec/languagetool-commandline.jar"))
+  (use-package languagetool
+    :ensure t
+    :commands languagetool-check
+    :config
+    (setq languagetool-language-tool-jar "/usr/local/Cellar/languagetool/5.0/libexec/languagetool-commandline.jar"))
 #+END_SRC
 
 *** Org-Mode
@@ -1443,14 +1443,14 @@ I want a nice way to work on PDF documents graphically.
 Install with `brew install pdf-tools`.
 
 #+BEGIN_SRC emacs-lisp :tangle yes :comments org
-  (use-package pdf-tools
-    :ensure t
-    :defer t
-    :config
-    (custom-set-variables
-     '(pdf-tools-handle-upgrades nil))
-    (setq pdf-info-epdfinfo-program "/usr/local/bin/epdfinfo")
-    (pdf-tools-install))
+    (use-package pdf-tools
+      :ensure t
+      :magic ("%PDF" . pdf-view-mode)
+      :config
+      (custom-set-variables
+       '(pdf-tools-handle-upgrades nil))
+      (setq pdf-info-epdfinfo-program "/usr/local/bin/epdfinfo")
+      (pdf-tools-install))
 #+END_SRC
 
 pdf-linter will "lint" a PDF document using PDFBox Preflight app.
