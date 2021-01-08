@@ -203,6 +203,17 @@ non-essential things while the window is being scrolled:
     (fast-scroll-mode 1))
 #+END_SRC
 
+*** Fetchmail
+
+#+BEGIN_SRC emacs-lisp :tangle yes :comments org
+  (use-package fetchmail-ctl
+    :after gnus-group
+    :bind (:map gnus-group-mode-map
+                ("v b" . switch-to-fetchmail)
+                ("v d" . shutdown-fetchmail)
+                ("v k" . kick-fetchmail)))
+#+END_SRC
+
 *** File Backup Management
 
 Store Emacs backup files in their own directory, so as not to pollute

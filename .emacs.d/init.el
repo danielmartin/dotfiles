@@ -179,6 +179,16 @@
   (fast-scroll-config)
   (fast-scroll-mode 1))
 
+;; Fetchmail
+
+
+(use-package fetchmail-ctl
+  :after gnus-group
+  :bind (:map gnus-group-mode-map
+              ("v b" . switch-to-fetchmail)
+              ("v d" . shutdown-fetchmail)
+              ("v k" . kick-fetchmail)))
+
 ;; File Backup Management
 
 ;; Store Emacs backup files in their own directory, so as not to pollute
