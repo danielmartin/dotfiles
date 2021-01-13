@@ -148,7 +148,7 @@ end tell")) 1 -1))
                            (string-to-multibyte "tell application \"Safari\"
         URL of document of front window
 end tell")) 1 -1)))
-      (org-make-link-string url subject)))
+      (org-link-make-string url subject)))
 
   (defun dm/org-insert-url-link ()
     (interactive)
