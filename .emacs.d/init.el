@@ -378,13 +378,14 @@
 ;; Remove trailing whitespace before saving a file.
 
 
-(add-hook 'before-save-hook
-          (lambda ()
-            ;; Don't delete trailing whitespace in PDFs to avoid
-            ;; corrupting them.
-            (let ((extension (file-name-extension buffer-file-name)))
-              (unless (and extension (string= "pdf" (downcase extension)))
-                (delete-trailing-whitespace)))))
+(defun dm/delete-trailing-whitespace ()
+  "Delete trailing whitespace before saving a file."
+  (add-hook 'before-save-hook #'delete-trailing-whitespace nil t))
+
+;; Remove trailing whitespace in programming language modes only.
+;; Note that `markdown-mode' inherits from `text-mode', so it's
+;; excluded.
+(add-hook 'prog-mode-hook #'dm/delete-trailing-whitespace)
 
 ;; Cursor position
 
