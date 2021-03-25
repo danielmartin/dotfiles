@@ -281,16 +281,16 @@ Time is formatted in hours, minutes, and seconds."
   ;; This function assumes that it's running on macOS.
   (call-process "open" nil nil nil "-b" "com.adobe.acrobat.Pro" (expand-file-name file)))
 
-(defun dm/open-in-pspdfinspector (file)
-  "Open FILE in PSPDFInspector."
+(defun dm/open-in-pdfinspector (file)
+  "Open FILE in PDF Inspector."
   ;; This function assumes that it's running on macOS.
-  (call-process "open" nil nil nil "-a" "PSPDFInspector" (expand-file-name file)))
+  (call-process "open" nil nil nil "-a" "PDF Inspector" (expand-file-name file)))
 
 (defun dm/open-pdf-at-point--internal (file)
   "Prompt which program should open the PDF FILE."
   (let ((programs '(("Emacs" . dm/open-in-emacs)
                     ("Adobe Acrobat" . dm/open-in-adobe-acrobat)
-                    ("PSPDFInspector" . dm/open-in-pspdfinspector))))
+                    ("PDF Inspector" . dm/open-in-pdfinspector))))
     (unless (file-readable-p file)
       (error "The file %s does not exist" file))
     (funcall
